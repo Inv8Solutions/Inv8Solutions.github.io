@@ -7,6 +7,7 @@ import FeaturesSection from './components/Home/Features.vue'
 import StepsSection from './components/Home/Steps.vue'
 import ProductPreview from './components/Home/ProductPreview.vue'
 import WhyChooseUs from './components/Home/WhyChooseUs.vue'
+import Faq from './components/Home/Faq.vue'
 </script>
 
 <template>
@@ -18,4 +19,5 @@ import WhyChooseUs from './components/Home/WhyChooseUs.vue'
   <StepsSection />
   <ProductPreview />
   <WhyChooseUs />
+  <Faq />
 </template>
