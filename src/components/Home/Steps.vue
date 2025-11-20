@@ -45,6 +45,7 @@ const tools = [
   { name: 'Java', icon: 'fa-brands fa-java' },
   { name: 'Raspberry Pi', icon: 'fa-brands fa-raspberry-pi' },
   { name: 'Arduino', icon: 'fa-solid fa-infinity' },
+  { name: 'Linux', icon: 'fa-brands fa-linux' },
 ]
 </script>
 
