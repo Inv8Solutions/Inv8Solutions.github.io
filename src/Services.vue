@@ -1,6 +1,8 @@
 <script lang="ts">
-defineOptions({
-  name: 'ServicesSection',
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'ServicesSection', // or 'Services' for Services.vue
 })
 </script>
 

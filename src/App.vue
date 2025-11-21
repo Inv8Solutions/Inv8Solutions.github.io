@@ -1,25 +1,41 @@
 <script setup lang="ts">
-import HeroSection from './components/Home/HeroSection.vue'
-import MarqueeTop from './components/Home/MarqueeTop.vue'
-import MarqueeBottom from './components/Home/MarqueeBottom.vue'
-import WorkedCompanies from './components/Home/WorkedCompanies.vue'
-import FeaturesSection from './components/Home/Features.vue'
-import StepsSection from './components/Home/Steps.vue'
-import ProductPreview from './components/Home/ProductPreview.vue'
-import WhyChooseUs from './components/Home/WhyChooseUs.vue'
-import Faq from './components/Home/Faq.vue'
-import FooterSection from './components/Footer.vue'
+import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import AppHeader from '@/components/AppHeader.vue'
+import FooterSection from '@/components/Footer.vue'
+
+const route = useRoute()
+
+// Handle scroll behavior for hash links
+onMounted(() => {
+  if (route.hash) {
+    const element = document.querySelector(route.hash)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+})
 </script>
 
 <template>
-  <HeroSection />
-  <MarqueeTop />
-  <MarqueeBottom />
-  <WorkedCompanies />
-  <FeaturesSection />
-  <StepsSection />
-  <ProductPreview />
-  <WhyChooseUs />
-  <Faq />
+  <AppHeader />
+  <main class="min-h-screen">
+    <router-view v-slot="{ Component }">
+      <component :is="Component" :key="$route.fullPath" />
+    </router-view>
+  </main>
   <FooterSection />
 </template>
+
+<style>
+/* Add smooth page transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

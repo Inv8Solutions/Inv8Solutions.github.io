@@ -1,9 +1,20 @@
-<script lang="ts">
+<script setup lang="ts">
+import WorksHeroSection from './components/Works/HeroSection.vue'
+import ProductContainer from './components/Works/ProductContainer.vue'
 defineOptions({
-  name: 'WorksSection',
+  name: 'WorksPage',
 })
 </script>
 
 <template>
-  <h1>Works</h1>
+  <div class="works-page">
+    <works-hero-section />
+    <product-container />
+  </div>
 </template>
+
+<style scoped>
+.works-page {
+  min-height: 100vh;
+}
+</style>
