@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import AppHeader from '@/components/AppHeader.vue'
+import AppHeader from '@/AppHeader.vue'
 import FooterSection from '@/components/Footer.vue'
 
 const route = useRoute()
