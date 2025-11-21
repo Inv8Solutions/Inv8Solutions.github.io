@@ -9,8 +9,8 @@ const companies = [
 </script>
 
 <template>
-  <section class="bg-white py-16">
-    <div class="mx-auto max-w-6xl px-4">
+  <section class="bg-white py-24 min-h-[720px] flex flex-col justify-center">
+    <div class="mx-auto w-full max-w-7xl px-4">
       <div class="text-center">
         <p class="text-xs font-semibold uppercase tracking-[0.35em] text-gray-400">
           Companies we&apos;ve worked with

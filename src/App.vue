@@ -8,6 +8,7 @@ import StepsSection from './components/Home/Steps.vue'
 import ProductPreview from './components/Home/ProductPreview.vue'
 import WhyChooseUs from './components/Home/WhyChooseUs.vue'
 import Faq from './components/Home/Faq.vue'
+import FooterSection from './components/Footer.vue'
 </script>
 
 <template>
@@ -20,4 +21,5 @@ import Faq from './components/Home/Faq.vue'
   <ProductPreview />
   <WhyChooseUs />
   <Faq />
+  <FooterSection />
 </template>

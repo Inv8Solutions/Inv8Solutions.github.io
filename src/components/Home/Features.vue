@@ -37,8 +37,11 @@ const features = [
 </script>
 
 <template>
-  <section class="bg-white py-20" aria-labelledby="features-heading">
-    <div class="mx-auto max-w-6xl px-4" :aria-describedby="'features-intro'">
+  <section
+    class="bg-white py-24 min-h-[720px] flex items-center"
+    aria-labelledby="features-heading"
+  >
+    <div class="mx-auto w-full max-w-7xl px-4" :aria-describedby="'features-intro'">
       <div class="text-center">
         <div
           class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1 text-xs font-semibold text-blue-600"
@@ -54,7 +57,7 @@ const features = [
         </p>
       </div>
 
-      <div class="mt-12 grid gap-8 md:grid-cols-2">
+      <div class="mt-12 grid gap-10 md:grid-cols-2 max-w-7xl">
         <article
           v-for="feature in features"
           :key="feature.title"

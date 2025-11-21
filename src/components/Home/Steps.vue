@@ -51,7 +51,7 @@ const tools = [
 
 <template>
   <section class="bg-[#050505] py-20 text-white" aria-labelledby="steps-heading">
-    <div class="mx-auto max-w-6xl px-4">
+    <div class="mx-auto max-w-7xl px-4">
       <div class="text-center">
         <div
           class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-semibold text-blue-200"

@@ -42,7 +42,7 @@ const reasons = [
 </script>
 
 <template>
-  <section class="bg-[#f6f7fb] px-4 py-20 text-gray-900">
+  <section class="bg-[#f6f7fb] px-4 py-24 min-h-[720px] text-gray-900 flex flex-col justify-center">
     <div class="mx-auto max-w-5xl space-y-10 text-center">
       <div
         class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-blue-600"
@@ -60,11 +60,11 @@ const reasons = [
       </div>
     </div>
 
-    <div class="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3">
       <article
         v-for="reason in reasons"
         :key="reason.title"
-        class="rounded-[28px] border border-gray-200 bg-white p-6 text-left shadow-[0_30px_80px_-60px_rgba(15,23,42,0.5)] transition-all duration-300 hover:shadow-lg"
+        class="rounded-[28px] border border-gray-200 bg-white px-8 py-6 text-left shadow-[0_30px_80px_-60px_rgba(15,23,42,0.5)] transition-all duration-300 hover:shadow-lg"
       >
         <div
           class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600"

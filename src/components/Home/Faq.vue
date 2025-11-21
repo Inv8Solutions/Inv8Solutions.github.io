@@ -67,7 +67,7 @@ const toggleFAQ = (index: number) => {
 
 <template>
   <section class="bg-[#f6f7fb] px-4 pt-8 pb-12 text-gray-900">
-    <div class="mx-auto flex max-w-6xl flex-col gap-12 p-4 lg:flex-row lg:items-center lg:gap-16">
+    <div class="mx-auto flex max-w-7xl flex-col gap-12 p-4 lg:flex-row lg:items-center lg:gap-16">
       <div class="flex-1 space-y-6">
         <span
           class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600"

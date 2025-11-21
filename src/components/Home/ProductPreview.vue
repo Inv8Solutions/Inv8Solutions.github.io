@@ -28,8 +28,8 @@ const projects = [
 </script>
 
 <template>
-  <section class="bg-[#f8f8fc] px-4 py-20 text-gray-900">
-    <div class="mx-auto max-w-6xl space-y-10">
+  <section class="bg-[#f8f8fc] px-4 py-24 min-h-[720px] text-gray-900 flex items-center">
+    <div class="mx-auto w-full max-w-7xl space-y-10">
       <header class="flex flex-wrap items-center justify-between gap-6">
         <div class="space-y-5">
           <div
