@@ -1,11 +1,26 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import HeroSection from '@/components/Offers/HeroSection.vue'
+import OffersBody from '@/components/Offers/Body.vue'
+import { DEFAULT_SERVICE_ID } from '@/data/offers'
 
-export default defineComponent({
-  name: 'ServicesSection', // or 'Services' for Services.vue
+defineOptions({
+  name: 'ServicesPage',
 })
+
+const selectedServiceId = ref(DEFAULT_SERVICE_ID)
 </script>
 
 <template>
-  <h1>services</h1>
+  <div class="services-page">
+    <hero-section v-model:selected-service-id="selectedServiceId" />
+    <offers-body :selected-service-id="selectedServiceId" />
+  </div>
 </template>
+
+<style scoped>
+.services-page {
+  min-height: 100vh;
+  width: 100%;
+}
+</style>

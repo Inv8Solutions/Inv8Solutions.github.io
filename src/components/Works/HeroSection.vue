@@ -11,7 +11,7 @@ const categories = [
 
 <template>
   <section class="bg-[#f5f5f5] px-4 py-16 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-6xl">
+    <div class="mx-auto max-w-7xl">
       <div
         class="rounded-[32px] bg-white px-6 py-12 text-center shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:px-12"
       >
