@@ -24,7 +24,7 @@ onMounted(() => {
       <component :is="Component" :key="$route.fullPath" />
     </router-view>
   </main>
-  <FooterSection />
+  <FooterSection v-if="!$route.path.startsWith('/contactus')" />
 </template>
 
 <style>

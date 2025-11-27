@@ -18,12 +18,13 @@ const navLinks = [
   { name: 'About Us', path: '/' },
   { name: 'Services', path: '/services' },
   { name: 'Works', path: '/works' },
-  { name: 'Contact Us', path: '/#contact' },
+  { name: 'Contact Us', path: '/contactus' },
 ]
 
 const isActive = (path: string) => {
   if (path === '/' && route.path === '/') return true
   if (path === '/#contact' && route.hash === '#contact') return true
+  if (path === '/contactus' && route.path === '/contactus') return true
   return route.path.startsWith(path) && path !== '/'
 }
 
@@ -38,6 +39,10 @@ const navigate = (path: string) => {
       router.push({ path: '/', hash: path.substring(1) })
     }
   } else {
+    // Close mobile menu if open
+    if (isMenuOpen.value) {
+      isMenuOpen.value = false
+    }
     router.push(path)
   }
 }
@@ -128,7 +133,7 @@ const navigate = (path: string) => {
             <li>
               <button
                 class="w-full rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-300/70 transition hover:bg-blue-700"
-                @click="[navigate('/#contact'), closeMenu()]"
+                @click="[navigate('/contactus'), closeMenu()]"
               >
                 Start a Project
               </button>

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Works from '../Works.vue'
 import Services from '@/Services.vue'
+import ContactUs from '@/components/ContactUs.vue'
 import HomeView from '@/views/HomeView.vue'
 
 const routes = [
@@ -18,6 +19,11 @@ const routes = [
     path: '/services',
     name: 'Services',
     component: Services,
+  },
+  {
+    path: '/contactus',
+    name: 'ContactUs',
+    component: ContactUs,
   },
   // Add a catch-all route for 404s
   {
