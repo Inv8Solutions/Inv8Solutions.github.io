@@ -45,3 +45,6 @@ const db = getFirestore(app)
 const auth = getAuth(app)
 
 const storage = getStorage(app)
+
+// Export Firebase services
+export { db, auth, storage, analytics }

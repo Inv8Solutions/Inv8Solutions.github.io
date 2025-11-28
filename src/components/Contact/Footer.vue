@@ -16,7 +16,7 @@ defineOptions({
 
 <template>
   <footer class="border-t border-gray-200 bg-white px-4 py-16 text-gray-600 sm:px-6 lg:px-8">
-    <div class="mx-auto w-full max-w-6xl">
+    <div class="mx-auto w-full max-w-7xl">
       <div
         class="grid gap-10 pb-10 md:grid-cols-[1.2fr_repeat(3,minmax(0,1fr))] md:gap-12 lg:pb-14"
       >

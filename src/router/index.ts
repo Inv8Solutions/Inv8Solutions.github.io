@@ -3,6 +3,9 @@ import Works from '../Works.vue'
 import Services from '@/Services.vue'
 import ContactUs from '@/components/ContactUs.vue'
 import HomeView from '@/views/HomeView.vue'
+import AdminLogin from '@/AdminLogin.vue'
+import AdminPanel from '@/AdminPanel.vue'
+import ProjectDetails from '@/components/ProjectDetails.vue'
 
 const routes = [
   {
@@ -25,7 +28,23 @@ const routes = [
     name: 'ContactUs',
     component: ContactUs,
   },
-  // Add a catch-all route for 404s
+  {
+    path: '/admin/login',
+    name: 'AdminLogin',
+    component: AdminLogin,
+  },
+  {
+    path: '/admin',
+    name: 'AdminPanel',
+    component: AdminPanel,
+  },
+  {
+    path: '/project/:id',
+    name: 'ProjectDetails',
+    component: ProjectDetails,
+    props: true,
+  },
+  // Add a catch-all route for 404s (must be last)
   {
     path: '/:pathMatch(.*)*',
     redirect: '/',
