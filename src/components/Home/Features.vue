@@ -5,31 +5,37 @@ defineOptions({
 const features = [
   {
     title: 'UI/UX Design',
+    image: '/src/assets/UI_UX.png',
     description:
       'We design intuitive, user-centered interfaces that bring clarity to complex ideas. Our process focuses on usability, simplicity, and creating experiences that feel natural from day one.',
   },
   {
     title: 'MVP Development',
+    image: '/src/assets/MVP_Dev.png',
     description:
       'We build lean, functional MVPs that turn early ideas into working products fast. Our approach prioritizes essential features, clean architecture, and real-world validation from the very first release.',
   },
   {
     title: 'Innovation for SMEs',
+    image: '/src/assets/Innov_SME.png',
     description:
       'We modernize business operations by identifying inefficiencies and designing practical digital solutions. Our work streamlines workflows, reduces manual effort, and helps teams operate with greater clarity and control.',
   },
   {
     title: 'IoT Development',
+    image: '/src/assets/IoT_Dev.png',
     description:
       'We create reliable, scalable IoT systems that connect devices, data, and environments seamlessly. Our process integrates hardware, software, and cloud technologies to deliver solutions that perform consistently in real-world conditions.',
   },
   {
     title: 'Pitchdeck Design',
+    image: '/src/assets/Pitchdeck.png',
     description:
       'We craft clear, compelling pitch decks that communicate your vision with precision. Our approach focuses on structure, storytelling, and visuals that help founders present their product with confidence.',
   },
   {
     title: 'Intellectual Property Registration',
+    image: '/src/assets/IP.png',
     description:
       "We support founders in securing their IP through a trusted partner specializing in trademarks, patents, and design protection. It reduces friction in the process, ensuring you're guided by experts from filing to approval.",
   },
@@ -63,9 +69,18 @@ const features = [
           :key="feature.title"
           class="flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_25px_70px_-40px_rgba(15,23,42,0.5)]"
         >
-          <div
-            class="rounded-3xl bg-gradient-to-b from-gray-100 to-gray-50 px-4 pb-[55%] pt-6"
-          ></div>
+          <div class="rounded-3xl bg-gradient-to-b from-gray-100 to-gray-50 p-4 overflow-hidden">
+            <img
+              v-if="feature.image"
+              :src="feature.image"
+              :alt="feature.title"
+              class="w-full h-auto object-cover rounded-2xl"
+            />
+            <div
+              v-else
+              class="rounded-3xl bg-gradient-to-b from-gray-100 to-gray-50 h-[200px]"
+            ></div>
+          </div>
 
           <div class="mt-6 flex items-start justify-between gap-4">
             <div>

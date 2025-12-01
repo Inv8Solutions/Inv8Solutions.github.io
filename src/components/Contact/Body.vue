@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { db } from '@/firebase'
+import { getFunctions, httpsCallable } from 'firebase/functions'
+
 defineOptions({
   name: 'ContactBodySection',
 })
@@ -31,17 +36,118 @@ const formFields = [
   {
     id: 'service',
     label: 'Service Interested In *',
-    type: 'text',
+    type: 'select',
+    options: [
+      { value: 'ui-ux-design', label: 'UI/UX Design' },
+      { value: 'mvp-dev', label: 'MVP Development' },
+      { value: 'sme-innovation', label: 'Innovation for SMEs' },
+      { value: 'consulting', label: 'Technical Consulting' },
+      { value: 'iot-dev', label: 'IoT Development' },
+      { value: 'other', label: 'Others' },
+    ],
     placeholder: 'Select a service',
   },
-  { id: 'budget', label: 'Estimated Budget', type: 'text', placeholder: 'Select budget range' },
+  {
+    id: 'budget',
+    label: 'Estimated Budget',
+    type: 'select',
+    options: [
+      { value: '20k-below', label: '₱20,000 and below' },
+      { value: '20k-40k', label: '₱20,001 - ₱40,000' },
+      { value: '40k-60k', label: '₱40,001 - ₱60,000' },
+      { value: '60k-100k', label: '₱60,001 - ₱100,000' },
+      { value: '100k-plus', label: '₱100,001 and above' },
+    ],
+    placeholder: 'Select budget range',
+  },
   {
     id: 'timeline',
     label: 'Project Timeline',
-    type: 'text',
-    placeholder: 'When do you want to start?',
+    type: 'select',
+    options: [
+      { value: 'asap', label: 'ASAP' },
+      { value: 'within-1-month', label: 'Within 1 Month' },
+      { value: '1-3-months', label: '1 - 3 Months' },
+      { value: '3-6-months', label: '3 - 6 Months' },
+      { value: 'flexible', label: 'Flexible' },
+    ],
+    placeholder: 'Select timeline',
   },
 ]
+
+// Form state
+const formData = ref<Record<string, string>>({})
+const projectDetails = ref('')
+const isSubmitting = ref(false)
+const submitStatus = ref<'idle' | 'success' | 'error'>('idle')
+const errorMessage = ref('')
+
+// Initialize form data
+formFields.forEach((field) => {
+  formData.value[field.id] = ''
+})
+
+const handleSubmit = async () => {
+  // Validate required fields
+  const requiredFields = ['name', 'email', 'service']
+  const missingFields = requiredFields.filter((field) => !formData.value[field]?.trim())
+
+  if (missingFields.length > 0) {
+    errorMessage.value = 'Please fill in all required fields'
+    submitStatus.value = 'error'
+    return
+  }
+
+  if (!projectDetails.value.trim()) {
+    errorMessage.value = 'Please tell us about your project'
+    submitStatus.value = 'error'
+    return
+  }
+
+  isSubmitting.value = true
+  submitStatus.value = 'idle'
+  errorMessage.value = ''
+
+  try {
+    const inquiryData = {
+      name: formData.value.name,
+      email: formData.value.email,
+      company: formData.value.company || null,
+      service: formData.value.service,
+      budget: formData.value.budget || null,
+      timeline: formData.value.timeline || null,
+      projectDetails: projectDetails.value,
+      status: 'new',
+      createdAt: serverTimestamp(),
+    }
+
+    // Save to Firestore
+    const docRef = await addDoc(collection(db, 'inquiries'), inquiryData)
+
+    // Send confirmation email
+    const functions = getFunctions()
+    const sendEmail = httpsCallable(functions, 'sendInquiryConfirmation')
+
+    await sendEmail({
+      ...inquiryData,
+      id: docRef.id,
+    })
+
+    // Reset form
+    formFields.forEach((field) => {
+      formData.value[field.id] = ''
+    })
+    projectDetails.value = ''
+
+    submitStatus.value = 'success'
+  } catch (error) {
+    console.error('Error submitting inquiry:', error)
+    errorMessage.value = 'Failed to submit inquiry. Please try again.'
+    submitStatus.value = 'error'
+  } finally {
+    isSubmitting.value = false
+  }
+}
 </script>
 
 <template>
@@ -49,7 +155,7 @@ const formFields = [
     <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
       <div class="space-y-8">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">
+          <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600 pulse">
             Start a Conversation
           </p>
           <h2 class="mt-3 text-3xl font-semibold text-gray-900 sm:text-4xl">
@@ -146,16 +252,48 @@ const formFields = [
           Fill out the form below and we'll be in touch soon.
         </p>
 
-        <form class="mt-8 space-y-5">
+        <form class="mt-8 space-y-5" @submit.prevent="handleSubmit">
+          <!-- Error/Success Messages -->
+          <div
+            v-if="submitStatus === 'error'"
+            class="rounded-2xl bg-red-50 border border-red-200 p-4"
+          >
+            <p class="text-sm text-red-600">{{ errorMessage }}</p>
+          </div>
+
+          <div
+            v-if="submitStatus === 'success'"
+            class="rounded-2xl bg-green-50 border border-green-200 p-4"
+          >
+            <p class="text-sm text-green-600">
+              Thank you! Your inquiry has been submitted successfully. We'll be in touch soon.
+            </p>
+          </div>
+
           <div v-for="field in formFields" :key="field.id" class="space-y-2">
             <label :for="field.id" class="text-sm font-medium text-gray-700">{{
               field.label
             }}</label>
-            <input
+            <select
+              v-if="field.type === 'select'"
               :id="field.id"
+              v-model="formData[field.id]"
+              class="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              :disabled="isSubmitting"
+            >
+              <option value="" disabled>{{ field.placeholder }}</option>
+              <option v-for="option in field.options" :key="option.value" :value="option.value">
+                {{ option.label }}
+              </option>
+            </select>
+            <input
+              v-else
+              :id="field.id"
+              v-model="formData[field.id]"
               :type="field.type"
               :placeholder="field.placeholder"
               class="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              :disabled="isSubmitting"
             />
           </div>
 
@@ -165,18 +303,23 @@ const formFields = [
             >
             <textarea
               id="project-details"
+              v-model="projectDetails"
               rows="4"
               placeholder="Describe your project, goals, and any specific requirements..."
               class="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              :disabled="isSubmitting"
             ></textarea>
           </div>
 
           <button
-            type="button"
-            class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-300/60 transition hover:bg-blue-700"
+            type="submit"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-300/60 transition hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            :disabled="isSubmitting"
           >
-            Send Message
+            <span v-if="isSubmitting">Submitting...</span>
+            <span v-else>Send Message</span>
             <svg
+              v-if="!isSubmitting"
               class="h-4 w-4"
               viewBox="0 0 24 24"
               fill="none"

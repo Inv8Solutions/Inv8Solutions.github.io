@@ -347,11 +347,27 @@
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">Select Platform</option>
-              <option value="Web">Web</option>
-              <option value="Mobile">Mobile</option>
+              <option value="Website">Web</option>
+              <option value="Mobile Application">Mobile</option>
+              <option value="Desktop Application">Desktop</option>
               <option value="IoT/Hardware">IoT/Hardware</option>
-              <option value="Web & Mobile">UI/UX Design</option>
+              <option value="UI/UX Design">UI/UX Design</option>
               <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Service</label>
+            <select
+              v-model="newProject.service"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Select Service</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="MVP Development">MVP Development</option>
+              <option value="Innovation for SMEs">Innovation for SMEs</option>
+              <option value="IoT Development">IoT Development</option>
+              <option value="PitchDeck Design">PitchDeck Design</option>
             </select>
           </div>
 
@@ -446,17 +462,60 @@
                 class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">Select Technology</option>
+                <option value="Javascript">Javascript</option>
+                <option value="Python">Python</option>
+                <option value="Java">Java</option>
+                <option value="C++">C++</option>
+                <option value="Go">Go</option>
+                <option value="C#">C#</option>
+                <option value="Ruby">Ruby</option>
+                <option value="PHP">PHP</option>
+                <option value="Swift">Swift</option>
+                <option value="Kotlin">Kotlin</option>
+                <option value="Rust">Rust</option>
+                <option value="Typescript">Typescript</option>
+                <option value="Scala">Scala</option>
+                <option value="Elixir">Elixir</option>
+                <option value="R">R</option>
+                <option value="Assembly">Assembly</option>
+                <option value="C">C</option>
+                <option value="Clojure">Clojure</option>
+                <option value="Erlang">Erlang</option>
+                <option value="Fortran">Fortran</option>
+                <option value="Haskell">Haskell</option>
+                <option value="Lua">Lua</option>
+                <option value="Matlab">Matlab</option>
+                <option value="Objective-C">Objective-C</option>
+                <option value="Perl">Perl</option>
+                <option value="Ruby on Rails">Ruby on Rails</option>
+                <option value="Sass">Sass</option>
+                <option value="Shell">Shell</option>
+                <option value="SQL">SQL</option>
+                <option value="Less">Less</option>
+                <option value="SCSS">SCSS</option>
                 <option value="Vue.js">Vue.js</option>
                 <option value="React">React</option>
                 <option value="Angular">Angular</option>
                 <option value="Node.js">Node.js</option>
-                <option value="Python">Python</option>
                 <option value="Django">Django</option>
                 <option value="Firebase">Firebase</option>
                 <option value="MongoDB">MongoDB</option>
                 <option value="PostgreSQL">PostgreSQL</option>
                 <option value="AWS">AWS</option>
                 <option value="Docker">Docker</option>
+                <option value="Android">Android</option>
+                <option value="iOS">iOS</option>
+                <option value="Windows">Windows</option>
+                <option value="MacOS">MacOS</option>
+                <option value="Linux">Linux</option>
+                <option value="Adobe Photoshop">Adobe Photoshop</option>
+                <option value="Adobe Illustrator">Adobe Illustrator</option>
+                <option value="Adobe InDesign">Adobe InDesign</option>
+                <option value="Adobe XD">Adobe XD</option>
+                <option value="Sketch">Sketch</option>
+                <option value="Figma">Figma</option>
+                <option value="Adobe Animate">Adobe Animate</option>
+                <option value="Adobe After Effects">Adobe After Effects</option>
                 <option value="Other">Other</option>
               </select>
               <button
@@ -597,6 +656,7 @@ const newProject = ref({
   title: '',
   shortDescription: '',
   platform: '',
+  service: '',
   clientName: '',
   challengeStatement: '',
   solution: '',
@@ -699,6 +759,7 @@ const openAddProjectModal = () => {
     title: '',
     shortDescription: '',
     platform: '',
+    service: '',
     clientName: '',
     challengeStatement: '',
     solution: '',
