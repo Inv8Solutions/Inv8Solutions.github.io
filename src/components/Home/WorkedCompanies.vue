@@ -1,12 +1,20 @@
 <script setup lang="ts">
+import acornLogo from '@/assets/Acorn.png'
+import artistHubLogo from '@/assets/ArtistHub.png'
+import bentoBasketLogo from '@/assets/BentoBasket.png'
+import forensicLensLogo from '@/assets/ForensicLens.png'
+import layer2Logo from '@/assets/layer2.png'
+import retasifyLogo from '@/assets/Retasify.png'
+import trapiHausLogo from '@/assets/TrapiHaus.png'
+
 const companies = [
-  { name: 'Retasify', image: '/src/assets/Retasify.png' },
-  { name: 'TrapiHaus', image: '/src/assets/TrapiHaus.png' },
-  { name: 'Acorn', image: '/src/assets/Acorn.png' },
-  { name: 'BentoBasket', image: '/src/assets/BentoBasket.png' },
-  { name: 'ForensicLens', image: '/src/assets/ForensicLens.png' },
-  { name: 'ArtistHub', image: '/src/assets/ArtistHub.png' },
-  { name: 'Layer2', image: '/src/assets/layer2.png' },
+  { name: 'Retasify', image: retasifyLogo },
+  { name: 'TrapiHaus', image: trapiHausLogo },
+  { name: 'Acorn', image: acornLogo },
+  { name: 'BentoBasket', image: bentoBasketLogo },
+  { name: 'ForensicLens', image: forensicLensLogo },
+  { name: 'ArtistHub', image: artistHubLogo },
+  { name: 'Layer2', image: layer2Logo },
 ]
 </script>
 

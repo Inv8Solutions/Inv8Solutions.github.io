@@ -1,41 +1,49 @@
 <script setup lang="ts">
+import uiuxImage from '@/assets/UI_UX.png'
+import mvpImage from '@/assets/MVP_Dev.png'
+import innovImage from '@/assets/Innov_SME.png'
+import iotImage from '@/assets/IoT_Dev.png'
+import pitchdeckImage from '@/assets/Pitchdeck.png'
+import ipImage from '@/assets/IP.png'
+
 defineOptions({
   name: 'FeaturesSection',
 })
+
 const features = [
   {
     title: 'UI/UX Design',
-    image: '/src/assets/UI_UX.png',
+    image: uiuxImage,
     description:
       'We design intuitive, user-centered interfaces that bring clarity to complex ideas. Our process focuses on usability, simplicity, and creating experiences that feel natural from day one.',
   },
   {
     title: 'MVP Development',
-    image: '/src/assets/MVP_Dev.png',
+    image: mvpImage,
     description:
       'We build lean, functional MVPs that turn early ideas into working products fast. Our approach prioritizes essential features, clean architecture, and real-world validation from the very first release.',
   },
   {
     title: 'Innovation for SMEs',
-    image: '/src/assets/Innov_SME.png',
+    image: innovImage,
     description:
       'We modernize business operations by identifying inefficiencies and designing practical digital solutions. Our work streamlines workflows, reduces manual effort, and helps teams operate with greater clarity and control.',
   },
   {
     title: 'IoT Development',
-    image: '/src/assets/IoT_Dev.png',
+    image: iotImage,
     description:
       'We create reliable, scalable IoT systems that connect devices, data, and environments seamlessly. Our process integrates hardware, software, and cloud technologies to deliver solutions that perform consistently in real-world conditions.',
   },
   {
     title: 'Pitchdeck Design',
-    image: '/src/assets/Pitchdeck.png',
+    image: pitchdeckImage,
     description:
       'We craft clear, compelling pitch decks that communicate your vision with precision. Our approach focuses on structure, storytelling, and visuals that help founders present their product with confidence.',
   },
   {
     title: 'Intellectual Property Registration',
-    image: '/src/assets/IP.png',
+    image: ipImage,
     description:
       "We support founders in securing their IP through a trusted partner specializing in trademarks, patents, and design protection. It reduces friction in the process, ensuring you're guided by experts from filing to approval.",
   },
