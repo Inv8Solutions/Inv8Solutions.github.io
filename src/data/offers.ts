@@ -11,6 +11,7 @@ export type OfferDetail = {
   blurb: string
   deliverables: string[]
   capabilities: Capability[]
+  image?: string
 }
 
 export const offerDetails: OfferDetail[] = [
@@ -21,6 +22,7 @@ export const offerDetails: OfferDetail[] = [
     title: 'UI/UX Design Services',
     blurb:
       'We create user-centered interfaces that turn complex ideas into clear, usable, and engaging experiences. Our design process focuses on understanding real needs, simplifying interactions, and crafting products that feel natural from the very first use.',
+    image: '/src/assets/UI_UX.png',
     deliverables: [
       'A clear, validated user flow',
       'A complete, modern UI design system',
@@ -67,6 +69,7 @@ export const offerDetails: OfferDetail[] = [
     title: 'MVP Development Services',
     blurb:
       'We partner with founders to scope, design, and build lean MVPs that validate your product vision quickly. Our process balances speed and quality so you can learn faster and raise with confidence.',
+    image: '/src/assets/MVP_Dev.png',
     deliverables: [
       'Prioritized feature roadmap',
       'Technical architecture & stack selection',
@@ -107,6 +110,7 @@ export const offerDetails: OfferDetail[] = [
     title: 'Innovation Programs for SMEs',
     blurb:
       'We modernize legacy workflows, connect data silos, and deliver tools that help SMEs operate with the speed of startups. From discovery to rollout, we guide teams through every phase.',
+    image: '/src/assets/Innov_SME.png',
     deliverables: [
       'Innovation roadmap & success metrics',
       'System architecture & integrations plan',
@@ -148,6 +152,7 @@ export const offerDetails: OfferDetail[] = [
     title: 'IoT Product Development',
     blurb:
       'We design embedded experiences, real-time dashboards, and secure cloud infrastructure so your devices deliver continuous value. Our team bridges hardware realities with elegant digital layers.',
+    image: '/src/assets/IoT_Dev.png',
     deliverables: [
       'Hardware-to-cloud architecture',
       'Device companion app UI/UX',
@@ -188,6 +193,7 @@ export const offerDetails: OfferDetail[] = [
     title: 'Pitchdeck & Narrative Design',
     blurb:
       'We craft decks that communicate your vision with precision—combining story structure, data visualization, and refined visuals that resonate with investors, partners, and customers.',
+    image: '/src/assets/Pitchdeck.png',
     deliverables: [
       'Narrative arc & messaging hierarchy',
       'Custom slide design system',

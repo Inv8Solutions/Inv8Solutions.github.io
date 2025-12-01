@@ -1,40 +1,148 @@
 <script setup lang="ts">
-export interface Project {
-  id: string
+import { ref, onMounted, watch } from 'vue'
+import { collection, query, where, limit, getDocs } from 'firebase/firestore'
+import { db } from '@/firebase'
+
+export interface SampleWork {
+  id?: string
   title: string
-  description: string
-  imageUrl?: string
-  serviceId?: string
+  shortDesc: string
+  coverPhoto?: string
+  service?: string
+  platform?: string
+  clientName?: string
+  createdAt?: Date | null
 }
 
 const props = defineProps<{
-  projects: Project[]
+  serviceId?: string
 }>()
+
+// Reactive state
+const projects = ref<SampleWork[]>([])
+const isLoading = ref(false)
+const error = ref<string | null>(null)
+
+// Map service IDs to Firestore service names
+const serviceIdMapping: Record<string, string> = {
+  uiux: 'UI/UX Design',
+  mvp: 'MVP Development',
+  innovation: 'Innovation for SMEs',
+  iot: 'IoT Solutions',
+  pitchdeck: 'Pitchdeck Design',
+}
+
+// Fetch sample works based on service
+const fetchSampleWorks = async (serviceId?: string) => {
+  isLoading.value = true
+  error.value = null
+
+  try {
+    const serviceName = serviceId ? serviceIdMapping[serviceId] : null
+
+    let q = query(collection(db, 'sampleworks'), limit(2))
+
+    if (serviceName) {
+      q = query(collection(db, 'sampleworks'), where('service', '==', serviceName), limit(2))
+    }
+
+    const querySnapshot = await getDocs(q)
+    const fetchedProjects: SampleWork[] = []
+
+    querySnapshot.forEach((doc) => {
+      fetchedProjects.push({
+        id: doc.id,
+        ...doc.data(),
+      } as SampleWork)
+    })
+
+    projects.value = fetchedProjects
+  } catch (err) {
+    console.error('Error fetching sample works:', err)
+    error.value = 'Failed to load sample projects'
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// Watch for serviceId changes
+watch(
+  () => props.serviceId,
+  (newServiceId) => {
+    fetchSampleWorks(newServiceId)
+  },
+  { immediate: true },
+)
+
+// Initial load
+onMounted(() => {
+  fetchSampleWorks(props.serviceId)
+})
 </script>
 
 <template>
-  <section v-if="props.projects.length > 0" class="bg-white px-4 py-16 sm:px-6 lg:px-8">
+  <section v-if="projects.length > 0 || isLoading" class="bg-white px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-6xl">
       <div class="text-center">
         <h2 class="text-3xl font-semibold text-gray-900 sm:text-4xl">Our Sample Projects</h2>
       </div>
 
-      <div class="mt-10 grid gap-8 md:grid-cols-2">
+      <!-- Loading State -->
+      <div v-if="isLoading" class="mt-10 grid gap-8 md:grid-cols-2">
+        <div v-for="i in 2" :key="i" class="animate-pulse">
+          <div
+            class="flex flex-col gap-6 rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:p-8"
+          >
+            <div class="rounded-[28px] border border-gray-200 bg-[#ededed] shadow-inner">
+              <div class="aspect-[16/10] w-full rounded-[24px] bg-[#d9d9d9]"></div>
+            </div>
+            <div class="space-y-3">
+              <div class="h-6 w-3/4 rounded bg-gray-200"></div>
+              <div class="h-4 w-full rounded bg-gray-200"></div>
+              <div class="h-4 w-2/3 rounded bg-gray-200"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="mt-10 text-center">
+        <div class="rounded-2xl bg-red-50 border border-red-200 p-6">
+          <p class="text-red-600">{{ error }}</p>
+        </div>
+      </div>
+
+      <!-- Projects Grid -->
+      <div v-else class="mt-10 grid gap-8 md:grid-cols-2">
         <article
-          v-for="project in props.projects"
+          v-for="project in projects"
           :key="project.id"
           class="flex flex-col gap-6 rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:p-8"
         >
           <div class="rounded-[28px] border border-gray-200 bg-[#ededed] shadow-inner">
-            <div class="aspect-[16/10] w-full rounded-[24px] bg-[#d9d9d9]"></div>
+            <div class="aspect-[16/10] w-full rounded-[24px] bg-[#d9d9d9]">
+              <img
+                v-if="project.coverPhoto"
+                :src="project.coverPhoto"
+                :alt="project.title"
+                class="h-full w-full object-cover rounded-[24px]"
+              />
+            </div>
           </div>
 
           <div class="flex flex-1 flex-col gap-4">
             <div>
               <h3 class="text-xl font-semibold text-gray-900">{{ project.title }}</h3>
               <p class="mt-2 text-sm text-gray-600">
-                {{ project.description }}
+                {{ project.shortDesc }}
               </p>
+              <div v-if="project.service" class="mt-2">
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                >
+                  {{ project.service }}
+                </span>
+              </div>
             </div>
 
             <div class="mt-auto flex justify-end">

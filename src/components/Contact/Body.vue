@@ -13,7 +13,7 @@ const contactMethods = [
     id: 'email',
     title: 'Email Us',
     description: "Drop us a line and we'll get back within 24 hours",
-    actionLabel: 'hello@inv8.studio',
+    actionLabel: 'hello@inv8.io',
   },
   {
     id: 'call',
