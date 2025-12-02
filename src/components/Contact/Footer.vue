@@ -21,14 +21,14 @@ defineOptions({
         class="grid gap-10 pb-10 md:grid-cols-[1.2fr_repeat(3,minmax(0,1fr))] md:gap-12 lg:pb-14"
       >
         <div class="space-y-3">
-          <p class="text-2xl font-semibold text-[#1363ff]">inv8 Solutions</p>
+          <h2 class="text-2xl font-semibold text-[#1363ff]">inv8 Solutions</h2>
           <p class="text-sm text-gray-500">Product design and development studio.</p>
         </div>
 
         <div class="space-y-4">
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
             Quick Navigation
-          </p>
+          </h3>
           <ul class="space-y-2 text-sm">
             <li v-for="link in quickLinks" :key="link">
               <a href="#" class="transition hover:text-gray-900">{{ link }}</a>
@@ -37,9 +37,9 @@ defineOptions({
         </div>
 
         <div class="space-y-4">
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
             Services List
-          </p>
+          </h3>
           <ul class="space-y-2 text-sm">
             <li v-for="service in serviceList" :key="service">
               <span>{{ service }}</span>
@@ -48,7 +48,9 @@ defineOptions({
         </div>
 
         <div class="space-y-4">
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">Get in Touch</p>
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+            Get in Touch
+          </h3>
           <a
             href="mailto:hello@inv8.io"
             class="inline-flex items-center gap-2 text-sm font-medium text-gray-900 transition hover:text-[#1363ff]"

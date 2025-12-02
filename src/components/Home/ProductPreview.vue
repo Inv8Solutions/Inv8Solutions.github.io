@@ -100,10 +100,10 @@ defineExpose({
             Our Works
           </div>
           <div>
-            <p class="text-4xl font-semibold leading-tight md:text-5xl">
+            <h2 class="text-4xl font-semibold leading-tight md:text-5xl">
               Products and systems we<br class="hidden sm:block" />
               have designed
-            </p>
+            </h2>
           </div>
         </div>
         <button

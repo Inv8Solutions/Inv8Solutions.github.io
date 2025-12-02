@@ -223,9 +223,9 @@ const handleSubmit = async () => {
           </div>
 
           <div>
-            <p class="mb-4 text-sm font-semibold uppercase tracking-wider text-blue-700">
+            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-blue-700">
               What you get
-            </p>
+            </h3>
             <ul class="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white">
               <li
                 v-for="item in currentOffer.deliverables"
@@ -292,7 +292,7 @@ const handleSubmit = async () => {
         class="space-y-10 rounded-[32px] border border-gray-100 bg-white px-6 py-12 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:px-10"
       >
         <div class="text-center">
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">What we do</p>
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">What we do</h3>
           <h3 class="mt-3 text-3xl font-semibold text-gray-900">{{ currentOffer.title }}</h3>
           <p class="mt-2 text-base text-gray-500">
             A proven playbook tailored for {{ currentOffer.label }} engagements.

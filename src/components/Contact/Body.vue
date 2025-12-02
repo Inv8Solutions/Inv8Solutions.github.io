@@ -155,9 +155,9 @@ const handleSubmit = async () => {
     <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
       <div class="space-y-8">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600 pulse">
+          <h3 class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600 pulse">
             Start a Conversation
-          </p>
+          </h3>
           <h2 class="mt-3 text-3xl font-semibold text-gray-900 sm:text-4xl">
             Have a project in mind?
           </h2>
@@ -201,7 +201,7 @@ const handleSubmit = async () => {
               <div>
                 <h3 class="text-lg font-semibold text-gray-900">{{ method.title }}</h3>
                 <p class="text-sm text-gray-500">{{ method.description }}</p>
-                <p class="mt-1 text-sm font-semibold text-blue-600">{{ method.actionLabel }}</p>
+                <h4 class="mt-1 text-sm font-semibold text-blue-600">{{ method.actionLabel }}</h4>
               </div>
             </div>
           </article>

@@ -51,12 +51,12 @@ const reasons = [
         Why Choose Us
       </div>
       <div class="space-y-3">
-        <p class="text-3xl font-semibold text-gray-900 md:text-5xl">
+        <h2 class="text-3xl font-semibold text-gray-900 md:text-5xl">
           We deliver clarity, speed, and disciplined
-        </p>
-        <p class="text-3xl font-semibold text-gray-600 md:text-5xl">
+        </h2>
+        <h3 class="text-3xl font-semibold text-gray-600 md:text-5xl">
           execution in every product we build.
-        </p>
+        </h3>
       </div>
     </div>
 

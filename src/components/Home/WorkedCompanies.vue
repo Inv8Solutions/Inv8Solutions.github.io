@@ -22,9 +22,9 @@ const companies = [
   <section class="bg-white py-12 min-h-[380px] flex flex-col justify-center">
     <div class="mx-auto w-full max-w-8xl px-4">
       <div class="text-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-gray-400">
+        <h2 class="text-xs font-semibold uppercase tracking-[0.35em] text-gray-400">
           Companies we&apos;ve worked with
-        </p>
+        </h2>
         <div
           class="mx-auto mt-4 h-px w-32 bg-gradient-to-r from-transparent via-gray-300 to-transparent"
         />

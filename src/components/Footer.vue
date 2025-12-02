@@ -221,14 +221,14 @@ const handleSubmitBooking = async () => {
         class="mt-16 grid gap-8 border-t border-gray-200 pt-10 md:grid-cols-[1.4fr_repeat(3,minmax(0,1fr))]"
       >
         <div class="space-y-4 text-left">
-          <p class="text-2xl font-semibold text-[#1363ff]">inv8 Solutions</p>
+          <h2 class="text-2xl font-semibold text-[#1363ff]">inv8 Solutions</h2>
           <p class="text-sm text-gray-500">Product design and development studio.</p>
         </div>
 
         <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
             Quick Navigation
-          </p>
+          </h3>
           <ul class="mt-4 space-y-2 text-sm text-gray-600">
             <li v-for="link in quickLinks" :key="link.name">
               <a
@@ -246,16 +246,18 @@ const handleSubmitBooking = async () => {
         </div>
 
         <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
             Services List
-          </p>
+          </h3>
           <ul class="mt-4 space-y-2 text-sm text-gray-600">
             <li v-for="service in services" :key="service">{{ service }}</li>
           </ul>
         </div>
 
         <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">Get in Touch</p>
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+            Get in Touch
+          </h3>
           <a class="mt-4 flex items-center gap-3 text-sm text-gray-700" href="mailto:hello@inv8.io">
             <span
               class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 text-gray-500"

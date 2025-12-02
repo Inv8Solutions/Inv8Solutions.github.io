@@ -18,12 +18,15 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@duskmoon/vue3-typed-js": "^0.0.4",
     "@tailwindcss/cli": "^4.1.17",
     "@tailwindcss/postcss": "^4.1.17",
     "firebase": "^12.6.0",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3",
-    "vue3-marquee": "^4.2.2"
+    "vue-typed-js": "^0.1.2",
+    "vue3-marquee": "^4.2.2",
+    "vue3-typed-js": "^0.0.1"
   },
   "devDependencies": {
     "@prettier/plugin-oxc": "^0.0.4",

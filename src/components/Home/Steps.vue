@@ -62,7 +62,7 @@ const tools = [
         <h2 id="steps-heading" class="mt-6 text-3xl font-semibold text-white md:text-5xl">
           A proven process for
         </h2>
-        <p class="mt-2 text-3xl font-semibold text-white/70 md:text-5xl">purposeful innovation</p>
+        <h3 class="mt-2 text-3xl font-semibold text-white/70 md:text-5xl">purposeful innovation</h3>
       </div>
 
       <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">

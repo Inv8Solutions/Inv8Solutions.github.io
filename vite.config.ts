@@ -15,4 +15,9 @@ export default defineConfig({
   build: {
     copyPublicDir: true,
   },
+  server: {
+    fs: {
+      allow: ['..'],
+    },
+  },
 })

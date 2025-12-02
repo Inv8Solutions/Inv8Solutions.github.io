@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { offerDetails, DEFAULT_SERVICE_ID } from '@/data/offers'
+import { Typed } from '@duskmoon/vue3-typed-js'
 
 const props = defineProps<{
   selectedServiceId?: string
@@ -12,10 +13,10 @@ const emit = defineEmits<{
 
 const selectedId = computed(() => props.selectedServiceId ?? DEFAULT_SERVICE_ID)
 
+const typingStrings = ['Desirable', 'Viable', 'Feasible', 'Scalable', 'Secure']
+
 const selectService = (id: string) => {
-  if (id !== selectedId.value) {
-    emit('update:selectedServiceId', id)
-  }
+  if (id !== selectedId.value) emit('update:selectedServiceId', id)
 }
 </script>
 
@@ -34,7 +35,19 @@ const selectService = (id: string) => {
 
         <h1 class="text-3xl font-semibold leading-tight text-gray-900 sm:text-4xl">
           We build products that are
-          <span class="text-blue-600">Desirable</span>
+          <Typed
+            :options="{
+              strings: typingStrings,
+              typeSpeed: 100,
+              backSpeed: 50,
+              loop: true,
+              backDelay: 700,
+              showCursor: false,
+            }"
+            class="inline text-blue-600 font-semibold"
+          >
+            <span class="typing"></span>
+          </Typed>
         </h1>
 
         <p class="mx-auto mt-4 max-w-3xl text-base text-gray-500 sm:text-lg">
@@ -64,3 +77,15 @@ const selectService = (id: string) => {
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Optional: custom cursor animation if you want it
+.typing-cursor {
+  display: inline-block;
+  width: 3px;
+  background-color: currentColor;
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+*/
+</style>

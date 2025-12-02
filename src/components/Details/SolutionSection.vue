@@ -33,7 +33,7 @@
                 </svg>
               </span>
               <div>
-                <p class="font-semibold text-white">{{ detail.title }}</p>
+                <h4 class="font-semibold text-white">{{ detail.title }}</h4>
                 <p class="text-sm text-slate-300">{{ detail.description }}</p>
               </div>
             </li>

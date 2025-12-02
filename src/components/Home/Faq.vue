@@ -76,8 +76,8 @@ const toggleFAQ = (index: number) => {
           FAQ
         </span>
         <div class="space-y-4">
-          <p class="text-4xl font-semibold text-gray-900 sm:text-5xl">Have questions?</p>
-          <p class="text-4xl font-semibold text-gray-500 sm:text-5xl">We’ve got answers</p>
+          <h2 class="text-4xl font-semibold text-gray-900 sm:text-5xl">Have questions?</h2>
+          <h3 class="text-4xl font-semibold text-gray-500 sm:text-5xl">We've got answers</h3>
         </div>
       </div>
 
@@ -90,9 +90,9 @@ const toggleFAQ = (index: number) => {
               @click="toggleFAQ(index)"
             >
               <div class="space-y-2">
-                <p class="text-base font-semibold text-gray-900 sm:text-lg">
+                <h4 class="text-base font-semibold text-gray-900 sm:text-lg">
                   {{ faq.question }}
-                </p>
+                </h4>
                 <p v-if="openIndex === index" class="text-sm text-gray-500 sm:text-base">
                   {{ faq.answer }}
                 </p>
