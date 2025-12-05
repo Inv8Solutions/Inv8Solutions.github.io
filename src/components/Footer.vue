@@ -221,7 +221,7 @@ const handleSubmitBooking = async () => {
         class="mt-16 grid gap-8 border-t border-gray-200 pt-10 md:grid-cols-[1.4fr_repeat(3,minmax(0,1fr))]"
       >
         <div class="space-y-4 text-left">
-          <h2 class="text-2xl font-semibold text-[#1363ff]">inv8 Solutions</h2>
+          <h2 class="text-2xl font-semibold text-[#1363ff]">inv8 Studio</h2>
           <p class="text-sm text-gray-500">Product design and development studio.</p>
         </div>
 

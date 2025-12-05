@@ -21,7 +21,7 @@ defineOptions({
         class="grid gap-10 pb-10 md:grid-cols-[1.2fr_repeat(3,minmax(0,1fr))] md:gap-12 lg:pb-14"
       >
         <div class="space-y-3">
-          <h2 class="text-2xl font-semibold text-[#1363ff]">inv8 Solutions</h2>
+          <h2 class="text-2xl font-semibold text-[#1363ff]">inv8 Studio</h2>
           <p class="text-sm text-gray-500">Product design and development studio.</p>
         </div>
 

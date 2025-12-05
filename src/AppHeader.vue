@@ -200,7 +200,7 @@ const handleSubmit = async () => {
   <div class="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 shadow-sm">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
       <header class="flex items-center justify-between gap-6 py-6">
-        <a href="/" class="text-2xl font-semibold text-blue-600">inv8 Solutions</a>
+        <a href="/" class="text-2xl font-semibold text-blue-600">inv8 Studio</a>
 
         <!-- Desktop Navigation -->
         <nav class="hidden items-center gap-8 text-sm font-medium text-gray-700 md:flex">
