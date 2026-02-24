@@ -1,7 +1,25 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+
 defineOptions({
   name: 'StepsSection',
 })
+
+const observeElements = (selector: string) => {
+  if (typeof window === 'undefined') return
+  
+  const elements = document.querySelectorAll(selector)
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in')
+        observer.unobserve(entry.target)
+      }
+    })
+  })
+  
+  elements.forEach((el) => observer.observe(el))
+}
 
 const steps = [
   {
