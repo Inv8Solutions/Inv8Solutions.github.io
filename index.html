@@ -1,10 +1,14 @@
 <!doctype html>
-<html lang="">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap.xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
     <!-- Preload fonts -->
     <link rel="preload" href="/fonts/GeneralSans.otf" as="font" type="font/otf" crossorigin />
@@ -35,18 +39,19 @@
     <meta property="og:url" content="https://www.inv8.io/" />
     <meta property="og:site_name" content="inv8 Solutions" />
 
+    <!-- Load Font Awesome async for better performance -->
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.1.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"
-    />
+    <noscript>
+      <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        rel="stylesheet"
+      />
+    </noscript>
   </head>
   <body>
     <div id="app"></div>

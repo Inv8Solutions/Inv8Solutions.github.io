@@ -52,14 +52,14 @@ const floatingIcons = [
       </div>
     </div>
 
-    <div class="pointer-events-none absolute inset-0 hidden md:block">
+    <div class="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true">
       <div
         v-for="icon in floatingIcons"
         :key="icon.name"
         class="absolute rounded-2xl bg-white/95 p-4 shadow-xl shadow-gray-200/90 ring-1 ring-gray-100 animate-float"
         :style="`${icon.style} animation-delay: ${icon.delay};`"
       >
-        <img :src="icon.src" :alt="icon.name" class="h-10 w-10" loading="lazy" />
+        <img :src="icon.src" :alt="`${icon.name} icon`" class="h-10 w-10" loading="lazy" decoding="async" />
       </div>
     </div>
   </section>

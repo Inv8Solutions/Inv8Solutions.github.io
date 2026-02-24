@@ -98,13 +98,13 @@ defineExpose({
           v-for="n in 4"
           :key="n"
           class="flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.05)]"
+          role="status"
+          aria-label="Loading project"
         >
-          <div class="animate-pulse">
-            <div class="rounded-[26px] bg-gray-200 pb-[60%]"></div>
-            <div class="mt-6">
-              <div class="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
-              <div class="h-4 bg-gray-200 rounded w-full"></div>
-            </div>
+          <div class="loading-skeleton rounded-[26px] pb-[60%]"></div>
+          <div class="mt-6 space-y-3">
+            <div class="loading-skeleton h-6 w-3/4 rounded"></div>
+            <div class="loading-skeleton h-4 w-full rounded"></div>
           </div>
         </div>
       </div>
@@ -176,6 +176,11 @@ defineExpose({
           data-project-card
           class="work-project-card flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.05)] transition-smooth hover:scale-[1.02] hover:shadow-[0_25px_70px_rgba(15,23,42,0.08)] cursor-pointer"
           @click="handleProjectView(project)"
+          @keydown.enter="handleProjectView(project)"
+          @keydown.space.prevent="handleProjectView(project)"
+          tabindex="0"
+          role="button"
+          :aria-label="`View ${project.title} project details`"
         >
           <div
             class="rounded-[26px] bg-gradient-to-b from-gray-100 to-gray-50 pb-[60%] relative overflow-hidden"
@@ -183,8 +188,10 @@ defineExpose({
             <img
               v-if="project.coverPhoto"
               :src="project.coverPhoto"
-              :alt="project.title"
+              :alt="`${project.title} cover image`"
               class="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
               @error="handleImageError"
             />
           </div>

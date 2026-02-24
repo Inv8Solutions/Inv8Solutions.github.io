@@ -130,8 +130,10 @@ onMounted(() => {
               <img
                 v-if="project.coverPhoto"
                 :src="project.coverPhoto"
-                :alt="project.title"
+                :alt="`${project.title} cover image`"
                 class="h-full w-full object-cover rounded-[24px]"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

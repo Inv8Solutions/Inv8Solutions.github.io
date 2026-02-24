@@ -12,6 +12,8 @@
             :src="image.url"
             :alt="image.alt || `Project image ${index + 1}`"
             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+            decoding="async"
           />
 
           <!-- Loading state -->

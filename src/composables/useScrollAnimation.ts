@@ -2,19 +2,23 @@ import { onMounted, onUnmounted, ref } from 'vue'
 
 export function useScrollAnimation(threshold: number = 0.1) {
   const observer = ref<IntersectionObserver | null>(null)
+  const observedElements = new Set<Element>()
 
   const initObserver = () => {
     observer.value = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove('before-animate')
-            entry.target.classList.add('animate-fade-in-up')
-          } else {
-            // Reset animation when element leaves viewport
-            entry.target.classList.remove('animate-fade-in-up')
-            entry.target.classList.add('before-animate')
-          }
+        // Batch DOM updates for better performance
+        requestAnimationFrame(() => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.remove('before-animate')
+              entry.target.classList.add('animate-fade-in-up')
+            } else {
+              // Reset animation when element leaves viewport
+              entry.target.classList.remove('animate-fade-in-up')
+              entry.target.classList.add('before-animate')
+            }
+          })
         })
       },
       {
@@ -27,16 +31,24 @@ export function useScrollAnimation(threshold: number = 0.1) {
   const observeElements = (selector: string) => {
     if (!observer.value) return
 
-    const elements = document.querySelectorAll(selector)
-    elements.forEach((el) => {
-      el.classList.add('before-animate')
-      observer.value?.observe(el)
+    // Batch DOM queries
+    requestAnimationFrame(() => {
+      const elements = document.querySelectorAll(selector)
+      elements.forEach((el) => {
+        // Prevent observing the same element twice
+        if (!observedElements.has(el)) {
+          el.classList.add('before-animate')
+          observer.value?.observe(el)
+          observedElements.add(el)
+        }
+      })
     })
   }
 
   const cleanup = () => {
     if (observer.value) {
       observer.value.disconnect()
+      observedElements.clear()
     }
   }
 

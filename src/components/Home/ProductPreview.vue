@@ -132,13 +132,13 @@ defineExpose({
           v-for="n in 4"
           :key="n"
           class="flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_25px_70px_-40px_rgba(15,23,42,0.35)]"
+          role="status"
+          aria-label="Loading project"
         >
-          <div class="animate-pulse">
-            <div class="rounded-3xl bg-gray-200 pb-[60%]"></div>
-            <div class="mt-6">
-              <div class="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
-              <div class="h-4 bg-gray-200 rounded w-full"></div>
-            </div>
+          <div class="loading-skeleton rounded-3xl pb-[60%]"></div>
+          <div class="mt-6 space-y-3">
+            <div class="loading-skeleton h-6 w-3/4 rounded"></div>
+            <div class="loading-skeleton h-4 w-full rounded"></div>
           </div>
         </div>
       </div>
@@ -216,8 +216,10 @@ defineExpose({
             <img
               v-if="project.coverPhoto"
               :src="project.coverPhoto"
-              :alt="project.title"
+              :alt="`${project.title} preview image`"
               class="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
               @error="handleImageError"
             />
           </div>

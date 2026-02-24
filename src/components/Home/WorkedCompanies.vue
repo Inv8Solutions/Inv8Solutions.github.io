@@ -49,8 +49,10 @@ onMounted(() => {
         >
           <img
             :src="company.image"
-            :alt="company.name"
+            :alt="`${company.name} logo`"
             class="h-8 w-auto object-contain opacity-60 transition-smooth hover:opacity-100 hover:scale-110"
+            loading="lazy"
+            decoding="async"
           />
         </div>
       </div>
