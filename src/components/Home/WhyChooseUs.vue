@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+
 defineOptions({
   name: 'WhyChooseUs',
 })
+
+const { observeElements } = useScrollAnimation()
 
 const reasons = [
   {
@@ -39,6 +44,10 @@ const reasons = [
     icon: 'fa-solid fa-globe',
   },
 ]
+
+onMounted(() => {
+  observeElements('.reason-card')
+})
 </script>
 
 <template>
@@ -62,12 +71,13 @@ const reasons = [
 
     <div class="mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3">
       <article
-        v-for="reason in reasons"
+        v-for="(reason, index) in reasons"
         :key="reason.title"
-        class="rounded-[28px] border border-gray-200 bg-white px-8 py-6 text-left shadow-[0_30px_80px_-60px_rgba(15,23,42,0.5)] transition-all duration-300 hover:shadow-lg"
+        class="reason-card rounded-[28px] border border-gray-200 bg-white px-8 py-6 text-left shadow-[0_30px_80px_-60px_rgba(15,23,42,0.5)] transition-smooth hover:shadow-lg hover:-translate-y-1 hover:border-blue-200"
+        :style="`animation-delay: ${index * 0.1}s`"
       >
         <div
-          class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600"
+          class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 transition-smooth group-hover:scale-110"
         >
           <i :class="`${reason.icon} text-xl`"></i>
         </div>

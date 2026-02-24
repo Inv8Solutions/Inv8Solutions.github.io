@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 import uiuxImage from '@/assets/UI_UX.png'
 import mvpImage from '@/assets/MVP_Dev.png'
 import innovImage from '@/assets/Innov_SME.png'
@@ -9,6 +11,8 @@ import ipImage from '@/assets/IP.png'
 defineOptions({
   name: 'FeaturesSection',
 })
+
+const { observeElements } = useScrollAnimation()
 
 const features = [
   {
@@ -48,6 +52,10 @@ const features = [
       "We support founders in securing their IP through a trusted partner specializing in trademarks, patents, and design protection. It reduces friction in the process, ensuring you're guided by experts from filing to approval.",
   },
 ]
+
+onMounted(() => {
+  observeElements('.feature-card')
+})
 </script>
 
 <template>
@@ -75,7 +83,7 @@ const features = [
         <article
           v-for="feature in features"
           :key="feature.title"
-          class="flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_25px_70px_-40px_rgba(15,23,42,0.5)]"
+          class="feature-card flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_25px_70px_-40px_rgba(15,23,42,0.5)] transition-smooth hover:shadow-[0_30px_80px_-40px_rgba(15,23,42,0.6)] hover:-translate-y-1"
         >
           <div class="rounded-3xl bg-gradient-to-b from-gray-100 to-gray-50 p-4 overflow-hidden">
             <img
@@ -96,7 +104,7 @@ const features = [
             </div>
             <button
               type="button"
-              class="group inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition hover:border-gray-300 hover:text-gray-900"
+              class="group inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-smooth hover:border-gray-300 hover:text-gray-900 hover:scale-110"
               aria-label="Learn more"
             >
               <svg

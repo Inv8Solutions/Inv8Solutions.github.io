@@ -47,6 +47,11 @@ const tools = [
   { name: 'Arduino', icon: 'fa-solid fa-infinity' },
   { name: 'Linux', icon: 'fa-brands fa-linux' },
 ]
+
+onMounted(() => {
+  observeElements('.step-card')
+  observeElements('.tools-section')
+})
 </script>
 
 <template>
@@ -67,9 +72,10 @@ const tools = [
 
       <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <article
-          v-for="step in steps"
+          v-for="(step, index) in steps"
           :key="step.number"
-          class="rounded-[28px] border border-white/5 bg-white/5 px-6 py-8 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.8)]"
+          class="step-card rounded-[28px] border border-white/5 bg-white/5 px-6 py-8 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.8)] transition-smooth hover:bg-white/10 hover:-translate-y-1"
+          :style="`animation-delay: ${index * 0.1}s`"
         >
           <p class="text-sm font-semibold uppercase tracking-wider text-white/60">
             {{ step.number }}
@@ -79,7 +85,7 @@ const tools = [
         </article>
       </div>
 
-      <div class="mt-12 rounded-[32px] border border-white/5 bg-white/5 px-6 py-5">
+      <div class="tools-section mt-12 rounded-[32px] border border-white/5 bg-white/5 px-6 py-5">
         <div
           class="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/50"
         >
@@ -89,7 +95,7 @@ const tools = [
           <div
             v-for="tool in tools"
             :key="tool.name"
-            class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-xl transition-all hover:bg-white/10"
+            class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-xl transition-smooth hover:bg-white/10 hover:scale-110 hover:border-white/20"
           >
             <i :class="tool.icon" aria-hidden="true"></i>
             <span class="sr-only">{{ tool.name }}</span>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 import acornLogo from '@/assets/Acorn.png'
 import artistHubLogo from '@/assets/ArtistHub.png'
 import bentoBasketLogo from '@/assets/BentoBasket.png'
@@ -16,6 +18,12 @@ const companies = [
   { name: 'ArtistHub', image: artistHubLogo },
   { name: 'Layer2', image: layer2Logo },
 ]
+
+const { observeElements } = useScrollAnimation()
+
+onMounted(() => {
+  observeElements('.company-logo')
+})
 </script>
 
 <template>
@@ -34,14 +42,15 @@ const companies = [
         class="mt-10 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-x-12 gap-y-8 items-center justify-items-center max-w-4xl mx-auto"
       >
         <div
-          v-for="company in companies"
+          v-for="(company, index) in companies"
           :key="company.name"
-          class="flex items-center justify-center"
+          class="company-logo flex items-center justify-center"
+          :style="`animation-delay: ${index * 0.1}s`"
         >
           <img
             :src="company.image"
             :alt="company.name"
-            class="h-8 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity"
+            class="h-8 w-auto object-contain opacity-60 transition-smooth hover:opacity-100 hover:scale-110"
           />
         </div>
       </div>
