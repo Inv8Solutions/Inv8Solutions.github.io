@@ -1,7 +1,7 @@
 <template>
   <section class="w-full bg-white px-4 py-12 sm:px-6 lg:px-12">
     <div class="mx-auto flex max-w-7xl flex-col gap-8">
-      <div class="flex flex-col gap-6 py-8 lg:flex-row lg:items-start lg:gap-16">
+      <div class="challenge-section flex flex-col gap-6 py-8 lg:flex-row lg:items-start lg:gap-16">
         <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl lg:w-1/3">
           {{ challengeContent.subtitle }}
         </h2>
@@ -19,6 +19,9 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
+import{ useScrollAnimation } from '@/composables/useScrollAnimation'
+
+const { observeElements } = useScrollAnimation()
 
 interface ChallengeContent {
   subtitle: string
@@ -100,5 +103,6 @@ defineExpose({
 
 onMounted(() => {
   loadChallenge()
+  observeElements('.challenge-section')
 })
 </script>

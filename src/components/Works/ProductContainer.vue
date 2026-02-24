@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { collection, getDocs, query, limit } from 'firebase/firestore'
 import { db } from '@/firebase'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
   name: 'WorksProductContainer',
 })
+
+const { observeElements } = useScrollAnimation()
 
 interface SampleWork {
   id?: string
@@ -74,8 +77,10 @@ const handleImageError = (event: Event) => {
 }
 
 // Load data on component mount
-onMounted(() => {
-  loadSampleWorks()
+onMounted(async () => {
+  await loadSampleWorks()
+  await nextTick()
+  observeElements('.work-project-card')
 })
 
 // Expose refresh function for parent components
@@ -169,7 +174,7 @@ defineExpose({
           v-for="project in projects"
           :key="project.id || project.title"
           data-project-card
-          class="flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.05)] transition-transform hover:scale-[1.02] cursor-pointer"
+          class="work-project-card flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.05)] transition-smooth hover:scale-[1.02] hover:shadow-[0_25px_70px_rgba(15,23,42,0.08)] cursor-pointer"
           @click="handleProjectView(project)"
         >
           <div

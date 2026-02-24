@@ -1,7 +1,7 @@
 <template>
   <section class="w-full bg-white px-4 py-10 sm:px-6 lg:px-12">
     <div class="mx-auto flex max-w-7xl flex-col gap-4">
-      <div class="border-y border-gray-200 py-6 sm:py-8">
+      <div class="dossier-section border-y border-gray-200 py-6 sm:py-8">
         <dl class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div class="flex flex-col gap-2">
             <dt
@@ -114,6 +114,9 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+
+const { observeElements } = useScrollAnimation()
 
 interface ProjectDossierContent {
   clientName: string
@@ -204,5 +207,6 @@ defineExpose({
 
 onMounted(() => {
   loadProjectDossier()
+  observeElements('.dossier-section')
 })
 </script>

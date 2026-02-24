@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { offerDetails, DEFAULT_SERVICE_ID, type OfferDetail } from '@/data/offers'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebase'
 import { getFunctions, httpsCallable } from 'firebase/functions'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
   name: 'OffersBody',
@@ -12,6 +13,7 @@ defineOptions({
 const props = defineProps<{ selectedServiceId?: string }>()
 
 const router = useRouter()
+const { observeElements } = useScrollAnimation()
 
 const currentOffer = computed<OfferDetail>(() => {
   const resolvedId = props.selectedServiceId ?? DEFAULT_SERVICE_ID
@@ -198,13 +200,18 @@ const handleSubmit = async () => {
     isSubmitting.value = false
   }
 }
+
+onMounted(() => {
+  observeElements('.offer-details-section')
+  observeElements('.offer-deliverable-item')
+})
 </script>
 
 <template>
   <section class="bg-white px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-6xl space-y-16">
       <div
-        class="grid gap-10 rounded-[36px] border border-gray-100 bg-[#f8f9fb] px-6 py-10 shadow-[0_30px_80px_rgba(15,23,42,0.08)] sm:px-10 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]"
+        class="offer-details-section grid gap-10 rounded-[36px] border border-gray-100 bg-[#f8f9fb] px-6 py-10 shadow-[0_30px_80px_rgba(15,23,42,0.08)] sm:px-10 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]"
       >
         <div class="space-y-8">
           <div>
@@ -228,9 +235,10 @@ const handleSubmit = async () => {
             </h3>
             <ul class="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white">
               <li
-                v-for="item in currentOffer.deliverables"
+                v-for="(item, index) in currentOffer.deliverables"
                 :key="item"
-                class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700"
+                class="offer-deliverable-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 transition-smooth hover:bg-blue-50"
+                :style="`animation-delay: ${index * 0.05}s`"
               >
                 <span
                   class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600"

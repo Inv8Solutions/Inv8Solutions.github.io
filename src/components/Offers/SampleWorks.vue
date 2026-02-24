@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { collection, query, where, limit, getDocs } from 'firebase/firestore'
 import { db } from '@/firebase'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 export interface SampleWork {
   id?: string
@@ -17,6 +18,8 @@ export interface SampleWork {
 const props = defineProps<{
   serviceId?: string
 }>()
+
+const { observeElements } = useScrollAnimation()
 
 // Reactive state
 const projects = ref<SampleWork[]>([])
@@ -62,6 +65,8 @@ const fetchSampleWorks = async (serviceId?: string) => {
     error.value = 'Failed to load sample projects'
   } finally {
     isLoading.value = false
+    await nextTick()
+    observeElements('.sample-work-card')
   }
 }
 
@@ -115,9 +120,10 @@ onMounted(() => {
       <!-- Projects Grid -->
       <div v-else class="mt-10 grid gap-8 md:grid-cols-2">
         <article
-          v-for="project in projects"
+          v-for="(project, index) in projects"
           :key="project.id"
-          class="flex flex-col gap-6 rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:p-8"
+          class="sample-work-card flex flex-col gap-6 rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:p-8 transition-smooth hover:shadow-[0_25px_70px_rgba(15,23,42,0.09)] hover:-translate-y-1"
+          :style="`animation-delay: ${index * 0.1}s`"
         >
           <div class="rounded-[28px] border border-gray-200 bg-[#ededed] shadow-inner">
             <div class="aspect-[16/10] w-full rounded-[24px] bg-[#d9d9d9]">
@@ -148,7 +154,7 @@ onMounted(() => {
             <div class="mt-auto flex justify-end">
               <button
                 type="button"
-                class="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-900 transition hover:border-gray-400 hover:bg-gray-50"
+                class="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-900 transition-smooth hover:border-gray-400 hover:bg-gray-50 hover:scale-110"
                 :aria-label="`View ${project.title}`"
               >
                 <svg

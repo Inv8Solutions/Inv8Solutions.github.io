@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
   name: 'FaqSection',
 })
+
+const { observeElements } = useScrollAnimation()
 
 type FaqItem = {
   question: string
@@ -63,12 +66,17 @@ const openIndex = ref<null | number>(0)
 const toggleFAQ = (index: number) => {
   openIndex.value = openIndex.value === index ? null : index
 }
+
+onMounted(() => {
+  observeElements('.faq-section-header')
+  observeElements('.faq-item')
+})
 </script>
 
 <template>
   <section class="bg-[#f6f7fb] px-4 pt-8 pb-12 text-gray-900">
     <div class="mx-auto flex max-w-7xl flex-col gap-12 p-4 lg:flex-row lg:items-center lg:gap-16">
-      <div class="flex-1 space-y-6">
+      <div class="faq-section-header flex-1 space-y-6">
         <span
           class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600"
         >
@@ -83,9 +91,9 @@ const toggleFAQ = (index: number) => {
 
       <div class="flex-1 rounded-[40px] bg-blue-50/50 p-6 sm:p-8">
         <ul class="divide-y divide-gray-200">
-          <li v-for="(faq, index) in faqs" :key="faq.question" class="py-4 first:pt-0 last:pb-0">
+          <li v-for="(faq, index) in faqs" :key="faq.question" class="faq-item py-4 first:pt-0 last:pb-0" :style="`animation-delay: ${index * 0.05}s`">
             <button
-              class="flex w-full items-start justify-between gap-6 text-left"
+              class="flex w-full items-start justify-between gap-6 text-left transition-smooth hover:opacity-75"
               type="button"
               @click="toggleFAQ(index)"
             >

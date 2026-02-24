@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
   name: 'WorksHeroSection',
 })
+
+const { observeElements } = useScrollAnimation()
 
 const categories = [
   'All Projects',
@@ -77,6 +80,8 @@ function selectCategory(category: string) {
 // Load initial filtering on mount
 onMounted(() => {
   selectCategory('All Projects')
+  observeElements('.hero-content')
+  observeElements('.category-button')
 })
 
 // Expose methods for parent component
@@ -91,12 +96,12 @@ defineExpose({
   <section class="bg-[#f5f5f5] px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
       <div
-        class="rounded-[32px] bg-white px-6 py-12 text-center shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:px-12"
+        class="hero-content rounded-[32px] bg-white px-6 py-12 text-center shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:px-12"
       >
         <div
-          class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1 text-sm font-medium text-blue-700"
+          class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1 text-sm font-medium text-blue-700 animate-pulse"
         >
-          <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+          <span class="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
           Our Portfolio
         </div>
 
@@ -137,7 +142,7 @@ defineExpose({
             :key="category"
             @click="selectCategory(category)"
             :disabled="isLoading"
-            class="rounded-full border px-5 py-2 text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="category-button rounded-full border px-5 py-2 text-sm font-semibold transition-smooth disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105"
             :class="{
               'border-blue-500 bg-blue-500 text-white shadow-md': selectedCategory === category,
               'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300 hover:bg-white hover:text-gray-900':

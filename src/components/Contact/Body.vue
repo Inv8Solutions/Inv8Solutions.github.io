@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebase'
 import { getFunctions, httpsCallable } from 'firebase/functions'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
   name: 'ContactBodySection',
 })
+
+const { observeElements } = useScrollAnimation()
 
 const contactMethods = [
   {
@@ -148,6 +151,11 @@ const handleSubmit = async () => {
     isSubmitting.value = false
   }
 }
+
+onMounted(() => {
+  observeElements('.contact-method-card')
+  observeElements('.contact-form-section')
+})
 </script>
 
 <template>
@@ -168,9 +176,10 @@ const handleSubmit = async () => {
 
         <div class="space-y-4">
           <article
-            v-for="method in contactMethods"
+            v-for="(method, index) in contactMethods"
             :key="method.id"
-            class="rounded-[32px] border border-gray-200 bg-white p-5 shadow-[0_15px_45px_rgba(15,23,42,0.06)] sm:p-6"
+            class="contact-method-card rounded-[32px] border border-gray-200 bg-white p-5 shadow-[0_15px_45px_rgba(15,23,42,0.06)] sm:p-6 transition-smooth hover:shadow-[0_20px_55px_rgba(15,23,42,0.09)] hover:-translate-y-1"
+            :style="`animation-delay: ${index * 0.1}s`"
           >
             <div class="flex items-center gap-4">
               <div

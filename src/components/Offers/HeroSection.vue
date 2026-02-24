@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { offerDetails, DEFAULT_SERVICE_ID } from '@/data/offers'
 import { Typed } from '@duskmoon/vue3-typed-js'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+
+const { observeElements } = useScrollAnimation()
 
 const props = defineProps<{
   selectedServiceId?: string
@@ -18,22 +21,26 @@ const typingStrings = ['Desirable', 'Viable', 'Feasible', 'Scalable', 'Secure']
 const selectService = (id: string) => {
   if (id !== selectedId.value) emit('update:selectedServiceId', id)
 }
+
+onMounted(() => {
+  observeElements('.offers-hero-content')
+})
 </script>
 
 <template>
   <section class="bg-[#f5f5f5] px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-5xl">
       <div
-        class="rounded-[36px] bg-white px-6 py-14 text-center shadow-[0_25px_80px_rgba(15,23,42,0.08)] sm:px-12"
+        class="offers-hero-content rounded-[36px] bg-white px-6 py-14 text-center shadow-[0_25px_80px_rgba(15,23,42,0.08)] sm:px-12"
       >
         <div
-          class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-5 py-1.5 text-sm font-semibold text-blue-600"
+          class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-5 py-1.5 text-sm font-semibold text-blue-600 animate-fade-in-up"
         >
-          <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+          <span class="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
           Our Services
         </div>
 
-        <h1 class="text-3xl font-semibold leading-tight text-gray-900 sm:text-4xl">
+        <h1 class="text-3xl font-semibold leading-tight text-gray-900 sm:text-4xl animate-fade-in-up animate-delay-200">
           We build products that are
           <Typed
             :options="{
@@ -50,7 +57,7 @@ const selectService = (id: string) => {
           </Typed>
         </h1>
 
-        <p class="mx-auto mt-4 max-w-3xl text-base text-gray-500 sm:text-lg">
+        <p class="mx-auto mt-4 max-w-3xl text-base text-gray-500 sm:text-lg animate-fade-in-up animate-delay-400">
           We help founders and businesses design, build, and launch digital products through a
           process grounded in insight, simplicity, and disciplined execution.
         </p>
@@ -62,7 +69,7 @@ const selectService = (id: string) => {
             v-for="offer in offerDetails"
             :key="offer.id"
             type="button"
-            class="rounded-full border px-5 py-2 text-sm font-medium transition"
+            class="rounded-full border px-5 py-2 text-sm font-medium transition-smooth hover:scale-105"
             :class="[
               selectedId === offer.id
                 ? 'border-blue-500 bg-blue-600 text-white shadow-lg shadow-blue-200'

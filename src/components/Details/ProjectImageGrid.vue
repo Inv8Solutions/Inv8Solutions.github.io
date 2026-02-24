@@ -5,7 +5,8 @@
         <div
           v-for="(image, index) in projectImages"
           :key="image.id || index"
-          class="group relative overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition-shadow hover:shadow-md"
+          class="project-image-item group relative overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition-smooth hover:shadow-md hover:scale-[1.02]"
+          :style="`animation-delay: ${index * 0.1}s`"
         >
           <img
             :src="image.url"
@@ -71,10 +72,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+
+const { observeElements } = useScrollAnimation()
 
 interface ProjectImage {
   id?: string
@@ -150,7 +154,9 @@ defineExpose({
   refreshImages: loadProjectImages,
 })
 
-onMounted(() => {
-  loadProjectImages()
+onMounted(async () => {
+  await loadProjectImages()
+  await nextTick()
+  observeElements('.project-image-item')
 })
 </script>

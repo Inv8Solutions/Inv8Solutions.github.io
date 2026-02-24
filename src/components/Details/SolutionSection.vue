@@ -2,7 +2,7 @@
   <section class="w-full bg-white px-4 py-12 sm:px-6 lg:px-12">
     <div class="mx-auto flex max-w-7xl flex-col">
       <div
-        class="rounded-[32px] bg-black px-6 py-10 text-white sm:px-10 lg:flex lg:items-center lg:gap-16"
+        class="solution-section rounded-[32px] bg-black px-6 py-10 text-white sm:px-10 lg:flex lg:items-center lg:gap-16"
       >
         <div class="flex-1 space-y-6">
           <div>
@@ -78,6 +78,9 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+
+const { observeElements } = useScrollAnimation()
 
 interface SolutionDetail {
   title: string
@@ -183,5 +186,6 @@ defineExpose({
 
 onMounted(() => {
   loadSolution()
+  observeElements('.solution-section')
 })
 </script>

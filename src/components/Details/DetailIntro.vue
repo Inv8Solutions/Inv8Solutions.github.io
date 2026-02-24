@@ -2,7 +2,7 @@
   <section class="w-full bg-white px-4 py-12 sm:px-6 lg:px-12">
     <div class="mx-auto max-w-7xl">
       <button
-        class="inline-flex items-center gap-2 border-none bg-transparent p-0 text-sm font-medium text-slate-500 transition-colors hover:text-slate-900"
+        class="inline-flex items-center gap-2 border-none bg-transparent p-0 text-sm font-medium text-slate-500 transition-smooth hover:text-slate-900"
         type="button"
         @click="handleBackNavigation"
       >
@@ -11,16 +11,16 @@
       </button>
       <br />
       <div
-        class="mt-10 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-blue-600"
+        class="detail-intro-badge mt-10 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-blue-600"
         :aria-busy="isLoading"
       >
         <span
-          class="h-1.5 w-1.5 rounded-full bg-blue-500 shadow-[0_0_0_4px_rgba(59,130,246,0.2)]"
+          class="h-1.5 w-1.5 rounded-full bg-blue-500 shadow-[0_0_0_4px_rgba(59,130,246,0.2)] animate-pulse"
         />
         {{ projectContent.categoryLabel }}
       </div>
 
-      <div class="mt-7 max-w-3xl space-y-4">
+      <div class="detail-intro-content mt-7 max-w-3xl space-y-4">
         <h1 class="text-4xl font-semibold leading-tight text-gray-900 sm:text-5xl lg:text-[56px]">
           {{ projectContent.title }}
         </h1>
@@ -29,7 +29,7 @@
         </p>
       </div>
 
-      <div class="mt-12 rounded-[40px] bg-[#f4f4f5] p-2 sm:p-4">
+      <div class="detail-intro-preview mt-12 rounded-[40px] bg-[#f4f4f5] p-2 sm:p-4">
         <div class="aspect-[16/9] w-full rounded-[32px] bg-gray-100">
           <img
             v-if="projectContent.mediaPreviewUrl"
@@ -49,6 +49,9 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore'
 import { db } from '../../firebase'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
+
+const { observeElements } = useScrollAnimation()
 
 interface ProjectIntroContent {
   id: string
@@ -278,5 +281,8 @@ defineExpose({
 
 onMounted(() => {
   loadProjectIntro()
+  observeElements('.detail-intro-badge')
+  observeElements('.detail-intro-content')
+  observeElements('.detail-intro-preview')
 })
 </script>
