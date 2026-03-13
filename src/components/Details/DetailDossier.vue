@@ -148,11 +148,13 @@ async function fetchProjectDossierFromFirebase(id: string): Promise<ProjectDossi
 
     const data = docSnap.data()
     const techStackField = Array.isArray(data.techStack) ? data.techStack : []
+    const durationWeeks = typeof data.durationWeeks === 'number' ? data.durationWeeks : null
+    const timeline = durationWeeks ? `${durationWeeks} week${durationWeeks === 1 ? '' : 's'}` : null
 
     return {
       clientName: data.clientName ?? defaultProjectDossier.clientName,
-      service: data.service ?? defaultProjectDossier.service,
-      timeline: data.timeline ?? defaultProjectDossier.timeline,
+      service: data.serviceId ?? defaultProjectDossier.service,
+      timeline: timeline ?? defaultProjectDossier.timeline,
       techStack: techStackField.length ? techStackField : [...defaultProjectDossier.techStack],
     }
   } catch (error) {

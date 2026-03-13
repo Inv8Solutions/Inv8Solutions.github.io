@@ -52,7 +52,7 @@ async function fetchChallengeFromFirebase(id: string): Promise<ChallengeContent 
 
     return {
       subtitle: 'Challenge',
-      description: data.challenge ?? defaultChallengeContent.description,
+      description: data.challengeStatement ?? defaultChallengeContent.description,
     }
   } catch (error) {
     console.error('Failed to fetch challenge data from Firestore', error)

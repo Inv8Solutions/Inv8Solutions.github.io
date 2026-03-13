@@ -117,24 +117,23 @@ async function fetchSolutionFromFirebase(id: string): Promise<SolutionContent | 
 
     const data = docSnap.data()
     const features = Array.isArray(data.features) ? data.features : []
-    const featureDesc = Array.isArray(data.featureDesc) ? data.featureDesc : []
 
-    console.log('Raw data:', data)
-    console.log('Features:', features)
-    console.log('FeatureDesc:', featureDesc)
+    const bullets = features.map((feature: { name?: string; description?: string } | string) => {
+      if (typeof feature === 'string') {
+        return { title: feature, description: '' }
+      }
 
-    const bullets = features.map((feature: string, index: number) => ({
-      title: feature,
-      description: featureDesc[index] || '',
-    }))
-
-    console.log('Mapped bullets:', bullets)
+      return {
+        title: feature.name || '',
+        description: feature.description || '',
+      }
+    })
 
     return {
       subtitle: 'Solution',
       description: data.solution ?? defaultSolutionContent.description,
       bullets,
-      coverPhoto: data.coverPhoto,
+      coverPhoto: data.imageUrl ?? null,
     }
   } catch (error) {
     console.error('Failed to fetch solution data from Firestore', error)

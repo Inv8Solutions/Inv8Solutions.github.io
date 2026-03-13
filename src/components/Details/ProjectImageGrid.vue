@@ -106,15 +106,18 @@ async function fetchProjectImagesFromFirebase(id: string): Promise<ProjectImage[
     }
 
     const data = docSnap.data()
-    const images = Array.isArray(data.images) ? data.images : []
+    const imageUrl = typeof data.imageUrl === 'string' ? data.imageUrl : null
 
-    const projectImages = images.map((imageUrl: string, index: number) => ({
-      id: `img-${index}`,
-      url: imageUrl,
-      alt: `Project image ${index + 1}`,
-    }))
+    const projectImages = imageUrl
+      ? [
+          {
+            id: 'img-0',
+            url: imageUrl,
+            alt: 'Project image 1',
+          },
+        ]
+      : []
 
-    console.log('Fetched images:', projectImages)
     return projectImages
   } catch (error) {
     console.error('Failed to fetch project images from Firestore', error)

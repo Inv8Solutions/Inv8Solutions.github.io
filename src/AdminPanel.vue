@@ -187,7 +187,7 @@
                         {{ project.date }}
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button class="text-red-600 hover:text-red-900">Delete</button>
+                        <button @click="deleteProject(project)" class="text-red-600 hover:text-red-900">Delete</button>
                       </td>
                     </tr>
                   </tbody>
@@ -476,6 +476,16 @@
             </div>
 
             <div>
+              <label class="block text-sm font-medium text-gray-700">Cover Photo</label>
+              <input
+                type="file"
+                @change="onCoverPhotoChange"
+                accept="image/*"
+                class="mt-1 block w-full"
+              />
+            </div>
+
+            <div>
               <label class="block text-sm font-medium text-gray-700">Platform</label>
               <select
                 v-model="newProject.platform"
@@ -535,6 +545,80 @@
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Project duration"
               />
+            </div>
+
+            <div class="md:col-span-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-sm font-medium text-gray-700">Features</label>
+                <button
+                  type="button"
+                  @click="addFeature"
+                  class="text-sm text-blue-600 hover:text-blue-700"
+                >
+                  Add Feature
+                </button>
+              </div>
+              <div class="mt-2 space-y-3">
+                <div
+                  v-for="(feature, index) in newProject.features"
+                  :key="`feature-${index}`"
+                  class="grid grid-cols-1 md:grid-cols-5 gap-2"
+                >
+                  <input
+                    type="text"
+                    v-model="feature.name"
+                    class="md:col-span-2 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Feature name"
+                  />
+                  <input
+                    type="text"
+                    v-model="feature.description"
+                    class="md:col-span-2 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Feature description"
+                  />
+                  <button
+                    type="button"
+                    @click="removeFeature(index)"
+                    class="md:col-span-1 px-3 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-sm font-medium text-gray-700">Tech Stack</label>
+                <button
+                  type="button"
+                  @click="addTechStack"
+                  class="text-sm text-blue-600 hover:text-blue-700"
+                >
+                  Add Tech
+                </button>
+              </div>
+              <div class="mt-2 space-y-2">
+                <div
+                  v-for="(tech, index) in newProject.techStack"
+                  :key="`tech-${index}`"
+                  class="flex gap-2"
+                >
+                  <input
+                    type="text"
+                    v-model="newProject.techStack[index]"
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="e.g. Vue, Firebase, Tailwind"
+                  />
+                  <button
+                    type="button"
+                    @click="removeTechStack(index)"
+                    class="px-3 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -743,8 +827,9 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { collection, getDocs, query, orderBy, doc, updateDoc, addDoc, serverTimestamp } from 'firebase/firestore'
-import { db } from '@/firebase'
+import { collection, getDocs, query, orderBy, doc, updateDoc, setDoc, serverTimestamp, deleteDoc } from 'firebase/firestore'
+import { db, storage } from '@/firebase'
+import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 
 // TypeScript interfaces
 interface Project {
@@ -755,6 +840,7 @@ interface Project {
   date: string
   description?: string
   imageUrl?: string
+  imagePath?: string
   serviceId?: string
 }
 
@@ -869,6 +955,7 @@ async function fetchProjects() {
         date: data.date || new Date().toISOString().split('T')[0],
         description: data.description || '',
         imageUrl: data.imageUrl,
+        imagePath: data.imagePath,
         serviceId: data.serviceId,
       })
     })
@@ -1101,7 +1188,19 @@ const addProject = async () => {
   isSubmitting.value = true
 
   try {
-    const docRef = await addDoc(collection(db, 'sampleworks'), {
+    const docRef = doc(collection(db, 'sampleworks'))
+    let imageUrl: string | null = null
+    let imagePath: string | null = null
+
+    if (payload.coverPhoto) {
+      const ext = payload.coverPhoto.name.split('.').pop() || 'jpg'
+      imagePath = `sampleworks/${docRef.id}/cover.${ext}`
+      const sRef = storageRef(storage, imagePath)
+      await uploadBytes(sRef, payload.coverPhoto)
+      imageUrl = await getDownloadURL(sRef)
+    }
+
+    await setDoc(docRef, {
       title: payload.title,
       clientName: payload.clientName,
       description: payload.shortDescription || '',
@@ -1112,7 +1211,8 @@ const addProject = async () => {
       durationWeeks: payload.duration || 0,
       features: payload.features || [],
       techStack: payload.techStack || [],
-      imageUrl: null,
+      imageUrl,
+      imagePath,
       status: 'Planning',
       date: new Date().toISOString().split('T')[0],
       createdAt: serverTimestamp(),
@@ -1126,6 +1226,8 @@ const addProject = async () => {
       status: 'Planning',
       date: new Date().toISOString().split('T')[0],
       description: payload.shortDescription || '',
+      imageUrl: imageUrl || undefined,
+      imagePath: imagePath || undefined,
     } as Project)
 
     closeAddProjectModal()
@@ -1134,6 +1236,57 @@ const addProject = async () => {
     formError.value = 'Failed to add project. Please try again.'
   } finally {
     isSubmitting.value = false
+  }
+}
+
+const onCoverPhotoChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  const file = target.files && target.files[0]
+  newProject.value.coverPhoto = file || null
+}
+
+const addFeature = () => {
+  newProject.value.features.push({ name: '', description: '' })
+}
+
+const removeFeature = (index: number) => {
+  if (newProject.value.features.length <= 1) return
+  newProject.value.features.splice(index, 1)
+}
+
+const addTechStack = () => {
+  newProject.value.techStack.push('')
+}
+
+const removeTechStack = (index: number) => {
+  if (newProject.value.techStack.length <= 1) return
+  newProject.value.techStack.splice(index, 1)
+}
+
+const deleteProject = async (project: Project) => {
+  if (!project || !project.id) return
+
+  const ok = confirm(`Delete project "${project.name}"? This cannot be undone.`)
+  if (!ok) return
+
+  try {
+    // Attempt to delete storage object (ignore errors)
+    try {
+      const storagePath = project.imagePath || `sampleworks/${project.id}/cover.jpg`
+      const sRef = storageRef(storage, storagePath)
+      await deleteObject(sRef)
+    } catch (e) {
+      console.warn('Storage delete ignored error:', e)
+    }
+
+    // Delete Firestore document
+    await deleteDoc(doc(db, 'sampleworks', project.id))
+
+    // Remove from local state
+    projects.value = projects.value.filter((p) => p.id !== project.id)
+  } catch (err) {
+    console.error('Error deleting project:', err)
+    alert('Failed to delete project. Check console for details.')
   }
 }
 

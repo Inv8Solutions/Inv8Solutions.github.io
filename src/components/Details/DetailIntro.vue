@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
@@ -58,9 +58,8 @@ interface ProjectIntroContent {
   categoryLabel: string
   title: string
   description: string
-  shortDesc?: string
   platform?: string
-  coverPhoto?: string
+  shortDesc?: string
   mediaPreviewUrl: string | null
 }
 
@@ -79,33 +78,25 @@ const defaultProjectIntro: ProjectIntroContent = {
 }
 
 async function fetchProjectIntroFromFirebase(id: string): Promise<ProjectIntroContent | null> {
-  console.log('Fetching document with ID:', id)
-  console.log('Firestore db instance:', db)
-
   try {
     const docRef = doc(db, 'sampleworks', id)
-    console.log('Document reference created:', docRef.path)
-    console.log('Document reference object:', docRef)
-
     const docSnap = await getDoc(docRef)
-    console.log('Document snapshot:', docSnap)
-
     if (docSnap.exists()) {
       const data = docSnap.data()
-      console.log('Document data:', data)
+      // Use imageUrl from Firestore directly to render the preview.
+      // If imageUrl is not present, do not attempt Storage fallbacks here.
+      const mediaPreviewUrl = typeof data.imageUrl === 'string' && data.imageUrl.trim().length > 0
+        ? data.imageUrl
+        : null
 
       const result = {
         id: docSnap.id,
         title: data.title || '',
         categoryLabel: data.platform || 'Project',
-        description: data.shortDesc || '',
-        mediaPreviewUrl: data.coverPhoto || null,
-        shortDesc: data.shortDesc,
+        description: data.description ?? data.shortDesc ?? '',
+        mediaPreviewUrl,
         platform: data.platform,
-        coverPhoto: data.coverPhoto,
       }
-
-      console.log('Mapped document data:', result)
       return result
     } else {
       console.error('No such document! ID:', id)
@@ -124,87 +115,7 @@ async function fetchProjectIntroFromFirebase(id: string): Promise<ProjectIntroCo
   }
 }
 
-// Debug function to list all projects in the collection
-async function listAllProjects() {
-  try {
-    console.log('Firestore db instance:', db)
-    console.log('Fetching all projects from collection...')
-
-    // Try the 'sampleworks' collection first
-    const projectsRef = collection(db, 'sampleworks')
-    console.log('Collection reference:', projectsRef)
-
-    const querySnapshot = await getDocs(projectsRef)
-    console.log('Query snapshot:', querySnapshot)
-    console.log('Query snapshot empty?', querySnapshot.empty)
-    console.log('Query snapshot size:', querySnapshot.size)
-
-    const projects: ProjectIntroContent[] = []
-    querySnapshot.forEach((doc) => {
-      console.log(`Document ID: ${doc.id} =>`, doc.data())
-      const data = doc.data()
-      projects.push({
-        id: doc.id,
-        categoryLabel: data.platform || 'Project',
-        title: data.title || '',
-        description: data.shortDesc || '',
-        mediaPreviewUrl: data.coverPhoto || null,
-        shortDesc: data.shortDesc,
-        platform: data.platform,
-        coverPhoto: data.coverPhoto,
-      })
-    })
-    console.log('All projects in collection:', projects)
-
-    // If no projects found, try some common alternative names
-    if (projects.length === 0) {
-      console.log('No projects found. Trying alternative collection names...')
-      const alternatives = [
-        'sampleworks',
-        'projects',
-        'project',
-        'Project',
-        'Projects',
-        'entries',
-        'Entries',
-      ]
-
-      for (const altName of alternatives) {
-        try {
-          console.log(`Trying collection: ${altName}`)
-          const altRef = collection(db, altName)
-          const altSnapshot = await getDocs(altRef)
-          if (!altSnapshot.empty) {
-            console.log(`Found ${altSnapshot.size} documents in '${altName}' collection!`)
-            altSnapshot.forEach((doc) => {
-              console.log(`Document ID: ${doc.id} =>`, doc.data())
-            })
-            break
-          }
-        } catch (altError) {
-          console.log(`Failed to access '${altName}':`, altError)
-        }
-      }
-    }
-
-    return projects
-  } catch (error) {
-    console.error('Error listing projects:', error)
-    if (error instanceof Error) {
-      console.error('Error details:', {
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-      })
-    }
-    return []
-  }
-}
-
 async function loadProjectIntro() {
-  // First, list all available projects for debugging
-  await listAllProjects()
-
   console.log('Route params:', route.params)
   const projectId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
 
@@ -237,8 +148,8 @@ async function loadProjectIntro() {
         ...payload,
         title: payload.title || defaultProjectIntro.title,
         categoryLabel: payload.platform || defaultProjectIntro.categoryLabel,
-        description: payload.shortDesc || defaultProjectIntro.description,
-        mediaPreviewUrl: payload.coverPhoto || defaultProjectIntro.mediaPreviewUrl,
+        description: payload.description ?? payload.shortDesc ?? '',
+        mediaPreviewUrl: payload.mediaPreviewUrl || defaultProjectIntro.mediaPreviewUrl,
       }
       console.log('Merged project data:', mergedData)
       projectIntro.value = mergedData
