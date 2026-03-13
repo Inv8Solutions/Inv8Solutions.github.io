@@ -2,11 +2,9 @@
 
 import { initializeApp } from 'firebase/app'
 
-import { getAnalytics } from 'firebase/analytics'
+import { getAnalytics, isSupported, type Analytics } from 'firebase/analytics'
 
 import { getFirestore } from 'firebase/firestore'
-
-import { getAuth } from 'firebase/auth'
 
 import { getStorage } from 'firebase/storage'
 
@@ -19,32 +17,36 @@ import { getStorage } from 'firebase/storage'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyC3rc29SQoO0Vx36SppNBUcD4aCp5fUwAg',
-
-  authDomain: 'team-10-sg250815064105.firebaseapp.com',
-
-  projectId: 'team-10-sg250815064105',
-
-  storageBucket: 'team-10-sg250815064105.firebasestorage.app',
-
-  messagingSenderId: '202422768680',
-
-  appId: '1:202422768680:web:36fc1b2af772a69504511d',
-
-  measurementId: 'G-Q0V3M49SG0',
-}
+  apiKey: "AIzaSyB9Ilvf0yOz70yCqyDUzPTNL3UjSnpcWBo",
+  authDomain: "inv8-77414.firebaseapp.com",
+  projectId: "inv8-77414",
+  storageBucket: "inv8-77414.firebasestorage.app",
+  messagingSenderId: "262708431691",
+  appId: "1:262708431691:web:b2f431fa5ef0c4834ff6ce",
+  measurementId: "G-99QBGX5QFL"
+};
 
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig)
 
-const analytics = getAnalytics(app)
+let analytics: Analytics | null = null
+
+if (typeof window !== 'undefined' && import.meta.env.PROD) {
+  isSupported()
+    .then((supported) => {
+      if (supported) {
+        analytics = getAnalytics(app)
+      }
+    })
+    .catch(() => {
+      analytics = null
+    })
+}
 
 const db = getFirestore(app)
-
-const auth = getAuth(app)
 
 const storage = getStorage(app)
 
 // Export Firebase services
-export { db, auth, storage, analytics }
+export { db, storage, analytics }

@@ -743,7 +743,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { collection, getDocs, query, orderBy, doc, updateDoc } from 'firebase/firestore'
+import { collection, getDocs, query, orderBy, doc, updateDoc, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebase'
 
 // TypeScript interfaces
@@ -1088,9 +1088,53 @@ const closeAddProjectModal = () => {
   formError.value = null
 }
 
-const addProject = () => {
-  // TODO: Implement project addition logic
-  closeAddProjectModal()
+const addProject = async () => {
+  formError.value = null
+
+  const payload = newProject.value
+
+  if (!payload.title || !payload.clientName) {
+    formError.value = 'Please provide project title and client name.'
+    return
+  }
+
+  isSubmitting.value = true
+
+  try {
+    const docRef = await addDoc(collection(db, 'sampleworks'), {
+      title: payload.title,
+      clientName: payload.clientName,
+      description: payload.shortDescription || '',
+      platform: payload.platform || '',
+      serviceId: payload.service || null,
+      challengeStatement: payload.challengeStatement || '',
+      solution: payload.solution || '',
+      durationWeeks: payload.duration || 0,
+      features: payload.features || [],
+      techStack: payload.techStack || [],
+      imageUrl: null,
+      status: 'Planning',
+      date: new Date().toISOString().split('T')[0],
+      createdAt: serverTimestamp(),
+    })
+
+    // Optimistically update local UI
+    projects.value.unshift({
+      id: docRef.id,
+      name: payload.title || '',
+      clientName: payload.clientName || '',
+      status: 'Planning',
+      date: new Date().toISOString().split('T')[0],
+      description: payload.shortDescription || '',
+    } as Project)
+
+    closeAddProjectModal()
+  } catch (err) {
+    console.error('Error adding project:', err)
+    formError.value = 'Failed to add project. Please try again.'
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
 const saveSettings = () => {
