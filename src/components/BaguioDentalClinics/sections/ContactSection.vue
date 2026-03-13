@@ -126,7 +126,7 @@ const bookingLink = computed(() => {
 </script>
 
 <template>
-  <section class="bg-white">
+  <section id="booking-assistant" class="bg-white">
     <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
         <h2 class="text-3xl font-semibold text-gray-900">Automated Appointment Assistant</h2>

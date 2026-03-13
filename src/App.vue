@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppHeader from '@/AppHeader.vue'
 import FooterSection from '@/components/Footer.vue'
+import BaguioDentalHeader from '@/components/BaguioDentalClinics/BaguioDentalHeader.vue'
 
 const route = useRoute()
 const router = useRouter()
+const isDentalRoute = computed(() => route.path.startsWith('/BaguioDental/Clinics'))
 
 // Check authentication for admin routes
 const checkAdminAuth = () => {
@@ -42,14 +44,15 @@ watch(
 </script>
 
 <template>
-  <AppHeader v-if="!$route.path.startsWith('/admin')" />
+  <BaguioDentalHeader v-if="isDentalRoute" />
+  <AppHeader v-else-if="!$route.path.startsWith('/admin')" />
   <main class="min-h-screen" :class="{ 'admin-layout': $route.path.startsWith('/admin') }">
     <router-view v-slot="{ Component }">
       <component :is="Component" :key="$route.fullPath" />
     </router-view>
   </main>
   <FooterSection
-    v-if="!$route.path.startsWith('/contactus') && !$route.path.startsWith('/admin')"
+    v-if="!isDentalRoute && !$route.path.startsWith('/contactus') && !$route.path.startsWith('/admin')"
   />
 </template>
 
