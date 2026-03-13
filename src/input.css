@@ -1,4 +1,6 @@
-/* Declare explicit font-face entries BEFORE Tailwind import */
+@import 'tailwindcss';
+
+/* Declare explicit font-face entries AFTER Tailwind import */
 @font-face {
   font-family: 'GeneralSans';
   src:
@@ -16,8 +18,6 @@
   font-style: normal;
   font-display: block;
 }
-
-@import 'tailwindcss';
 
 @layer base {
   /* Apply the site font without forcing via !important. */

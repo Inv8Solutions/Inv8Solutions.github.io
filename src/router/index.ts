@@ -6,6 +6,7 @@ import HomeView from '@/views/HomeView.vue'
 import AdminLogin from '@/AdminLogin.vue'
 import AdminPanel from '@/AdminPanel.vue'
 import ProjectDetails from '@/components/ProjectDetails.vue'
+import { BaguioDentalClinics } from '@/components/BaguioDentalClinics'
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     name: 'ProjectDetails',
     component: ProjectDetails,
     props: true,
+  },
+  {
+    path: '/BaguioDental/Clinics',
+    name: 'BaguioDentalClinics',
+    component: BaguioDentalClinics,
   },
   // Add a catch-all route for 404s (must be last)
   {

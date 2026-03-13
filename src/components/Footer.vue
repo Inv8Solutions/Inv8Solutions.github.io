@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebase'
 
 defineOptions({
   name: 'FooterSection',
 })
-
-const route = useRoute()
-const router = useRouter()
 
 // Modal state
 const isBookingModalOpen = ref(false)
@@ -56,12 +52,7 @@ const availableDates = computed(() => {
 // Available time slots
 const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM']
 
-const quickLinks = [
-  { name: 'About Us', path: '/' },
-  { name: 'Services', path: '/services' },
-  { name: 'Works', path: '/works' },
-  { name: 'Contact Us', path: '/contactus' },
-]
+const quickLinks = ['About Us', 'Services', 'Works', 'Contact Us']
 
 const services = [
   'UI/UX Design',
@@ -78,28 +69,6 @@ const policies = [
 ]
 
 const currentYear = new Date().getFullYear()
-
-const isActive = (path: string) => {
-  if (path === '/' && route.path === '/') return true
-  if (path === '/#contact' && route.hash === '#contact') return true
-  if (path === '/contactus' && route.path === '/contactus') return true
-  return route.path.startsWith(path) && path !== '/'
-}
-
-const navigate = (path: string) => {
-  if (path.startsWith('#')) {
-    if (route.path === '/') {
-      const element = document.querySelector(path)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
-      }
-    } else {
-      router.push({ path: '/', hash: path.substring(1) })
-    }
-  } else {
-    router.push(path)
-  }
-}
 
 const openBookingModal = () => {
   isBookingModalOpen.value = true
@@ -230,17 +199,8 @@ const handleSubmitBooking = async () => {
             Quick Navigation
           </h3>
           <ul class="mt-4 space-y-2 text-sm text-gray-600">
-            <li v-for="link in quickLinks" :key="link.name">
-              <a
-                :href="link.path"
-                @click.prevent="navigate(link.path)"
-                class="transition hover:text-gray-900 cursor-pointer"
-                :class="{
-                  'text-blue-600 font-medium': isActive(link.path),
-                }"
-              >
-                {{ link.name }}
-              </a>
+            <li v-for="link in quickLinks" :key="link" class="text-gray-500">
+              {{ link }}
             </li>
           </ul>
         </div>
