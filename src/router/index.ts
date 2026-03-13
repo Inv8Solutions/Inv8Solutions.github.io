@@ -49,6 +49,7 @@ const routes = [
     path: '/BaguioDental/Clinics',
     name: 'BaguioDentalClinics',
     component: BaguioDentalClinics,
+    alias: ['/baguiodental/clinics'],
   },
   // Add a catch-all route for 404s (must be last)
   {
