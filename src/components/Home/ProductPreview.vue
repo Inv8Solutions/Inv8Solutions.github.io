@@ -15,7 +15,7 @@ interface SampleWork {
   id?: string
   title: string
   shortDesc: string
-  coverPhoto?: string
+  imageUrl?: string
 }
 
 const router = useRouter()
@@ -30,7 +30,13 @@ async function fetchSampleWorks(): Promise<SampleWork[]> {
     const querySnapshot = await getDocs(q)
     const works: SampleWork[] = []
     querySnapshot.forEach((doc) => {
-      works.push({ id: doc.id, ...doc.data() } as SampleWork)
+      const data = doc.data()
+      works.push({
+        id: doc.id,
+        title: data.title || 'Untitled Project',
+        shortDesc: data.shortDesc || data.description || '',
+        imageUrl: data.imageUrl || data.coverPhoto || '',
+      })
     })
     return works
   } catch (err) {
@@ -214,8 +220,8 @@ defineExpose({
             class="rounded-3xl bg-gradient-to-b from-gray-100 to-gray-50 pb-[60%] relative overflow-hidden"
           >
             <img
-              v-if="project.coverPhoto"
-              :src="project.coverPhoto"
+              v-if="project.imageUrl"
+              :src="project.imageUrl"
               :alt="`${project.title} preview image`"
               class="absolute inset-0 w-full h-full object-cover"
               loading="lazy"

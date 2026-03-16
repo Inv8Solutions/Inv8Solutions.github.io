@@ -187,6 +187,7 @@
                         {{ project.date }}
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button @click="openEditProjectModal(project)" class="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                         <button @click="deleteProject(project)" class="text-red-600 hover:text-red-900">Delete</button>
                       </td>
                     </tr>
@@ -483,6 +484,21 @@
                 accept="image/*"
                 class="mt-1 block w-full"
               />
+              <p v-if="addSelectedFileName" class="mt-1 text-xs text-gray-500">
+                Selected: {{ addSelectedFileName }}
+              </p>
+              <div v-if="isSubmitting && newProject.coverPhoto" class="mt-3">
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                  <span>Uploading cover photo...</span>
+                  <span>{{ addUploadProgress }}%</span>
+                </div>
+                <div class="mt-1 h-2 overflow-hidden rounded-full bg-gray-200">
+                  <div
+                    class="h-full bg-blue-600 transition-all duration-300"
+                    :style="{ width: `${addUploadProgress}%` }"
+                  ></div>
+                </div>
+              </div>
             </div>
 
             <div>
@@ -639,7 +655,259 @@
               :disabled="isSubmitting"
               class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {{ isSubmitting ? 'Adding...' : 'Add Project' }}
+              {{ isSubmitting ? (newProject.coverPhoto ? `Uploading ${addUploadProgress}%` : 'Adding...') : 'Add Project' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Project Modal -->
+    <div
+      v-if="showEditProjectModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+      @click="closeEditProjectModal"
+    >
+      <div
+        class="relative top-10 mx-auto p-6 border w-7xl max-w-[90vw] shadow-lg rounded-lg bg-white"
+        @click.stop
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold text-gray-900">Edit Project</h3>
+          <button @click="closeEditProjectModal" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <form @submit.prevent="updateProject">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Project Title *</label>
+              <input
+                type="text"
+                v-model="editProjectData.title"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Project title"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Client Name *</label>
+              <input
+                type="text"
+                v-model="editProjectData.clientName"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Client name"
+              />
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Short Description</label>
+              <input
+                type="text"
+                v-model="editProjectData.shortDescription"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Brief project description"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Cover Photo</label>
+              <input
+                type="file"
+                @change="onEditCoverPhotoChange"
+                accept="image/*"
+                class="mt-1 block w-full"
+              />
+              <p v-if="editSelectedFileName" class="mt-1 text-xs text-gray-500">
+                Selected: {{ editSelectedFileName }}
+              </p>
+              <p class="text-xs text-gray-500 mt-1">Leave blank to keep current image</p>
+              <div v-if="editExistingImageUrl && !editProjectData.coverPhoto" class="mt-3">
+                <img
+                  :src="editExistingImageUrl"
+                  alt="Current project cover"
+                  class="h-24 w-full rounded-lg border border-gray-200 object-cover"
+                />
+              </div>
+              <div v-if="isEditSubmitting && editProjectData.coverPhoto" class="mt-3">
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                  <span>Uploading replacement cover...</span>
+                  <span>{{ editUploadProgress }}%</span>
+                </div>
+                <div class="mt-1 h-2 overflow-hidden rounded-full bg-gray-200">
+                  <div
+                    class="h-full bg-blue-600 transition-all duration-300"
+                    :style="{ width: `${editUploadProgress}%` }"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Platform</label>
+              <select
+                v-model="editProjectData.platform"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Select Platform</option>
+                <option value="Website">Web</option>
+                <option value="Mobile Application">Mobile</option>
+                <option value="Desktop Application">Desktop</option>
+                <option value="IoT/Hardware">IoT/Hardware</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Service</label>
+              <select
+                v-model="editProjectData.service"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Select Service</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+                <option value="MVP Development">MVP Development</option>
+                <option value="Innovation for SMEs">Innovation for SMEs</option>
+                <option value="IoT Development">IoT Development</option>
+                <option value="PitchDeck Design">PitchDeck Design</option>
+              </select>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Challenge Statement</label>
+              <textarea
+                v-model="editProjectData.challengeStatement"
+                rows="3"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="What was the main challenge?"
+              ></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Solution</label>
+              <textarea
+                v-model="editProjectData.solution"
+                rows="3"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="How did you solve it?"
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Duration (weeks)</label>
+              <input
+                type="number"
+                v-model="editProjectData.duration"
+                min="1"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Project duration"
+              />
+            </div>
+
+            <div class="md:col-span-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-sm font-medium text-gray-700">Features</label>
+                <button
+                  type="button"
+                  @click="addEditFeature"
+                  class="text-sm text-blue-600 hover:text-blue-700"
+                >
+                  Add Feature
+                </button>
+              </div>
+              <div class="mt-2 space-y-3">
+                <div
+                  v-for="(feature, index) in editProjectData.features"
+                  :key="`edit-feature-${index}`"
+                  class="grid grid-cols-1 md:grid-cols-5 gap-2"
+                >
+                  <input
+                    type="text"
+                    v-model="feature.name"
+                    class="md:col-span-2 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Feature name"
+                  />
+                  <input
+                    type="text"
+                    v-model="feature.description"
+                    class="md:col-span-2 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Feature description"
+                  />
+                  <button
+                    type="button"
+                    @click="removeEditFeature(index)"
+                    class="md:col-span-1 px-3 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-sm font-medium text-gray-700">Tech Stack</label>
+                <button
+                  type="button"
+                  @click="addEditTechStack"
+                  class="text-sm text-blue-600 hover:text-blue-700"
+                >
+                  Add Tech
+                </button>
+              </div>
+              <div class="mt-2 space-y-2">
+                <div
+                  v-for="(tech, index) in editProjectData.techStack"
+                  :key="`edit-tech-${index}`"
+                  class="flex gap-2"
+                >
+                  <input
+                    type="text"
+                    v-model="editProjectData.techStack[index]"
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="e.g. Vue, Firebase, Tailwind"
+                  />
+                  <button
+                    type="button"
+                    @click="removeEditTechStack(index)"
+                    class="px-3 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="editFormError" class="mt-4 text-red-600 text-sm">
+            {{ editFormError }}
+          </div>
+
+          <div class="mt-6 flex justify-end space-x-3">
+            <button
+              type="button"
+              @click="closeEditProjectModal"
+              class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              :disabled="isEditSubmitting"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {{ isEditSubmitting ? (editProjectData.coverPhoto ? `Uploading ${editUploadProgress}%` : 'Saving...') : 'Save Changes' }}
             </button>
           </div>
         </form>
@@ -827,9 +1095,9 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { collection, getDocs, query, orderBy, doc, updateDoc, setDoc, serverTimestamp, deleteDoc } from 'firebase/firestore'
+import { collection, getDocs, getDoc, query, orderBy, doc, updateDoc, setDoc, serverTimestamp, deleteDoc } from 'firebase/firestore'
 import { db, storage } from '@/firebase'
-import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
+import { ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'
 
 // TypeScript interfaces
 interface Project {
@@ -937,6 +1205,69 @@ const newProject = ref({
 
 const isSubmitting = ref(false)
 const formError = ref<string | null>(null)
+const addUploadProgress = ref(0)
+const addSelectedFileName = ref('')
+
+// Edit project state
+const showEditProjectModal = ref(false)
+const editingProjectId = ref<string | null>(null)
+const isEditSubmitting = ref(false)
+const editFormError = ref<string | null>(null)
+const editUploadProgress = ref(0)
+const editSelectedFileName = ref('')
+const editExistingImageUrl = ref('')
+const editExistingImagePath = ref('')
+const editProjectData = ref({
+  title: '',
+  shortDescription: '',
+  platform: '',
+  service: '',
+  clientName: '',
+  challengeStatement: '',
+  solution: '',
+  duration: 0,
+  features: [{ name: '', description: '' }] as { name: string; description: string }[],
+  techStack: [''] as string[],
+  coverPhoto: null as File | null,
+})
+
+async function uploadProjectCoverImage(
+  file: File,
+  projectId: string,
+  onProgress: (progress: number) => void,
+) {
+  const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+  const imagePath = `sampleworks/${projectId}/cover-${Date.now()}.${fileExtension}`
+  const fileRef = storageRef(storage, imagePath)
+
+  return await new Promise<{ imageUrl: string; imagePath: string }>((resolve, reject) => {
+    const uploadTask = uploadBytesResumable(fileRef, file, {
+      contentType: file.type || 'image/jpeg',
+    })
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = snapshot.totalBytes
+          ? Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+          : 0
+        onProgress(progress)
+      },
+      (uploadError) => {
+        reject(uploadError)
+      },
+      async () => {
+        try {
+          const imageUrl = await getDownloadURL(uploadTask.snapshot.ref)
+          onProgress(100)
+          resolve({ imageUrl, imagePath })
+        } catch (downloadError) {
+          reject(downloadError)
+        }
+      },
+    )
+  })
+}
 
 // Fetch projects from Firestore
 async function fetchProjects() {
@@ -1153,6 +1484,8 @@ const handleLogout = () => {
 const openAddProjectModal = () => {
   showAddProjectModal.value = true
   formError.value = null
+  addUploadProgress.value = 0
+  addSelectedFileName.value = ''
   // Reset form
   newProject.value = {
     title: '',
@@ -1173,6 +1506,8 @@ const openAddProjectModal = () => {
 const closeAddProjectModal = () => {
   showAddProjectModal.value = false
   formError.value = null
+  addUploadProgress.value = 0
+  addSelectedFileName.value = ''
 }
 
 const addProject = async () => {
@@ -1186,6 +1521,7 @@ const addProject = async () => {
   }
 
   isSubmitting.value = true
+  addUploadProgress.value = 0
 
   try {
     const docRef = doc(collection(db, 'sampleworks'))
@@ -1193,11 +1529,11 @@ const addProject = async () => {
     let imagePath: string | null = null
 
     if (payload.coverPhoto) {
-      const ext = payload.coverPhoto.name.split('.').pop() || 'jpg'
-      imagePath = `sampleworks/${docRef.id}/cover.${ext}`
-      const sRef = storageRef(storage, imagePath)
-      await uploadBytes(sRef, payload.coverPhoto)
-      imageUrl = await getDownloadURL(sRef)
+      const uploadResult = await uploadProjectCoverImage(payload.coverPhoto, docRef.id, (progress) => {
+        addUploadProgress.value = progress
+      })
+      imageUrl = uploadResult.imageUrl
+      imagePath = uploadResult.imagePath
     }
 
     await setDoc(docRef, {
@@ -1233,9 +1569,10 @@ const addProject = async () => {
     closeAddProjectModal()
   } catch (err) {
     console.error('Error adding project:', err)
-    formError.value = 'Failed to add project. Please try again.'
+    formError.value = err instanceof Error ? err.message : 'Failed to add project. Please try again.'
   } finally {
     isSubmitting.value = false
+    addUploadProgress.value = 0
   }
 }
 
@@ -1243,6 +1580,7 @@ const onCoverPhotoChange = (e: Event) => {
   const target = e.target as HTMLInputElement
   const file = target.files && target.files[0]
   newProject.value.coverPhoto = file || null
+  addSelectedFileName.value = file?.name || ''
 }
 
 const addFeature = () => {
@@ -1288,6 +1626,169 @@ const deleteProject = async (project: Project) => {
     console.error('Error deleting project:', err)
     alert('Failed to delete project. Check console for details.')
   }
+}
+
+const openEditProjectModal = async (project: Project) => {
+  editingProjectId.value = project.id
+  editFormError.value = null
+  editUploadProgress.value = 0
+  editSelectedFileName.value = ''
+  editExistingImageUrl.value = project.imageUrl || ''
+  editExistingImagePath.value = project.imagePath || ''
+  editProjectData.value = {
+    title: '',
+    shortDescription: '',
+    platform: '',
+    service: '',
+    clientName: '',
+    challengeStatement: '',
+    solution: '',
+    duration: 0,
+    features: [{ name: '', description: '' }],
+    techStack: [''],
+    coverPhoto: null,
+  }
+  showEditProjectModal.value = true
+  try {
+    const docSnap = await getDoc(doc(db, 'sampleworks', project.id))
+    if (docSnap.exists()) {
+      const data = docSnap.data()
+      editProjectData.value = {
+        title: data.title || '',
+        shortDescription: data.description || '',
+        platform: data.platform || '',
+        service: data.serviceId || '',
+        clientName: data.clientName || '',
+        challengeStatement: data.challengeStatement || '',
+        solution: data.solution || '',
+        duration: data.durationWeeks || 0,
+        features: data.features?.length ? data.features : [{ name: '', description: '' }],
+        techStack: data.techStack?.length ? data.techStack : [''],
+        coverPhoto: null,
+      }
+      editExistingImageUrl.value = data.imageUrl || ''
+      editExistingImagePath.value = data.imagePath || ''
+    }
+  } catch (err) {
+    console.error('Error fetching project for edit:', err)
+    editFormError.value = err instanceof Error ? err.message : 'Failed to load project data.'
+  }
+}
+
+const closeEditProjectModal = () => {
+  showEditProjectModal.value = false
+  editingProjectId.value = null
+  editFormError.value = null
+  editUploadProgress.value = 0
+  editSelectedFileName.value = ''
+  editExistingImageUrl.value = ''
+  editExistingImagePath.value = ''
+}
+
+const updateProject = async () => {
+  editFormError.value = null
+  const payload = editProjectData.value
+
+  if (!payload.title || !payload.clientName) {
+    editFormError.value = 'Please provide project title and client name.'
+    return
+  }
+
+  if (!editingProjectId.value) return
+  isEditSubmitting.value = true
+  editUploadProgress.value = 0
+
+  try {
+    const docRef = doc(db, 'sampleworks', editingProjectId.value)
+    let imageUrl: string | undefined
+    let imagePath: string | undefined
+
+    if (payload.coverPhoto) {
+      const uploadResult = await uploadProjectCoverImage(
+        payload.coverPhoto,
+        editingProjectId.value,
+        (progress) => {
+          editUploadProgress.value = progress
+        },
+      )
+      imageUrl = uploadResult.imageUrl
+      imagePath = uploadResult.imagePath
+    }
+
+    const updateData: Record<string, unknown> = {
+      title: payload.title,
+      clientName: payload.clientName,
+      description: payload.shortDescription || '',
+      platform: payload.platform || '',
+      serviceId: payload.service || null,
+      challengeStatement: payload.challengeStatement || '',
+      solution: payload.solution || '',
+      durationWeeks: payload.duration || 0,
+      features: payload.features || [],
+      techStack: payload.techStack || [],
+      updatedAt: serverTimestamp(),
+    }
+
+    if (imageUrl !== undefined) {
+      updateData.imageUrl = imageUrl
+      updateData.imagePath = imagePath
+    }
+
+    await updateDoc(docRef, updateData)
+
+    if (imagePath && editExistingImagePath.value && editExistingImagePath.value !== imagePath) {
+      try {
+        await deleteObject(storageRef(storage, editExistingImagePath.value))
+      } catch (storageError) {
+        console.warn('Previous image delete ignored error:', storageError)
+      }
+    }
+
+    const idx = projects.value.findIndex((p) => p.id === editingProjectId.value)
+    if (idx !== -1) {
+      const existing = projects.value[idx]!
+      projects.value[idx] = {
+        ...existing,
+        name: payload.title,
+        clientName: payload.clientName,
+        description: payload.shortDescription,
+        ...(imageUrl !== undefined ? { imageUrl, imagePath } : {}),
+      }
+    }
+
+    closeEditProjectModal()
+  } catch (err) {
+    console.error('Error updating project:', err)
+    editFormError.value = err instanceof Error ? err.message : 'Failed to update project. Please try again.'
+  } finally {
+    isEditSubmitting.value = false
+    editUploadProgress.value = 0
+  }
+}
+
+const onEditCoverPhotoChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  const file = target.files && target.files[0]
+  editProjectData.value.coverPhoto = file || null
+  editSelectedFileName.value = file?.name || ''
+}
+
+const addEditFeature = () => {
+  editProjectData.value.features.push({ name: '', description: '' })
+}
+
+const removeEditFeature = (index: number) => {
+  if (editProjectData.value.features.length <= 1) return
+  editProjectData.value.features.splice(index, 1)
+}
+
+const addEditTechStack = () => {
+  editProjectData.value.techStack.push('')
+}
+
+const removeEditTechStack = (index: number) => {
+  if (editProjectData.value.techStack.length <= 1) return
+  editProjectData.value.techStack.splice(index, 1)
 }
 
 const saveSettings = () => {
