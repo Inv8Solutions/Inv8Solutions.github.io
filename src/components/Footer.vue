@@ -258,7 +258,7 @@ const handleSubmitBooking = async () => {
           <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
             Get in Touch
           </h3>
-          <a class="mt-4 flex items-center gap-3 text-sm text-gray-700" href="mailto:hello@inv8.io">
+          <a class="mt-4 flex items-center gap-3 text-sm text-gray-700" href="mailto:inv8design@gmail.com">
             <span
               class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 text-gray-500"
             >
@@ -283,7 +283,7 @@ const handleSubmitBooking = async () => {
                 />
               </svg>
             </span>
-            <span class="font-medium">hello@inv8.io</span>
+            <span class="font-medium">inv8design@gmail.com</span>
           </a>
         </div>
       </div>
