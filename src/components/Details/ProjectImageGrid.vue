@@ -106,17 +106,34 @@ async function fetchProjectImagesFromFirebase(id: string): Promise<ProjectImage[
     }
 
     const data = docSnap.data()
-    const imageUrl = typeof data.imageUrl === 'string' ? data.imageUrl : null
+    const coverImageUrl =
+      typeof data.imageUrl === 'string' && data.imageUrl.trim().length > 0
+        ? data.imageUrl
+        : typeof data.coverPhoto === 'string' && data.coverPhoto.trim().length > 0
+          ? data.coverPhoto
+          : null
 
-    const projectImages = imageUrl
-      ? [
-          {
-            id: 'img-0',
-            url: imageUrl,
-            alt: 'Project image 1',
-          },
-        ]
+    const additionalImageUrls = Array.isArray(data.additionalImageUrls)
+      ? data.additionalImageUrls.filter((item: unknown) => typeof item === 'string' && item.trim().length > 0)
       : []
+
+    const projectImages: ProjectImage[] = []
+
+    if (coverImageUrl) {
+      projectImages.push({
+        id: 'img-cover',
+        url: coverImageUrl,
+        alt: 'Project cover image',
+      })
+    }
+
+    additionalImageUrls.forEach((url: string, index: number) => {
+      projectImages.push({
+        id: `img-${index + 1}`,
+        url,
+        alt: `Project image ${index + 1}`,
+      })
+    })
 
     return projectImages
   } catch (error) {

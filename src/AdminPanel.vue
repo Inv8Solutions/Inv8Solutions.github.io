@@ -479,11 +479,18 @@
             <div>
               <label class="block text-sm font-medium text-gray-700">Cover Photo</label>
               <input
+                id="add-cover-photo-input"
                 type="file"
                 @change="onCoverPhotoChange"
                 accept="image/*"
-                class="mt-1 block w-full"
+                class="sr-only"
               />
+              <label
+                for="add-cover-photo-input"
+                class="mt-1 inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
+              >
+                Choose file
+              </label>
               <p v-if="addSelectedFileName" class="mt-1 text-xs text-gray-500">
                 Selected: {{ addSelectedFileName }}
               </p>
@@ -496,6 +503,54 @@
                   <div
                     class="h-full bg-blue-600 transition-all duration-300"
                     :style="{ width: `${addUploadProgress}%` }"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Additional Photos</label>
+              <input
+                id="add-additional-photos-input"
+                type="file"
+                @change="onAdditionalImagesChange"
+                accept="image/*"
+                multiple
+                class="sr-only"
+              />
+              <label
+                for="add-additional-photos-input"
+                class="mt-1 inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
+              >
+                Choose files
+              </label>
+              <p class="mt-1 text-xs text-gray-500">Used in project image sections (not cover photo)</p>
+              <div v-if="addSelectedAdditionalFileNames.length" class="mt-2 space-y-1">
+                <p class="text-xs text-gray-500">{{ addSelectedAdditionalFileNames.length }} file(s) selected</p>
+                <div
+                  v-for="(name, index) in addSelectedAdditionalFileNames"
+                  :key="`${name}-${index}`"
+                  class="flex items-center justify-between text-xs text-gray-500"
+                >
+                  <span class="truncate pr-2">• {{ name }}</span>
+                  <button
+                    type="button"
+                    @click="removeSelectedAdditionalImage(index)"
+                    class="text-red-600 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+              <div v-if="isSubmitting && newProject.additionalImages.length" class="mt-3">
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                  <span>Uploading additional photos...</span>
+                  <span>{{ addAdditionalUploadProgress }}%</span>
+                </div>
+                <div class="mt-1 h-2 overflow-hidden rounded-full bg-gray-200">
+                  <div
+                    class="h-full bg-blue-600 transition-all duration-300"
+                    :style="{ width: `${addAdditionalUploadProgress}%` }"
                   ></div>
                 </div>
               </div>
@@ -655,7 +710,13 @@
               :disabled="isSubmitting"
               class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {{ isSubmitting ? (newProject.coverPhoto ? `Uploading ${addUploadProgress}%` : 'Adding...') : 'Add Project' }}
+              {{
+                isSubmitting
+                  ? (newProject.coverPhoto || newProject.additionalImages.length
+                      ? `Uploading ${Math.max(addUploadProgress, addAdditionalUploadProgress)}%`
+                      : 'Adding...')
+                  : 'Add Project'
+              }}
             </button>
           </div>
         </form>
@@ -723,11 +784,18 @@
             <div>
               <label class="block text-sm font-medium text-gray-700">Cover Photo</label>
               <input
+                id="edit-cover-photo-input"
                 type="file"
                 @change="onEditCoverPhotoChange"
                 accept="image/*"
-                class="mt-1 block w-full"
+                class="sr-only"
               />
+              <label
+                for="edit-cover-photo-input"
+                class="mt-1 inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
+              >
+                Choose file
+              </label>
               <p v-if="editSelectedFileName" class="mt-1 text-xs text-gray-500">
                 Selected: {{ editSelectedFileName }}
               </p>
@@ -748,6 +816,63 @@
                   <div
                     class="h-full bg-blue-600 transition-all duration-300"
                     :style="{ width: `${editUploadProgress}%` }"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Additional Photos</label>
+              <input
+                id="edit-additional-photos-input"
+                type="file"
+                @change="onEditAdditionalImagesChange"
+                accept="image/*"
+                multiple
+                class="sr-only"
+              />
+              <label
+                for="edit-additional-photos-input"
+                class="mt-1 inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
+              >
+                Choose files
+              </label>
+              <p class="mt-1 text-xs text-gray-500">Upload more photos for project image sections</p>
+              <div v-if="editSelectedAdditionalFileNames.length" class="mt-2 space-y-1">
+                <p class="text-xs text-gray-500">{{ editSelectedAdditionalFileNames.length }} new file(s) selected</p>
+                <div
+                  v-for="(name, index) in editSelectedAdditionalFileNames"
+                  :key="`${name}-${index}`"
+                  class="flex items-center justify-between text-xs text-gray-500"
+                >
+                  <span class="truncate pr-2">• {{ name }}</span>
+                  <button
+                    type="button"
+                    @click="removeEditSelectedAdditionalImage(index)"
+                    class="text-red-600 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+              <div v-if="editExistingAdditionalImageUrls.length" class="mt-3 grid grid-cols-2 gap-2">
+                <img
+                  v-for="(url, index) in editExistingAdditionalImageUrls"
+                  :key="`${url}-${index}`"
+                  :src="url"
+                  :alt="`Existing additional image ${index + 1}`"
+                  class="h-20 w-full rounded-lg border border-gray-200 object-cover"
+                />
+              </div>
+              <div v-if="isEditSubmitting && editProjectData.additionalImages.length" class="mt-3">
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                  <span>Uploading additional photos...</span>
+                  <span>{{ editAdditionalUploadProgress }}%</span>
+                </div>
+                <div class="mt-1 h-2 overflow-hidden rounded-full bg-gray-200">
+                  <div
+                    class="h-full bg-blue-600 transition-all duration-300"
+                    :style="{ width: `${editAdditionalUploadProgress}%` }"
                   ></div>
                 </div>
               </div>
@@ -907,7 +1032,13 @@
               :disabled="isEditSubmitting"
               class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {{ isEditSubmitting ? (editProjectData.coverPhoto ? `Uploading ${editUploadProgress}%` : 'Saving...') : 'Save Changes' }}
+              {{
+                isEditSubmitting
+                  ? (editProjectData.coverPhoto || editProjectData.additionalImages.length
+                      ? `Uploading ${Math.max(editUploadProgress, editAdditionalUploadProgress)}%`
+                      : 'Saving...')
+                  : 'Save Changes'
+              }}
             </button>
           </div>
         </form>
@@ -1109,6 +1240,8 @@ interface Project {
   description?: string
   imageUrl?: string
   imagePath?: string
+  additionalImageUrls?: string[]
+  additionalImagePaths?: string[]
   serviceId?: string
 }
 
@@ -1200,13 +1333,15 @@ const newProject = ref({
   features: [{ name: '', description: '' }],
   techStack: [''],
   coverPhoto: null as File | null,
-  additionalImages: [null, null, null, null] as (File | null)[],
+  additionalImages: [] as File[],
 })
 
 const isSubmitting = ref(false)
 const formError = ref<string | null>(null)
 const addUploadProgress = ref(0)
 const addSelectedFileName = ref('')
+const addSelectedAdditionalFileNames = ref<string[]>([])
+const addAdditionalUploadProgress = ref(0)
 
 // Edit project state
 const showEditProjectModal = ref(false)
@@ -1217,6 +1352,10 @@ const editUploadProgress = ref(0)
 const editSelectedFileName = ref('')
 const editExistingImageUrl = ref('')
 const editExistingImagePath = ref('')
+const editExistingAdditionalImageUrls = ref<string[]>([])
+const editExistingAdditionalImagePaths = ref<string[]>([])
+const editSelectedAdditionalFileNames = ref<string[]>([])
+const editAdditionalUploadProgress = ref(0)
 const editProjectData = ref({
   title: '',
   shortDescription: '',
@@ -1229,44 +1368,64 @@ const editProjectData = ref({
   features: [{ name: '', description: '' }] as { name: string; description: string }[],
   techStack: [''] as string[],
   coverPhoto: null as File | null,
+  additionalImages: [] as File[],
 })
 
-async function uploadProjectCoverImage(
-  file: File,
+async function uploadProjectImages(
+  files: File[],
   projectId: string,
+  folder: 'cover' | 'gallery',
   onProgress: (progress: number) => void,
 ) {
-  const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
-  const imagePath = `sampleworks/${projectId}/cover-${Date.now()}.${fileExtension}`
-  const fileRef = storageRef(storage, imagePath)
+  if (!files.length) {
+    onProgress(100)
+    return { imageUrls: [] as string[], imagePaths: [] as string[] }
+  }
 
-  return await new Promise<{ imageUrl: string; imagePath: string }>((resolve, reject) => {
-    const uploadTask = uploadBytesResumable(fileRef, file, {
-      contentType: file.type || 'image/jpeg',
+  const totalBytes = files.reduce((sum, file) => sum + (file.size || 0), 0)
+  let uploadedBytes = 0
+  const imageUrls: string[] = []
+  const imagePaths: string[] = []
+
+  for (const [index, file] of files.entries()) {
+    const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+    const imagePath =
+      folder === 'cover'
+        ? `sampleworks/${projectId}/cover-${Date.now()}.${fileExtension}`
+        : `sampleworks/${projectId}/gallery-${Date.now()}-${index}.${fileExtension}`
+    const fileRef = storageRef(storage, imagePath)
+
+    await new Promise<void>((resolve, reject) => {
+      const uploadTask = uploadBytesResumable(fileRef, file, {
+        contentType: file.type || 'image/jpeg',
+      })
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const current = uploadedBytes + snapshot.bytesTransferred
+          const progress = totalBytes ? Math.round((current / totalBytes) * 100) : 0
+          onProgress(progress)
+        },
+        (uploadError) => reject(uploadError),
+        async () => {
+          try {
+            const imageUrl = await getDownloadURL(uploadTask.snapshot.ref)
+            imageUrls.push(imageUrl)
+            imagePaths.push(imagePath)
+            uploadedBytes += file.size || 0
+            const progress = totalBytes ? Math.round((uploadedBytes / totalBytes) * 100) : 100
+            onProgress(progress)
+            resolve()
+          } catch (downloadError) {
+            reject(downloadError)
+          }
+        },
+      )
     })
+  }
 
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = snapshot.totalBytes
-          ? Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-          : 0
-        onProgress(progress)
-      },
-      (uploadError) => {
-        reject(uploadError)
-      },
-      async () => {
-        try {
-          const imageUrl = await getDownloadURL(uploadTask.snapshot.ref)
-          onProgress(100)
-          resolve({ imageUrl, imagePath })
-        } catch (downloadError) {
-          reject(downloadError)
-        }
-      },
-    )
-  })
+  return { imageUrls, imagePaths }
 }
 
 // Fetch projects from Firestore
@@ -1285,8 +1444,14 @@ async function fetchProjects() {
         status: data.status || 'Planning',
         date: data.date || new Date().toISOString().split('T')[0],
         description: data.description || '',
-        imageUrl: data.imageUrl,
-        imagePath: data.imagePath,
+        imageUrl: data.imageUrl || data.coverPhoto,
+        imagePath: data.imagePath || data.coverPhotoPath,
+        additionalImageUrls: Array.isArray(data.additionalImageUrls)
+          ? data.additionalImageUrls.filter((item: unknown) => typeof item === 'string')
+          : [],
+        additionalImagePaths: Array.isArray(data.additionalImagePaths)
+          ? data.additionalImagePaths.filter((item: unknown) => typeof item === 'string')
+          : [],
         serviceId: data.serviceId,
       })
     })
@@ -1486,6 +1651,8 @@ const openAddProjectModal = () => {
   formError.value = null
   addUploadProgress.value = 0
   addSelectedFileName.value = ''
+  addSelectedAdditionalFileNames.value = []
+  addAdditionalUploadProgress.value = 0
   // Reset form
   newProject.value = {
     title: '',
@@ -1499,7 +1666,7 @@ const openAddProjectModal = () => {
     features: [{ name: '', description: '' }],
     techStack: [''],
     coverPhoto: null,
-    additionalImages: [null, null, null, null],
+    additionalImages: [],
   }
 }
 
@@ -1508,6 +1675,8 @@ const closeAddProjectModal = () => {
   formError.value = null
   addUploadProgress.value = 0
   addSelectedFileName.value = ''
+  addSelectedAdditionalFileNames.value = []
+  addAdditionalUploadProgress.value = 0
 }
 
 const addProject = async () => {
@@ -1522,18 +1691,29 @@ const addProject = async () => {
 
   isSubmitting.value = true
   addUploadProgress.value = 0
+  addAdditionalUploadProgress.value = 0
 
   try {
     const docRef = doc(collection(db, 'sampleworks'))
     let imageUrl: string | null = null
     let imagePath: string | null = null
+    let additionalImageUrls: string[] = []
+    let additionalImagePaths: string[] = []
 
     if (payload.coverPhoto) {
-      const uploadResult = await uploadProjectCoverImage(payload.coverPhoto, docRef.id, (progress) => {
+      const uploadResult = await uploadProjectImages([payload.coverPhoto], docRef.id, 'cover', (progress) => {
         addUploadProgress.value = progress
       })
-      imageUrl = uploadResult.imageUrl
-      imagePath = uploadResult.imagePath
+      imageUrl = uploadResult.imageUrls[0] || null
+      imagePath = uploadResult.imagePaths[0] || null
+    }
+
+    if (payload.additionalImages.length > 0) {
+      const uploadResult = await uploadProjectImages(payload.additionalImages, docRef.id, 'gallery', (progress) => {
+        addAdditionalUploadProgress.value = progress
+      })
+      additionalImageUrls = uploadResult.imageUrls
+      additionalImagePaths = uploadResult.imagePaths
     }
 
     await setDoc(docRef, {
@@ -1549,6 +1729,10 @@ const addProject = async () => {
       techStack: payload.techStack || [],
       imageUrl,
       imagePath,
+      coverPhoto: imageUrl,
+      coverPhotoPath: imagePath,
+      additionalImageUrls,
+      additionalImagePaths,
       status: 'Planning',
       date: new Date().toISOString().split('T')[0],
       createdAt: serverTimestamp(),
@@ -1564,6 +1748,8 @@ const addProject = async () => {
       description: payload.shortDescription || '',
       imageUrl: imageUrl || undefined,
       imagePath: imagePath || undefined,
+      additionalImageUrls: additionalImageUrls,
+      additionalImagePaths: additionalImagePaths,
     } as Project)
 
     closeAddProjectModal()
@@ -1573,6 +1759,7 @@ const addProject = async () => {
   } finally {
     isSubmitting.value = false
     addUploadProgress.value = 0
+    addAdditionalUploadProgress.value = 0
   }
 }
 
@@ -1581,6 +1768,32 @@ const onCoverPhotoChange = (e: Event) => {
   const file = target.files && target.files[0]
   newProject.value.coverPhoto = file || null
   addSelectedFileName.value = file?.name || ''
+}
+
+const onAdditionalImagesChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  const selectedFiles = target.files ? Array.from(target.files) : []
+  const merged = [...newProject.value.additionalImages, ...selectedFiles]
+  const uniqueFiles = merged.filter(
+    (file, index, self) =>
+      index ===
+      self.findIndex(
+        (item) =>
+          item.name === file.name &&
+          item.size === file.size &&
+          item.lastModified === file.lastModified,
+      ),
+  )
+
+  newProject.value.additionalImages = uniqueFiles
+  addSelectedAdditionalFileNames.value = uniqueFiles.map((file) => file.name)
+  target.value = ''
+}
+
+const removeSelectedAdditionalImage = (index: number) => {
+  if (index < 0 || index >= newProject.value.additionalImages.length) return
+  newProject.value.additionalImages.splice(index, 1)
+  addSelectedAdditionalFileNames.value = newProject.value.additionalImages.map((file) => file.name)
 }
 
 const addFeature = () => {
@@ -1613,6 +1826,19 @@ const deleteProject = async (project: Project) => {
       const storagePath = project.imagePath || `sampleworks/${project.id}/cover.jpg`
       const sRef = storageRef(storage, storagePath)
       await deleteObject(sRef)
+
+      if (project.additionalImagePaths?.length) {
+        await Promise.all(
+          project.additionalImagePaths.map(async (additionalPath) => {
+            if (!additionalPath) return
+            try {
+              await deleteObject(storageRef(storage, additionalPath))
+            } catch (additionalError) {
+              console.warn('Additional image delete ignored error:', additionalError)
+            }
+          }),
+        )
+      }
     } catch (e) {
       console.warn('Storage delete ignored error:', e)
     }
@@ -1635,6 +1861,10 @@ const openEditProjectModal = async (project: Project) => {
   editSelectedFileName.value = ''
   editExistingImageUrl.value = project.imageUrl || ''
   editExistingImagePath.value = project.imagePath || ''
+  editExistingAdditionalImageUrls.value = project.additionalImageUrls || []
+  editExistingAdditionalImagePaths.value = project.additionalImagePaths || []
+  editSelectedAdditionalFileNames.value = []
+  editAdditionalUploadProgress.value = 0
   editProjectData.value = {
     title: '',
     shortDescription: '',
@@ -1647,6 +1877,7 @@ const openEditProjectModal = async (project: Project) => {
     features: [{ name: '', description: '' }],
     techStack: [''],
     coverPhoto: null,
+    additionalImages: [],
   }
   showEditProjectModal.value = true
   try {
@@ -1665,9 +1896,16 @@ const openEditProjectModal = async (project: Project) => {
         features: data.features?.length ? data.features : [{ name: '', description: '' }],
         techStack: data.techStack?.length ? data.techStack : [''],
         coverPhoto: null,
+        additionalImages: [],
       }
-      editExistingImageUrl.value = data.imageUrl || ''
-      editExistingImagePath.value = data.imagePath || ''
+      editExistingImageUrl.value = data.imageUrl || data.coverPhoto || ''
+      editExistingImagePath.value = data.imagePath || data.coverPhotoPath || ''
+      editExistingAdditionalImageUrls.value = Array.isArray(data.additionalImageUrls)
+        ? data.additionalImageUrls.filter((item: unknown) => typeof item === 'string')
+        : []
+      editExistingAdditionalImagePaths.value = Array.isArray(data.additionalImagePaths)
+        ? data.additionalImagePaths.filter((item: unknown) => typeof item === 'string')
+        : []
     }
   } catch (err) {
     console.error('Error fetching project for edit:', err)
@@ -1683,6 +1921,10 @@ const closeEditProjectModal = () => {
   editSelectedFileName.value = ''
   editExistingImageUrl.value = ''
   editExistingImagePath.value = ''
+  editExistingAdditionalImageUrls.value = []
+  editExistingAdditionalImagePaths.value = []
+  editSelectedAdditionalFileNames.value = []
+  editAdditionalUploadProgress.value = 0
 }
 
 const updateProject = async () => {
@@ -1697,22 +1939,29 @@ const updateProject = async () => {
   if (!editingProjectId.value) return
   isEditSubmitting.value = true
   editUploadProgress.value = 0
+  editAdditionalUploadProgress.value = 0
 
   try {
     const docRef = doc(db, 'sampleworks', editingProjectId.value)
     let imageUrl: string | undefined
     let imagePath: string | undefined
+    let additionalImageUrls: string[] = []
+    let additionalImagePaths: string[] = []
 
     if (payload.coverPhoto) {
-      const uploadResult = await uploadProjectCoverImage(
-        payload.coverPhoto,
-        editingProjectId.value,
-        (progress) => {
-          editUploadProgress.value = progress
-        },
-      )
-      imageUrl = uploadResult.imageUrl
-      imagePath = uploadResult.imagePath
+      const uploadResult = await uploadProjectImages([payload.coverPhoto], editingProjectId.value, 'cover', (progress) => {
+        editUploadProgress.value = progress
+      })
+      imageUrl = uploadResult.imageUrls[0]
+      imagePath = uploadResult.imagePaths[0]
+    }
+
+    if (payload.additionalImages.length > 0) {
+      const uploadResult = await uploadProjectImages(payload.additionalImages, editingProjectId.value, 'gallery', (progress) => {
+        editAdditionalUploadProgress.value = progress
+      })
+      additionalImageUrls = uploadResult.imageUrls
+      additionalImagePaths = uploadResult.imagePaths
     }
 
     const updateData: Record<string, unknown> = {
@@ -1732,6 +1981,15 @@ const updateProject = async () => {
     if (imageUrl !== undefined) {
       updateData.imageUrl = imageUrl
       updateData.imagePath = imagePath
+      updateData.coverPhoto = imageUrl
+      updateData.coverPhotoPath = imagePath
+    }
+
+    if (additionalImageUrls.length > 0) {
+      const mergedUrls = [...editExistingAdditionalImageUrls.value, ...additionalImageUrls]
+      const mergedPaths = [...editExistingAdditionalImagePaths.value, ...additionalImagePaths]
+      updateData.additionalImageUrls = mergedUrls
+      updateData.additionalImagePaths = mergedPaths
     }
 
     await updateDoc(docRef, updateData)
@@ -1753,6 +2011,12 @@ const updateProject = async () => {
         clientName: payload.clientName,
         description: payload.shortDescription,
         ...(imageUrl !== undefined ? { imageUrl, imagePath } : {}),
+        ...(additionalImageUrls.length > 0
+          ? {
+              additionalImageUrls: [...editExistingAdditionalImageUrls.value, ...additionalImageUrls],
+              additionalImagePaths: [...editExistingAdditionalImagePaths.value, ...additionalImagePaths],
+            }
+          : {}),
       }
     }
 
@@ -1763,6 +2027,7 @@ const updateProject = async () => {
   } finally {
     isEditSubmitting.value = false
     editUploadProgress.value = 0
+    editAdditionalUploadProgress.value = 0
   }
 }
 
@@ -1771,6 +2036,32 @@ const onEditCoverPhotoChange = (e: Event) => {
   const file = target.files && target.files[0]
   editProjectData.value.coverPhoto = file || null
   editSelectedFileName.value = file?.name || ''
+}
+
+const onEditAdditionalImagesChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  const selectedFiles = target.files ? Array.from(target.files) : []
+  const merged = [...editProjectData.value.additionalImages, ...selectedFiles]
+  const uniqueFiles = merged.filter(
+    (file, index, self) =>
+      index ===
+      self.findIndex(
+        (item) =>
+          item.name === file.name &&
+          item.size === file.size &&
+          item.lastModified === file.lastModified,
+      ),
+  )
+
+  editProjectData.value.additionalImages = uniqueFiles
+  editSelectedAdditionalFileNames.value = uniqueFiles.map((file) => file.name)
+  target.value = ''
+}
+
+const removeEditSelectedAdditionalImage = (index: number) => {
+  if (index < 0 || index >= editProjectData.value.additionalImages.length) return
+  editProjectData.value.additionalImages.splice(index, 1)
+  editSelectedAdditionalFileNames.value = editProjectData.value.additionalImages.map((file) => file.name)
 }
 
 const addEditFeature = () => {
