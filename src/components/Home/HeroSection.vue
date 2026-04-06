@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const openStartProjectModal = () => {
+  window.dispatchEvent(new CustomEvent('open-start-project-modal'))
+}
+
 const floatingIcons = [
   {
     name: 'Figma',
@@ -45,6 +49,7 @@ const floatingIcons = [
           market-ready digital solutions through clarity, insight, and focused execution.
         </p>
         <button
+          @click="openStartProjectModal"
           class="rounded-full bg-blue-600 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-blue-300/60 transition-smooth hover:bg-blue-700 hover:shadow-xl hover:scale-105 animate-fade-in-up animate-delay-600"
         >
           Start a Project

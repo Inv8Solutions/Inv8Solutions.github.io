@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebase'
@@ -122,6 +122,10 @@ const closeProjectModal = () => {
   isProjectModalOpen.value = false
 }
 
+const handleOpenProjectModalEvent = () => {
+  openProjectModal()
+}
+
 const resetForm = () => {
   formFields.forEach((field) => {
     formData.value[field.id] = ''
@@ -194,6 +198,14 @@ const handleSubmit = async () => {
     isSubmitting.value = false
   }
 }
+
+onMounted(() => {
+  window.addEventListener('open-start-project-modal', handleOpenProjectModalEvent)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('open-start-project-modal', handleOpenProjectModalEvent)
+})
 </script>
 
 <template>

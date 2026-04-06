@@ -106,6 +106,10 @@ const openBookingModal = () => {
   resetForm()
 }
 
+const openStartProjectModal = () => {
+  window.dispatchEvent(new CustomEvent('open-start-project-modal'))
+}
+
 const closeBookingModal = () => {
   isBookingModalOpen.value = false
 }
@@ -210,6 +214,7 @@ const handleSubmitBooking = async () => {
           </button>
           <button
             type="button"
+            @click="openStartProjectModal"
             class="rounded-full bg-white px-6 py-3 text-sm font-semibold text-gray-900 transition hover:bg-blue-50"
           >
             Start a Project
