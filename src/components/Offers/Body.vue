@@ -208,48 +208,148 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-white px-4 py-16 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-6xl space-y-16">
-      <div
-        class="offer-details-section grid gap-10 rounded-[36px] border border-gray-100 bg-[#f8f9fb] px-6 py-10 shadow-[0_30px_80px_rgba(15,23,42,0.08)] sm:px-10 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]"
-      >
-        <div class="space-y-8">
-          <div>
-            <div
-              class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-1 text-sm font-semibold text-blue-600"
-            >
-              <span class="h-2 w-2 rounded-full bg-blue-500"></span>
-              {{ currentOffer.badge }}
-            </div>
-            <h2 class="mt-6 text-3xl font-semibold leading-tight text-gray-900 sm:text-4xl">
-              {{ currentOffer.title }}
-            </h2>
-            <p class="mt-4 max-w-2xl text-base text-gray-500 sm:text-lg">
-              {{ currentOffer.blurb }}
-            </p>
+  <section id="services-body" class="bg-[#03040f] px-4 py-24 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- Section header -->
+      <div class="offer-details-section mb-16 text-center">
+        <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Our Services</p>
+        <h2 class="mt-4 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl">
+          End-to-end solutions<br />for every stage of <span class="text-blue-500">innovation.</span>
+        </h2>
+        <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/50">
+          From strategy and design to development and growth,<br class="hidden sm:block" />
+          we help startups and businesses build meaningful digital products.
+        </p>
+      </div>
+
+      <!-- Service cards grid -->
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <article
+          v-for="(offer, index) in offerDetails"
+          :key="offer.id"
+          class="offer-deliverable-item group flex flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#0d0f1f] transition duration-300 hover:border-white/20 hover:bg-[#111327] cursor-pointer"
+          :style="`animation-delay: ${index * 0.08}s`"
+          @click="selectService(offer.id)"
+        >
+          <!-- Image area -->
+          <div class="relative h-52 overflow-hidden bg-[#080a18]">
+            <img
+              v-if="offer.image"
+              :src="offer.image"
+              :alt="offer.title"
+              class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0d0f1f] via-transparent to-transparent"></div>
           </div>
 
-          <div>
-            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-blue-700">
-              What you get
-            </h3>
-            <ul class="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white">
-              <li
-                v-for="(item, index) in currentOffer.deliverables"
-                :key="item"
-                class="offer-deliverable-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 transition-smooth hover:bg-blue-50"
-                :style="`animation-delay: ${index * 0.05}s`"
+          <!-- Card body -->
+          <div class="flex flex-1 flex-col p-6">
+            <!-- Icon + number row -->
+            <div class="mb-4 flex items-center justify-between">
+              <div class="flex h-11 w-11 items-center justify-center rounded-2xl"
+                :class="[
+                  index === 0 ? 'bg-blue-500/15 text-blue-400' :
+                  index === 1 ? 'bg-purple-500/15 text-purple-400' :
+                  index === 2 ? 'bg-green-500/15 text-green-400' :
+                  'bg-yellow-500/15 text-yellow-400'
+                ]"
               >
-                <span
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    class="h-4 w-4"
-                  >
+                <i :class="[
+                  index === 0 ? 'fa-solid fa-code' :
+                  index === 1 ? 'fa-solid fa-pen-nib' :
+                  index === 2 ? 'fa-solid fa-chart-bar' :
+                  'fa-solid fa-lightbulb',
+                  'text-sm'
+                ]" aria-hidden="true"></i>
+              </div>
+              <span class="text-2xl font-black"
+                :class="[
+                  index === 0 ? 'text-blue-500/60' :
+                  index === 1 ? 'text-purple-500/60' :
+                  index === 2 ? 'text-green-500/60' :
+                  'text-yellow-500/60'
+                ]"
+              >{{ (index + 1).toString().padStart(2, '0') }}</span>
+            </div>
+
+            <h3 class="text-xl font-black leading-snug text-white">{{ offer.label }}</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-white/50">{{ offer.blurb }}</p>
+
+            <button
+              type="button"
+              @click.stop="selectService(offer.id)"
+              class="mt-6 inline-flex items-center gap-2 text-sm font-semibold transition duration-200"
+              :class="[
+                index === 0 ? 'text-blue-400 hover:text-blue-300' :
+                index === 1 ? 'text-purple-400 hover:text-purple-300' :
+                index === 2 ? 'text-green-400 hover:text-green-300' :
+                'text-yellow-400 hover:text-yellow-300'
+              ]"
+            >
+              Learn more
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Selected service detail -->
+      <div class="mt-20 rounded-[32px] border border-white/10 bg-[#0d0f1f] p-8 sm:p-12">
+        <div class="grid gap-12 lg:grid-cols-[1fr_340px]">
+          <div>
+            <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-400">
+              <span class="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
+              {{ currentOffer.badge }}
+            </div>
+            <h2 class="mt-5 text-3xl font-black leading-tight text-white sm:text-4xl">{{ currentOffer.title }}</h2>
+            <p class="mt-4 max-w-2xl text-base leading-relaxed text-white/55">{{ currentOffer.blurb }}</p>
+
+            <!-- Capabilities -->
+            <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div
+                v-for="(capability, i) in currentOffer.capabilities"
+                :key="capability.title"
+                class="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+              >
+                <span class="text-xs font-bold text-white/30">{{ (i + 1).toString().padStart(2, '0') }}</span>
+                <h4 class="mt-2 text-sm font-bold text-white">{{ capability.title }}</h4>
+                <p class="mt-1 text-xs leading-relaxed text-white/45">{{ capability.description }}</p>
+              </div>
+            </div>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <button
+                type="button"
+                @click="openProjectModal"
+                class="rounded-full bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-900/50 transition hover:bg-blue-500 hover:scale-105"
+              >
+                Start a Project
+              </button>
+              <button
+                type="button"
+                @click="viewProjects"
+                class="rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 hover:scale-105"
+              >
+                View Projects
+              </button>
+            </div>
+          </div>
+
+          <!-- Deliverables -->
+          <div class="flex flex-col">
+            <h3 class="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-white/40">What you get</h3>
+            <ul class="flex-1 divide-y divide-white/5 rounded-2xl border border-white/10 bg-white/[0.03]">
+              <li
+                v-for="item in currentOffer.deliverables"
+                :key="item"
+                class="flex items-center gap-3 px-4 py-3 text-sm text-white/70"
+              >
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/15 text-blue-400">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3 w-3">
                     <path d="M5 12l4 4 10-10" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </span>
@@ -257,70 +357,9 @@ onMounted(() => {
               </li>
             </ul>
           </div>
-
-          <div class="flex flex-wrap gap-3">
-            <button
-              type="button"
-              @click="openProjectModal"
-              class="rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-300/60 transition hover:bg-blue-700"
-            >
-              Start a Project
-            </button>
-            <button
-              type="button"
-              @click="viewProjects"
-              class="rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-800 transition hover:border-gray-400"
-            >
-              View Projects
-            </button>
-          </div>
-        </div>
-
-        <div
-          class="hidden min-h-[320px] rounded-[32px] border border-gray-100 bg-white shadow-inner md:block"
-        >
-          <div class="flex h-full items-center justify-center p-8">
-            <div class="relative w-full h-full max-w-sm">
-              <img
-                v-if="currentOffer.image"
-                :src="currentOffer.image"
-                :alt="currentOffer.title"
-                class="w-full h-full object-contain rounded-2xl"
-              />
-              <div
-                v-else
-                class="h-40 w-40 rounded-3xl bg-gradient-to-br from-blue-100 to-purple-100"
-              ></div>
-            </div>
-          </div>
         </div>
       </div>
 
-      <div
-        class="space-y-10 rounded-[32px] border border-gray-100 bg-white px-6 py-12 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:px-10"
-      >
-        <div class="text-center">
-          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">What we do</h3>
-          <h3 class="mt-3 text-3xl font-semibold text-gray-900">{{ currentOffer.title }}</h3>
-          <p class="mt-2 text-base text-gray-500">
-            A proven playbook tailored for {{ currentOffer.label }} engagements.
-          </p>
-        </div>
-
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <article
-            v-for="(capability, index) in currentOffer.capabilities"
-            :key="capability.title"
-            class="flex flex-col gap-3 rounded-3xl border border-gray-100 bg-[#f9fafc] p-6"
-          >
-            <span class="text-sm font-semibold text-gray-400">{{
-              (index + 1).toString().padStart(2, '0')
-            }}</span>
-            <h4 class="text-lg font-semibold text-gray-900">{{ capability.title }}</h4>
-            <p class="text-sm text-gray-500">{{ capability.description }}</p>
-          </article>
-        </div>
-      </div>
     </div>
   </section>
 
