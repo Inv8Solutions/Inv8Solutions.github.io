@@ -168,7 +168,7 @@ defineExpose({
           v-for="project in projects"
           :key="project.id || project.title"
           data-project-card
-          class="work-project-card group relative overflow-hidden rounded-[28px] cursor-pointer pb-[65%] bg-gray-900 transition duration-500 hover:scale-[1.02]"
+          class="work-project-card group relative overflow-hidden rounded-[28px] cursor-pointer pb-[65%] bg-[#0d0f1f] transition duration-500 hover:scale-[1.02]"
           @click="handleProjectView(project)"
           @keydown.enter="handleProjectView(project)"
           @keydown.space.prevent="handleProjectView(project)"

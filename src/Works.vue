@@ -8,7 +8,7 @@ defineOptions({
 </script>
 
 <template>
-  <div class="works-page">
+  <div class="works-page bg-[#03040f]">
     <works-hero-section />
     <product-container />
     <work-with-us />
