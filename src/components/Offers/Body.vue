@@ -177,35 +177,42 @@ const handleSubmit = async () => {
       </div>
 
       <!-- Bento content card -->
-      <div class="overflow-hidden rounded-[24px] border border-white/10 bg-[#0a0c1c] p-3">
+      <div class="overflow-hidden rounded-[24px] border border-white/10 bg-[#0a0c1c]">
         <Transition name="tab-fade" mode="out-in">
-          <div :key="selectedId" class="grid gap-3 sm:grid-cols-2">
+          <div :key="selectedId" class="grid sm:grid-cols-2">
             <div
-              v-for="(item, i) in currentOffer.whatWeBuild"
+              v-for="(item, idx) in currentOffer.whatWeBuild"
               :key="item.title"
-              class="flex overflow-hidden rounded-[16px] border border-white/10 bg-[#0d0f1f]"
-              style="min-height: 220px"
+              class="flex flex-col"
+              :class="{
+                'border-r border-white/10': idx % 2 === 0,
+                'border-b border-white/10': idx < 2,
+              }"
             >
-              <!-- Text side -->
-              <div class="flex w-[42%] shrink-0 flex-col justify-between p-5">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl"
-                  :class="[accentColor(currentIndex).bg, accentColor(currentIndex).text]">
-                  <i :class="[item.icon, 'text-sm']" aria-hidden="true"></i>
-                </div>
-                <div>
-                  <h4 class="text-base font-black leading-snug text-white">{{ item.title }}</h4>
-                  <p class="mt-1.5 text-xs leading-relaxed text-white/45">{{ item.description }}</p>
-                </div>
-              </div>
-              <!-- Image side -->
-              <div class="flex-1 overflow-hidden bg-[#080a18]">
+              <!-- Image top -->
+              <div class="relative overflow-hidden bg-[#080a18]" style="height: 240px">
                 <img
                   v-if="item.image"
                   :src="item.image"
                   :alt="item.title"
-                  class="h-full w-full object-cover object-left-top"
+                  class="h-full w-full object-cover object-top"
                   loading="lazy"
                 />
+                <!-- Fade to bg at bottom -->
+                <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0a0c1c] to-transparent"></div>
+              </div>
+              <!-- Text bottom -->
+              <div class="flex items-start justify-between gap-4 p-6">
+                <div>
+                  <h4 class="text-xl font-black leading-snug text-white">{{ item.title }}</h4>
+                  <p class="mt-2 text-sm leading-relaxed text-white/50">{{ item.description }}</p>
+                </div>
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl mt-0.5"
+                  :class="[accentColor(currentIndex).bg, accentColor(currentIndex).text]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+                    <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
