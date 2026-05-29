@@ -4,6 +4,8 @@ import Services from '@/Services.vue'
 import ContactUs from '@/components/ContactUs.vue'
 import HomeView from '@/views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
+import BlogView from '@/views/BlogView.vue'
+import BlogPostView from '@/views/BlogPostView.vue'
 import AdminLogin from '@/AdminLogin.vue'
 import AdminPanel from '@/AdminPanel.vue'
 import ProjectDetails from '@/components/ProjectDetails.vue'
@@ -29,6 +31,17 @@ const routes = [
     path: '/services',
     name: 'Services',
     component: Services,
+  },
+  {
+    path: '/blog',
+    name: 'Blog',
+    component: BlogView,
+  },
+  {
+    path: '/blog/:slug',
+    name: 'BlogPost',
+    component: BlogPostView,
+    props: true,
   },
   {
     path: '/contactus',
