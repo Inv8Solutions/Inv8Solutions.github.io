@@ -34,12 +34,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <section aria-labelledby="process-heading" class="bg-[#050505] py-24 text-white">
+  <section aria-labelledby="process-heading" class="bg-[#03040f] py-24 text-white">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
       <!-- Header -->
       <div class="process-header mb-14 text-center">
-        <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-300">
+        <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/100/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-300">
           <span class="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
           Our Process
         </span>
@@ -57,7 +57,7 @@ onMounted(() => {
         <article
           v-for="(step, i) in steps"
           :key="step.number"
-          class="process-card group flex flex-col rounded-[28px] border border-white/5 bg-white/[0.04] p-7 transition hover:bg-white/[0.08] hover:-translate-y-1 hover:border-blue-500/20"
+          class="process-card group flex flex-col rounded-[28px] border border-white/5 bg-[#0d0f1f]/[0.04] p-7 transition hover:bg-[#0d0f1f]/[0.08] hover:-translate-y-1 hover:border-blue-500/20"
           :style="`animation-delay: ${i * 0.1}s`"
         >
           <span class="text-xs font-bold uppercase tracking-widest text-blue-500/80">{{ step.number }}</span>
@@ -68,13 +68,13 @@ onMounted(() => {
       </div>
 
       <!-- Tools -->
-      <div class="tools-row mt-10 rounded-3xl border border-white/5 bg-white/[0.03] px-7 py-6">
+      <div class="tools-row mt-10 rounded-3xl border border-white/5 bg-[#0d0f1f]/[0.03] px-7 py-6">
         <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-white/40">Tools we trust to build with clarity</p>
         <div class="mt-5 flex flex-wrap items-center gap-4">
           <div
             v-for="tool in tools"
             :key="tool.name"
-            class="group/t relative flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-lg text-white/60 transition hover:bg-white/10 hover:scale-110 hover:border-white/20 hover:text-white"
+            class="group/t relative flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-[#0d0f1f]/5 text-lg text-white/60 transition hover:bg-[#0d0f1f]/10 hover:scale-110 hover:border-white/20 hover:text-white"
           >
             <i :class="tool.icon" aria-hidden="true"></i>
             <span class="sr-only">{{ tool.name }}</span>

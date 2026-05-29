@@ -213,28 +213,20 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    class="sticky top-0 z-50 w-full backdrop-blur-md shadow-sm transition-colors duration-300"
-    :class="route.path === '/services' || route.path.startsWith('/blog') ? 'bg-[#03040f]/90 border-b border-white/10' : 'bg-white/80'"
-  >
+  <div class="sticky top-0 z-50 w-full border-b border-white/10 bg-[#03040f]/80 backdrop-blur-xl">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
       <header class="flex items-center justify-between gap-6 py-6">
-        <a href="/" class="text-2xl font-semibold" :class="route.path === '/services' || route.path.startsWith('/blog') ? 'text-white' : 'text-blue-600'">inv8 Studio</a>
+        <a href="/" class="text-xl font-black text-white tracking-tight">inv8 Studio</a>
 
         <!-- Desktop Navigation -->
-        <nav class="hidden items-center gap-8 text-sm font-medium md:flex" :class="route.path === '/services' || route.path.startsWith('/blog') ? 'text-white/70' : 'text-gray-700'">
+        <nav class="hidden items-center gap-8 text-sm font-medium text-white/60 md:flex">
           <a
             v-for="link in navLinks"
             :key="link.name"
             :href="link.path"
             @click.prevent="navigate(link.path)"
-            class="transition-colors duration-200 cursor-pointer"
-            :class="{
-              'text-blue-400': isActive(link.path) && route.path === '/services' || route.path.startsWith('/blog'),
-              'text-blue-600': isActive(link.path) && route.path !== '/services',
-              'hover:text-white': !isActive(link.path) && route.path === '/services' || route.path.startsWith('/blog'),
-              'hover:text-gray-900': !isActive(link.path) && route.path !== '/services',
-            }"
+            class="transition-colors duration-200 cursor-pointer hover:text-white"
+            :class="{ 'text-blue-400 font-semibold': isActive(link.path) }"
           >
             {{ link.name }}
           </a>
@@ -247,17 +239,12 @@ onUnmounted(() => {
             type="button"
             @click="toggleTheme"
             :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
-            class="inline-flex h-9 w-9 items-center justify-center rounded-full border transition duration-200"
-            :class="route.path === '/services' || route.path.startsWith('/blog')
-              ? 'border-white/20 text-white/70 hover:bg-white/10 hover:text-white'
-              : 'border-gray-200 text-gray-500 hover:bg-gray-100 hover:text-gray-900'"
+            class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/50 transition duration-200 hover:border-white/30 hover:bg-white/10 hover:text-white"
           >
-            <!-- Sun icon (shown in dark mode → click to go light) -->
             <svg v-if="isDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4" aria-hidden="true">
               <circle cx="12" cy="12" r="5"/>
               <path stroke-linecap="round" d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
             </svg>
-            <!-- Moon icon (shown in light mode → click to go dark) -->
             <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
             </svg>
@@ -266,8 +253,7 @@ onUnmounted(() => {
           <button
             type="button"
             @click="toggleMenu"
-            class="inline-flex h-9 w-9 items-center justify-center rounded-full border transition md:hidden"
-            :class="route.path === '/services' || route.path.startsWith('/blog') ? 'border-white/20 text-white hover:bg-white/10' : 'border-gray-300 text-gray-700 hover:bg-gray-100'"
+            class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/60 transition hover:bg-white/10 hover:text-white md:hidden"
             :aria-expanded="isMenuOpen"
             :aria-label="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'"
           >
@@ -291,7 +277,7 @@ onUnmounted(() => {
 
           <button
             @click="openProjectModal"
-            class="hidden rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-300/70 transition hover:bg-blue-700 md:inline-flex"
+            class="hidden rounded-full bg-blue-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-900/50 transition hover:bg-blue-500 hover:scale-105 md:inline-flex"
           >
             Start a Project
           </button>
@@ -307,25 +293,25 @@ onUnmounted(() => {
         leave-from-class="opacity-100 translate-y-0"
         leave-to-class="opacity-0 -translate-y-2"
       >
-        <nav v-if="isMenuOpen" class="mb-4 rounded-2xl bg-white p-4 shadow-lg md:hidden">
-          <ul class="space-y-4">
+        <nav v-if="isMenuOpen" class="mb-4 overflow-hidden rounded-2xl border border-white/10 bg-[#0d0f1f] p-4 md:hidden">
+          <ul class="space-y-1">
             <li v-for="link in navLinks" :key="link.name">
               <a
                 :href="link.path"
                 @click="[navigate(link.path), closeMenu()]"
-                class="block rounded-lg px-4 py-3 text-base font-medium transition-colors duration-200"
+                class="block rounded-xl px-4 py-3 text-sm font-medium transition-colors duration-200"
                 :class="{
-                  'bg-blue-50 text-blue-600': isActive(link.path),
-                  'text-gray-700 hover:bg-gray-50': !isActive(link.path),
+                  'bg-blue-500/10 text-blue-400': isActive(link.path),
+                  'text-white/60 hover:bg-white/5 hover:text-white': !isActive(link.path),
                 }"
               >
                 {{ link.name }}
               </a>
             </li>
-            <li>
+            <li class="pt-2">
               <button
                 @click="[openProjectModal(), closeMenu()]"
-                class="w-full rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-300/70 transition hover:bg-blue-700"
+                class="w-full rounded-full bg-blue-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
               >
                 Start a Project
               </button>

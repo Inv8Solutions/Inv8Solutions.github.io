@@ -42,17 +42,17 @@ onMounted(() => {
 
 <template>
   <!-- ── Our Story ─────────────────────────────────────────── -->
-  <section aria-labelledby="story-heading" class="bg-white py-24">
+  <section aria-labelledby="story-heading" class="bg-[#03040f] py-24">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
       <!-- Section label -->
       <div class="story-left mb-14 flex flex-col gap-2">
-        <span class="inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600">
-          <span class="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+        <span class="inline-flex w-fit items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
+          <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
           Our Story
         </span>
-        <h2 id="story-heading" class="text-4xl font-black leading-tight text-gray-900 md:text-5xl">
-          How <span class="text-blue-600">inv8</span> Started
+        <h2 id="story-heading" class="text-4xl font-black leading-tight text-white md:text-5xl">
+          How <span class="text-blue-400">inv8</span> Started
         </h2>
         <div class="h-1 w-10 rounded-full bg-blue-600"></div>
       </div>
@@ -60,13 +60,13 @@ onMounted(() => {
       <div class="flex flex-col gap-12 lg:flex-row lg:items-start">
 
         <!-- Left: Narrative -->
-        <div class="story-left animate-delay-100 flex flex-col gap-4 text-sm leading-relaxed text-gray-500 lg:w-[40%]">
+        <div class="story-left animate-delay-100 flex flex-col gap-4 text-sm leading-relaxed text-white/55 lg:w-[40%]">
           <p>inv8 started with a simple observation.</p>
           <p>Across startups, universities, incubators, innovation programs, and growing businesses, there was no shortage of ideas. What was often missing was the structure, product thinking, and execution needed to turn those ideas into real outcomes.</p>
           <p>We saw founders building without validation, organizations investing in solutions without clear product direction, and innovation programs producing promising concepts that struggled to move beyond the prototype stage.</p>
           <p>In Q4 2025, we began working with founders, ecosystem builders, and organizations to help bridge this gap.</p>
           <p>By 2026, inv8 became a registered product design and development studio focused on helping startups and MSMEs move from ideas to market-ready solutions through strategy, design, and engineering.</p>
-          <p class="font-medium text-gray-700">Today, we work as a trusted innovation partner — helping organizations reduce uncertainty, accelerate execution, and build products that create real impact.</p>
+          <p class="font-medium text-white/80">Today, we work as a trusted innovation partner — helping organizations reduce uncertainty, accelerate execution, and build products that create real impact.</p>
         </div>
 
         <!-- Right: Image + Timeline -->
@@ -95,15 +95,15 @@ onMounted(() => {
               :style="`animation-delay: ${i * 0.1}s`"
             >
               <div class="flex flex-col items-center">
-                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-blue-600 bg-white text-blue-600 shadow-sm">
+                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-blue-600 bg-white text-blue-400 shadow-sm">
                   <i :class="[item.icon, 'text-[10px]']" aria-hidden="true"></i>
                 </div>
                 <div v-if="i < timeline.length - 1" class="mt-1 w-px flex-1 bg-gradient-to-b from-blue-200 to-transparent"></div>
               </div>
               <div class="pb-7">
-                <p class="text-[11px] font-bold uppercase tracking-wider text-blue-600">{{ item.period }}</p>
-                <p class="mt-0.5 text-sm font-bold text-gray-900">{{ item.title }}</p>
-                <p class="mt-1 text-xs leading-relaxed text-gray-500">{{ item.description }}</p>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-blue-400">{{ item.period }}</p>
+                <p class="mt-0.5 text-sm font-bold text-white">{{ item.title }}</p>
+                <p class="mt-1 text-xs leading-relaxed text-white/55">{{ item.description }}</p>
               </div>
             </div>
           </div>
@@ -114,7 +114,7 @@ onMounted(() => {
   </section>
 
   <!-- ── Vision & Mission ──────────────────────────────────── -->
-  <section aria-label="Vision and Mission" class="bg-[#0a1628] py-20">
+  <section aria-label="Vision and Mission" class="bg-[#080a18] py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid gap-10 sm:grid-cols-2 sm:gap-6">
 

@@ -39,19 +39,19 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section aria-labelledby="community-heading" class="bg-white py-24">
+  <section aria-labelledby="community-heading" class="bg-[#03040f] py-24">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
       <!-- Header -->
       <div class="community-header mb-14 text-center">
-        <span class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600">
+        <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
           <span class="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
           Our Journey
         </span>
-        <h2 id="community-heading" class="mt-5 text-4xl font-black leading-tight text-gray-900 md:text-5xl">
+        <h2 id="community-heading" class="mt-5 text-4xl font-black leading-tight text-white md:text-5xl">
           Working with builders<br class="hidden sm:block" /> across the community
         </h2>
-        <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-500">
+        <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/55">
           From workshops to community events, these moments show how ideas move forward through collaboration and execution.
         </p>
       </div>
@@ -77,7 +77,7 @@ onMounted(async () => {
           </figure>
         </div>
 
-        <div v-else class="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-gray-200 py-20 text-gray-400">
+        <div v-else class="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-white/10 py-20 text-gray-400">
           <i class="fa-regular fa-images text-4xl" aria-hidden="true"></i>
           <p class="mt-3 text-sm font-semibold">No photos yet</p>
           <p class="mt-1 text-xs">Add photos from Admin Panel → Community Gallery</p>
@@ -85,7 +85,7 @@ onMounted(async () => {
       </div>
 
       <!-- Discord CTA -->
-      <div class="discord-cta overflow-hidden rounded-3xl bg-[#050505]">
+      <div class="discord-cta overflow-hidden rounded-3xl bg-[#03040f]">
         <div class="flex flex-col gap-10 p-10 md:flex-row md:items-start md:p-14">
 
           <!-- Left -->
@@ -113,9 +113,9 @@ onMounted(async () => {
             <div
               v-for="feature in communityFeatures"
               :key="feature.title"
-              class="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.04] p-5"
+              class="flex items-start gap-3 rounded-2xl border border-white/5 bg-[#0d0f1f]/[0.04] p-5"
             >
-              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/15 text-blue-400">
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/100/15 text-blue-400">
                 <i :class="[feature.icon, 'text-sm']" aria-hidden="true"></i>
               </div>
               <div>

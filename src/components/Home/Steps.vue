@@ -61,7 +61,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-[#050505] py-24 text-white" aria-labelledby="steps-heading">
+  <section class="bg-[#03040f] py-24 text-white" aria-labelledby="steps-heading">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="steps-header mb-14 text-center">
         <div

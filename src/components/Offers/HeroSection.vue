@@ -40,8 +40,14 @@ onMounted(() => {
     ></div>
     <!-- Blue glow top-right -->
     <div
-      class="pointer-events-none absolute -top-20 right-0 h-[700px] w-[700px] rounded-full opacity-25"
+      class="pointer-events-none absolute -top-20 right-0 h-[700px] w-[700px] rounded-full opacity-20"
       style="background: radial-gradient(circle, #3b82f6 0%, transparent 65%);"
+      aria-hidden="true"
+    ></div>
+    <!-- Blue glow bottom-left -->
+    <div
+      class="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full opacity-10"
+      style="background: radial-gradient(circle, #3b82f6 0%, transparent 70%);"
       aria-hidden="true"
     ></div>
 

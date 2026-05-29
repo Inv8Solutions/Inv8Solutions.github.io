@@ -186,28 +186,28 @@ const handleSubmitBooking = async () => {
 </script>
 
 <template>
-  <footer class="bg-[#f6f7fb] text-gray-900">
+  <footer class="bg-[#03040f] ">
     <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <div
-        class="mt-16 grid gap-8 border-t border-gray-200 pt-10 md:grid-cols-[1.4fr_repeat(3,minmax(0,1fr))]"
+        class="grid gap-8 border-t border-white/10 pt-10 md:grid-cols-[1.4fr_repeat(3,minmax(0,1fr))]"
       >
         <div class="space-y-4 text-left">
-          <h2 class="text-2xl font-semibold text-[#1363ff]">inv8 Studio</h2>
-          <p class="text-sm text-gray-500">Product design and development studio.</p>
+          <h2 class="text-2xl font-semibold text-white">inv8 Studio</h2>
+          <p class="text-sm text-white/45">Product design and development studio.</p>
         </div>
 
         <div>
-          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-white/30">
             Quick Navigation
           </h3>
-          <ul class="mt-4 space-y-2 text-sm text-gray-600">
+          <ul class="mt-4 space-y-2 text-sm text-white/55">
             <li v-for="link in quickLinks" :key="link.name">
               <a
                 :href="link.path"
                 @click.prevent="navigate(link.path)"
-                class="transition hover:text-gray-900 cursor-pointer"
+                class="transition hover: cursor-pointer"
                 :class="{
-                  'text-blue-600 font-medium': isActive(link.path),
+                  'text-blue-400 font-medium': isActive(link.path),
                 }"
               >
                 {{ link.name }}
@@ -217,21 +217,21 @@ const handleSubmitBooking = async () => {
         </div>
 
         <div>
-          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-white/30">
             Services List
           </h3>
-          <ul class="mt-4 space-y-2 text-sm text-gray-600">
+          <ul class="mt-4 space-y-2 text-sm text-white/55">
             <li v-for="service in services" :key="service">{{ service }}</li>
           </ul>
         </div>
 
         <div>
-          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-white/30">
             Get in Touch
           </h3>
-          <a class="mt-4 flex items-center gap-3 text-sm text-gray-700" href="mailto:inv8design@gmail.com">
+          <a class="mt-4 flex items-center gap-3 text-sm text-white/60" href="mailto:inv8design@gmail.com">
             <span
-              class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 text-gray-500"
+              class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/45"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -260,7 +260,7 @@ const handleSubmitBooking = async () => {
       </div>
 
       <div
-        class="mt-12 flex flex-col gap-4 border-t border-gray-200 pt-6 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between"
+        class="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-sm text-white/45 sm:flex-row sm:items-center sm:justify-between"
       >
         <p>© {{ currentYear }} Inv8 Studio. All rights reserved.</p>
         <div class="flex flex-wrap gap-6">
@@ -268,7 +268,7 @@ const handleSubmitBooking = async () => {
             v-for="policy in policies"
             :key="policy.label"
             :href="policy.href"
-            class="transition hover:text-gray-900"
+            class="transition hover:"
           >
             {{ policy.label }}
           </a>
@@ -288,10 +288,10 @@ const handleSubmitBooking = async () => {
       @click.stop
     >
       <div class="flex justify-between items-center mb-6">
-        <h3 class="text-2xl font-semibold text-gray-900">Book a FREE Consultation Call</h3>
+        <h3 class="text-2xl font-semibold ">Book a FREE Consultation Call</h3>
         <button
           @click="closeBookingModal"
-          class="text-gray-400 hover:text-gray-600 transition-colors"
+          class="text-white/30 hover:text-white/55 transition-colors"
         >
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
@@ -325,13 +325,13 @@ const handleSubmitBooking = async () => {
 
         <!-- Email Input -->
         <div class="space-y-2">
-          <label for="email" class="text-sm font-medium text-gray-700">Email Address *</label>
+          <label for="email" class="text-sm font-medium text-white/60">Email Address *</label>
           <input
             id="email"
             v-model="bookingForm.email"
             type="email"
             placeholder="your.email@example.com"
-            class="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+            class="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm  placeholder:text-white/30 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
             :disabled="isSubmitting"
             required
           />
@@ -339,37 +339,37 @@ const handleSubmitBooking = async () => {
 
         <!-- Name Input -->
         <div class="space-y-2">
-          <label for="name" class="text-sm font-medium text-gray-700">Your Name</label>
+          <label for="name" class="text-sm font-medium text-white/60">Your Name</label>
           <input
             id="name"
             v-model="bookingForm.name"
             type="text"
             placeholder="John Doe"
-            class="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+            class="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm  placeholder:text-white/30 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
             :disabled="isSubmitting"
           />
         </div>
 
         <!-- Company Input -->
         <div class="space-y-2">
-          <label for="company" class="text-sm font-medium text-gray-700">Company Name</label>
+          <label for="company" class="text-sm font-medium text-white/60">Company Name</label>
           <input
             id="company"
             v-model="bookingForm.company"
             type="text"
             placeholder="Your Company"
-            class="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+            class="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm  placeholder:text-white/30 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
             :disabled="isSubmitting"
           />
         </div>
 
         <!-- Date Selection -->
         <div class="space-y-2">
-          <label for="date" class="text-sm font-medium text-gray-700">Preferred Date *</label>
+          <label for="date" class="text-sm font-medium text-white/60">Preferred Date *</label>
           <select
             id="date"
             v-model="bookingForm.selectedDate"
-            class="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+            class="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm  placeholder:text-white/30 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
             :disabled="isSubmitting"
             required
           >
@@ -382,7 +382,7 @@ const handleSubmitBooking = async () => {
 
         <!-- Time Selection -->
         <div class="space-y-2">
-          <label for="time" class="text-sm font-medium text-gray-700">Preferred Time *</label>
+          <label for="time" class="text-sm font-medium text-white/60">Preferred Time *</label>
           <div class="grid grid-cols-3 gap-2">
             <button
               v-for="time in timeSlots"
@@ -393,7 +393,7 @@ const handleSubmitBooking = async () => {
               class="rounded-2xl border px-3 py-2 text-sm font-medium transition-colors"
               :class="{
                 'border-blue-500 bg-blue-50 text-blue-700': bookingForm.selectedTime === time,
-                'border-gray-200 text-gray-700 hover:border-gray-300':
+                'border-white/10 text-white/60 hover:border-gray-300':
                   bookingForm.selectedTime !== time,
               }"
             >
@@ -404,7 +404,7 @@ const handleSubmitBooking = async () => {
 
         <!-- Project Details -->
         <div class="space-y-2">
-          <label for="project-details" class="text-sm font-medium text-gray-700"
+          <label for="project-details" class="text-sm font-medium text-white/60"
             >Tell us about your project</label
           >
           <textarea
@@ -412,7 +412,7 @@ const handleSubmitBooking = async () => {
             v-model="bookingForm.projectDetails"
             rows="3"
             placeholder="Brief description of what you'd like to discuss..."
-            class="w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+            class="w-full rounded-2xl border border-white/10 px-4 py-3 text-sm  placeholder:text-white/30 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
             :disabled="isSubmitting"
           ></textarea>
         </div>
@@ -422,7 +422,7 @@ const handleSubmitBooking = async () => {
           <button
             type="button"
             @click="closeBookingModal"
-            class="flex-1 rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
+            class="flex-1 rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-white/60 transition hover:bg-gray-50"
             :disabled="isSubmitting"
           >
             Cancel

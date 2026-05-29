@@ -27,14 +27,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-white py-16">
+  <section class="bg-[#03040f] py-14 border-t border-white/5">
     <div class="mx-auto w-full max-w-8xl px-4">
       <div class="text-center">
-        <h2 class="text-xs font-semibold uppercase tracking-[0.35em] text-gray-400">
+        <h2 class="text-xs font-semibold uppercase tracking-[0.35em] text-white/30">
           Companies we&apos;ve worked with
         </h2>
         <div
-          class="mx-auto mt-4 h-px w-32 bg-gradient-to-r from-transparent via-gray-300 to-transparent"
+          class="mx-auto mt-4 h-px w-32 bg-gradient-to-r from-transparent via-white/20 to-transparent"
         />
       </div>
 
@@ -50,7 +50,7 @@ onMounted(() => {
           <img
             :src="company.image"
             :alt="`${company.name} logo`"
-            class="h-8 w-auto object-contain opacity-60 transition-smooth hover:opacity-100 hover:scale-110"
+            class="h-8 w-auto object-contain opacity-30 brightness-0 invert transition hover:opacity-70 hover:scale-110"
             loading="lazy"
             decoding="async"
           />

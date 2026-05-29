@@ -93,27 +93,28 @@ defineExpose({
 </script>
 
 <template>
-  <section class="bg-[#f5f5f5] px-4 py-16 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-7xl">
-      <div
-        class="hero-content rounded-[32px] bg-white px-6 py-12 text-center shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:px-12"
-      >
-        <div
-          class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1 text-sm font-medium text-blue-700 animate-pulse"
-        >
-          <span class="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
+  <section class="relative overflow-hidden bg-[#03040f] px-4 py-16 sm:px-6 lg:px-8">
+    <!-- Blue glow -->
+    <div class="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full opacity-15" style="background: radial-gradient(circle, #3b82f6 0%, transparent 65%);" aria-hidden="true"></div>
+    <!-- Grid -->
+    <div class="pointer-events-none absolute inset-0" style="background-image: linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px); background-size: 60px 60px;" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-7xl">
+      <div class="hero-content overflow-hidden rounded-[32px] border border-white/10 bg-[#0d0f1f] px-6 py-12 text-center sm:px-12">
+        <div class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
+          <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
           Our Portfolio
         </div>
 
-        <h1 class="mb-4 text-4xl font-semibold leading-tight text-gray-900 sm:text-5xl">
+        <h1 class="mb-4 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl">
           Work designed to solve real problems
         </h1>
-        <p class="mx-auto mb-8 max-w-3xl text-lg text-gray-500">
-          A collection of digital products, systems, and IoT solutions we've built for founders and
+        <p class="mx-auto mb-8 max-w-3xl text-base text-white/50">
+          A collection of digital products, systems, and solutions we've built for founders and
           businesses — crafted with clarity, purpose, and disciplined execution.
         </p>
 
-        <div class="mb-8 h-px w-full bg-gray-100"></div>
+        <div class="mb-8 h-px w-full bg-white/10"></div>
 
         <!-- Error State -->
         <div v-if="error" class="mb-6 rounded-lg bg-yellow-50 border border-yellow-200 p-4">
@@ -142,10 +143,10 @@ defineExpose({
             :key="category"
             @click="selectCategory(category)"
             :disabled="isLoading"
-            class="category-button rounded-full border px-5 py-2 text-sm font-semibold transition-smooth disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105"
+            class="category-button rounded-full border px-5 py-2 text-sm font-semibold transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             :class="{
-              'border-blue-500 bg-blue-500 text-white shadow-md': selectedCategory === category,
-              'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300 hover:bg-white hover:text-gray-900':
+              'border-blue-500 bg-blue-600 text-white': selectedCategory === category,
+              'border-white/15 bg-white/5 text-white/60 hover:border-white/30 hover:text-white':
                 selectedCategory !== category,
             }"
           >
