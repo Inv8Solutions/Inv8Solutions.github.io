@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="relative overflow-hidden bg-[#03040f] px-4 pt-24 pb-0 sm:px-6 lg:px-8">
+  <section class="relative min-h-screen overflow-hidden bg-[#03040f] px-4 sm:px-6 lg:px-8">
     <!-- Subtle grid -->
     <div
       class="pointer-events-none absolute inset-0"
@@ -40,28 +40,28 @@ onMounted(() => {
     ></div>
     <!-- Blue glow top-right -->
     <div
-      class="pointer-events-none absolute -top-32 right-0 h-[600px] w-[600px] rounded-full opacity-20"
-      style="background: radial-gradient(circle, #3b82f6 0%, transparent 70%);"
+      class="pointer-events-none absolute -top-20 right-0 h-[700px] w-[700px] rounded-full opacity-25"
+      style="background: radial-gradient(circle, #3b82f6 0%, transparent 65%);"
       aria-hidden="true"
     ></div>
 
-    <div class="relative mx-auto max-w-7xl">
-      <div class="flex flex-col items-center gap-16 lg:flex-row lg:items-end">
+    <div class="relative mx-auto flex min-h-screen max-w-7xl items-center">
+      <div class="flex w-full flex-col gap-12 py-24 lg:flex-row lg:items-center lg:gap-0">
 
-        <!-- Left: text -->
-        <div class="offers-hero-left flex-1 pb-24">
-          <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
+        <!-- Left: text — takes ~55% -->
+        <div class="offers-hero-left lg:w-[55%] lg:pr-12">
+          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
             <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
             Our Services
           </div>
 
-          <h1 class="text-5xl font-black leading-[1.08] tracking-tight text-white md:text-6xl lg:text-7xl">
+          <h1 class="text-5xl font-black leading-[1.06] tracking-tight text-white sm:text-6xl xl:text-7xl">
             Solutions built for<br />
             founders and<br />
             <span class="text-blue-500">growing businesses.</span>
           </h1>
 
-          <p class="mt-6 max-w-lg text-lg leading-relaxed text-white/55">
+          <p class="mt-6 max-w-md text-base leading-relaxed text-white/55 sm:text-lg">
             From validating ideas to building products and modernizing operations, inv8 helps startups and MSMEs move from uncertainty to execution.
           </p>
 
@@ -83,7 +83,7 @@ onMounted(() => {
           </div>
 
           <!-- Service filter pills -->
-          <div class="mt-14 border-t border-white/10 pt-8">
+          <div class="mt-12 border-t border-white/10 pt-8">
             <p class="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">Browse by service</p>
             <div class="flex flex-wrap gap-2">
               <button
@@ -104,16 +104,14 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Right: hero mockup -->
-        <div class="offers-hero-right relative hidden lg:block lg:w-[580px] lg:shrink-0">
+        <!-- Right: hero mockup — takes ~45% -->
+        <div class="offers-hero-right relative hidden lg:block lg:w-[45%]">
           <img
             :src="imgMockup"
             alt="inv8 product dashboard and mobile app mockup"
-            class="w-full object-contain drop-shadow-2xl"
+            class="w-full object-contain drop-shadow-[0_40px_80px_rgba(59,130,246,0.15)]"
             loading="eager"
           />
-          <!-- fade bottom into dark background -->
-          <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#03040f] to-transparent"></div>
         </div>
 
       </div>
