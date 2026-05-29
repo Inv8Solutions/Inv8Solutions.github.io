@@ -74,40 +74,36 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-gray-50 px-4 py-24 text-gray-900">
+  <section class="bg-[#03040f] px-4 py-24">
     <div class="mx-auto flex max-w-7xl flex-col gap-12 p-4 lg:flex-row lg:items-center lg:gap-16">
       <div class="faq-section-header flex-1 space-y-6">
-        <span
-          class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600"
-        >
-          <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+        <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
+          <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400"></span>
           FAQ
         </span>
         <div class="space-y-2 mt-4">
-          <h2 class="text-4xl font-black leading-tight tracking-tight text-gray-900 sm:text-5xl">Have questions?</h2>
-          <p class="text-4xl font-black leading-tight text-gray-400 sm:text-5xl">We've got answers.</p>
+          <h2 class="text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl">Have questions?</h2>
+          <p class="text-4xl font-black leading-tight text-white/30 sm:text-5xl">We've got answers.</p>
         </div>
       </div>
 
-      <div class="flex-1 rounded-[40px] bg-blue-50/50 p-6 sm:p-8">
-        <ul class="divide-y divide-gray-200">
+      <div class="flex-1 rounded-[40px] border border-white/10 bg-[#0d0f1f] p-6 sm:p-8">
+        <ul class="divide-y divide-white/10">
           <li v-for="(faq, index) in faqs" :key="faq.question" class="faq-item py-4 first:pt-0 last:pb-0" :style="`animation-delay: ${index * 0.05}s`">
             <button
-              class="flex w-full items-start justify-between gap-6 text-left transition-smooth hover:opacity-75"
+              class="flex w-full items-start justify-between gap-6 text-left transition hover:opacity-80"
               type="button"
               @click="toggleFAQ(index)"
             >
               <div class="space-y-2">
-                <h4 class="text-base font-semibold text-gray-900 sm:text-lg">
+                <h4 class="text-base font-semibold text-white sm:text-lg">
                   {{ faq.question }}
                 </h4>
-                <p v-if="openIndex === index" class="text-sm text-gray-500 sm:text-base">
+                <p v-if="openIndex === index" class="text-sm leading-relaxed text-white/55 sm:text-base">
                   {{ faq.answer }}
                 </p>
               </div>
-              <span
-                class="ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-lg font-light text-gray-900"
-              >
+              <span class="ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/20 text-lg font-light text-white/60">
                 {{ openIndex === index ? '−' : '+' }}
               </span>
             </button>

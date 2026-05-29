@@ -90,7 +90,7 @@ defineExpose({
 </script>
 
 <template>
-  <section class="w-full px-4 py-10 sm:px-6 lg:px-8">
+  <section class="w-full bg-[#03040f] px-4 py-10 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
       <!-- Loading State -->
       <div v-if="isLoading" class="grid gap-5 md:grid-cols-2">
@@ -128,7 +128,7 @@ defineExpose({
       <!-- Empty State -->
       <div v-else-if="projects.length === 0" class="text-center py-16">
         <svg
-          class="mx-auto h-16 w-16 text-gray-300"
+          class="mx-auto h-16 w-16 text-white/20"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -140,8 +140,8 @@ defineExpose({
             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
           />
         </svg>
-        <h3 class="mt-4 text-lg font-medium text-gray-900">No projects found</h3>
-        <p class="mt-2 text-sm text-gray-500">
+        <h3 class="mt-4 text-lg font-medium text-white">No projects found</h3>
+        <p class="mt-2 text-sm text-white/50">
           There are currently no projects in the sampleworks collection.
         </p>
         <div class="mt-6">
