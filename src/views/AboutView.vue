@@ -5,6 +5,7 @@ import AboutWhyExists from '@/components/About/AboutWhyExists.vue'
 import AboutProblems from '@/components/About/AboutProblems.vue'
 import AboutProcess from '@/components/About/AboutProcess.vue'
 import AboutCommunity from '@/components/About/AboutCommunity.vue'
+import WorkWithUs from '@/components/Home/WorkWithUs.vue'
 
 const originalTitle = document.title
 const originalDesc = document.querySelector('meta[name="description"]')?.getAttribute('content') ?? ''
@@ -54,5 +55,6 @@ onUnmounted(() => {
     <AboutProblems />
     <AboutProcess />
     <AboutCommunity />
+    <WorkWithUs />
   </main>
 </template>

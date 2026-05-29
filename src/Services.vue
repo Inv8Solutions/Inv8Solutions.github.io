@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import HeroSection from '@/components/Offers/HeroSection.vue'
 import OffersBody from '@/components/Offers/Body.vue'
 import SampleWorks from '@/components/Offers/SampleWorks.vue'
+import WorkWithUs from '@/components/Home/WorkWithUs.vue'
 import { DEFAULT_SERVICE_ID } from '@/data/offers'
 
 defineOptions({
@@ -17,6 +18,7 @@ const selectedServiceId = ref(DEFAULT_SERVICE_ID)
     <hero-section v-model:selected-service-id="selectedServiceId" />
     <offers-body :selected-service-id="selectedServiceId" />
     <sample-works :service-id="selectedServiceId" />
+    <work-with-us />
   </div>
 </template>
 
