@@ -19,7 +19,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 py-24">
+  <section class="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 py-16">
     <!-- Subtle radial glow -->
     <div
       class="pointer-events-none absolute inset-0"

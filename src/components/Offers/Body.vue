@@ -208,11 +208,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <section id="services-body" class="bg-[#03040f] px-4 py-24 sm:px-6 lg:px-8">
+  <section id="services-body" class="bg-[#03040f] px-4 py-12 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
 
       <!-- Section header -->
-      <div class="offer-details-section mb-16 text-center">
+      <div class="offer-details-section mb-10 text-center">
         <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Our Services</p>
         <h2 class="mt-4 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl">
           End-to-end solutions<br />for every stage of <span class="text-blue-500">innovation.</span>
@@ -298,7 +298,7 @@ onMounted(() => {
       </div>
 
       <!-- Selected service detail -->
-      <div class="mt-20 rounded-[32px] border border-white/10 bg-[#0d0f1f] p-8 sm:p-12">
+      <div class="mt-10 rounded-[32px] border border-white/10 bg-[#0d0f1f] p-6 sm:p-10">
         <div class="grid gap-12 lg:grid-cols-[1fr_340px]">
           <div>
             <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-400">
