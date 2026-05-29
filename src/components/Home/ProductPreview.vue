@@ -232,7 +232,7 @@ defineExpose({
             <button
               type="button"
               @click.stop="handleProjectView(project)"
-              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-white shadow-lg transition duration-300 group-hover:scale-110"
+              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-gray-900 shadow-lg transition duration-300 group-hover:scale-110"
               aria-label="View project"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 -rotate-45">
