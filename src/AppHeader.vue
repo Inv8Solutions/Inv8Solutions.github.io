@@ -213,7 +213,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="sticky top-0 z-50 w-full border-b border-white/[0.08] backdrop-blur-2xl" style="background: rgba(3,4,15,0.75); box-shadow: 0 1px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);">
+  <div class="sticky top-0 z-50 w-full border-b border-white/[0.07] bg-[#07090f]">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
       <header class="flex items-center justify-between gap-6 py-6">
         <a href="/" class="text-xl font-black text-white tracking-tight">inv8 Studio</a>
