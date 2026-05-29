@@ -236,8 +236,13 @@ onMounted(() => {
       v-for="(offer, index) in offerDetails"
       :key="offer.id"
       :id="`service-${offer.id}`"
-      class="service-section border-t border-white/10 px-4 py-16 sm:px-6 lg:px-8"
+      class="service-section px-4 pt-20 pb-24 sm:px-6 lg:px-8"
     >
+      <!-- Section divider (skip first) -->
+      <div v-if="index > 0" class="mx-auto max-w-7xl mb-0">
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent"></div>
+      </div>
+
       <div class="mx-auto max-w-7xl">
 
         <!-- Hero: icon + headline + image -->
