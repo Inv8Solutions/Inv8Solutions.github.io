@@ -312,8 +312,8 @@ onMounted(() => {
                 <p class="mt-1 text-xs leading-relaxed text-white/50">{{ item.description }}</p>
               </div>
             </div>
-            <div v-if="item.image" class="mx-4 mb-4 overflow-hidden rounded-xl bg-[#080a18]">
-              <img :src="item.image" :alt="item.title" class="w-full object-cover" loading="lazy" />
+            <div v-if="item.image" class="mx-4 mb-4 h-36 overflow-hidden rounded-xl bg-[#080a18]">
+              <img :src="item.image" :alt="item.title" class="h-full w-full object-cover" loading="lazy" />
             </div>
           </div>
         </div>
@@ -342,8 +342,8 @@ onMounted(() => {
         <h3 class="mb-8 text-center text-2xl font-black text-white">Example Solutions We've Built</h3>
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <div v-for="example in currentOffer.examples" :key="example.title" class="group cursor-pointer" @click="viewProjects">
-            <div class="overflow-hidden rounded-2xl bg-[#0d0f1f]">
-              <img :src="example.image" :alt="example.title" class="w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+            <div class="h-44 overflow-hidden rounded-2xl bg-[#0d0f1f]">
+              <img :src="example.image" :alt="example.title" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
             </div>
             <h4 class="mt-3 text-sm font-bold text-white">{{ example.title }}</h4>
             <p class="mt-1 text-xs leading-relaxed text-white/50">{{ example.description }}</p>

@@ -8,12 +8,6 @@ import artistHubImg from '@/assets/ArtistHub.png'
 import bentoBasketImg from '@/assets/BentoBasket.png'
 import forensicLensImg from '@/assets/ForensicLens.png'
 import trapiHausImg from '@/assets/TrapiHaus.png'
-import intro1 from '@/assets/introImage1.png'
-import intro2 from '@/assets/introImage2.png'
-import intro3 from '@/assets/introImage3.png'
-import intro4 from '@/assets/introImage4.png'
-import intro5 from '@/assets/introImage5.png'
-import intro6 from '@/assets/introImage6.png'
 
 export type Capability = {
   title: string
@@ -81,10 +75,10 @@ export const offerDetails: OfferDetail[] = [
       { title: 'Ongoing Support', description: 'We help deploy, monitor, and iterate through the first user feedback cycles.' },
     ],
     whatWeBuild: [
-      { icon: 'fa-solid fa-rocket', title: 'Startup MVPs', description: 'Launch your idea without spending months or building unnecessary features.', image: intro1 },
-      { icon: 'fa-solid fa-users', title: 'Customer Portals', description: 'Give customers a better way to interact with your business online.', image: intro2 },
-      { icon: 'fa-solid fa-briefcase', title: 'Internal Business Systems', description: 'Replace spreadsheets and manual processes with tools designed around your workflow.', image: intro3 },
-      { icon: 'fa-solid fa-mobile-screen', title: 'Web & Mobile Apps', description: 'Create digital experiences customers can access anywhere.', image: intro4 },
+      { icon: 'fa-solid fa-rocket', title: 'Startup MVPs', description: 'Launch your idea without spending months or building unnecessary features.', image: retasifyImg },
+      { icon: 'fa-solid fa-users', title: 'Customer Portals', description: 'Give customers a better way to interact with your business online.', image: acornImg },
+      { icon: 'fa-solid fa-briefcase', title: 'Internal Business Systems', description: 'Replace spreadsheets and manual processes with tools designed around your workflow.', image: forensicLensImg },
+      { icon: 'fa-solid fa-mobile-screen', title: 'Web & Mobile Apps', description: 'Create digital experiences customers can access anywhere.', image: bentoBasketImg },
     ],
     benefits: [
       { icon: 'fa-solid fa-rocket', iconColor: 'text-green-400 bg-green-400/15', title: 'Launch Faster', description: 'Turn ideas into working products in weeks, not months.' },
@@ -123,10 +117,10 @@ export const offerDetails: OfferDetail[] = [
       { title: 'Usability Testing & Refinement', description: 'We validate designs with real users and refine them for clarity and performance.' },
     ],
     whatWeBuild: [
-      { icon: 'fa-solid fa-mobile-screen', title: 'Mobile App Designs', description: 'Native-feeling mobile experiences that users actually want to open every day.', image: intro3 },
-      { icon: 'fa-solid fa-desktop', title: 'Web App & Dashboard UI', description: 'Clean, data-rich interfaces that make complex systems easy to understand.', image: intro4 },
-      { icon: 'fa-solid fa-swatchbook', title: 'Design Systems', description: 'Scalable component libraries that keep your product consistent as it grows.', image: intro5 },
-      { icon: 'fa-solid fa-object-group', title: 'Prototypes & Concepts', description: 'Clickable prototypes to validate ideas before a single line of code is written.', image: intro6 },
+      { icon: 'fa-solid fa-mobile-screen', title: 'Mobile App Designs', description: 'Native-feeling mobile experiences that users actually want to open every day.', image: forensicLensImg },
+      { icon: 'fa-solid fa-desktop', title: 'Web App & Dashboard UI', description: 'Clean, data-rich interfaces that make complex systems easy to understand.', image: retasifyImg },
+      { icon: 'fa-solid fa-swatchbook', title: 'Design Systems', description: 'Scalable component libraries that keep your product consistent as it grows.', image: artistHubImg },
+      { icon: 'fa-solid fa-object-group', title: 'Prototypes & Concepts', description: 'Clickable prototypes to validate ideas before a single line of code is written.', image: trapiHausImg },
     ],
     benefits: [
       { icon: 'fa-solid fa-users', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Higher Adoption', description: 'Intuitive designs reduce friction and increase product engagement.' },
@@ -165,10 +159,10 @@ export const offerDetails: OfferDetail[] = [
       { title: 'Performance Measurement', description: 'We implement dashboards and KPIs to track impact post-launch.' },
     ],
     whatWeBuild: [
-      { icon: 'fa-solid fa-gears', title: 'Workflow Automation', description: 'Replace manual, error-prone tasks with automated systems that run 24/7.', image: intro1 },
-      { icon: 'fa-solid fa-chart-pie', title: 'Business Dashboards', description: 'Real-time visibility into operations, sales, and performance metrics.', image: intro2 },
-      { icon: 'fa-solid fa-plug', title: 'System Integrations', description: 'Connect your CRM, ERP, and tools so your data flows where it needs to go.', image: intro5 },
-      { icon: 'fa-solid fa-toolbox', title: 'Internal Tools', description: 'Custom-built tools designed around how your team actually works.', image: intro6 },
+      { icon: 'fa-solid fa-gears', title: 'Workflow Automation', description: 'Replace manual, error-prone tasks with automated systems that run 24/7.', image: acornImg },
+      { icon: 'fa-solid fa-chart-pie', title: 'Business Dashboards', description: 'Real-time visibility into operations, sales, and performance metrics.', image: retasifyImg },
+      { icon: 'fa-solid fa-plug', title: 'System Integrations', description: 'Connect your CRM, ERP, and tools so your data flows where it needs to go.', image: bentoBasketImg },
+      { icon: 'fa-solid fa-toolbox', title: 'Internal Tools', description: 'Custom-built tools designed around how your team actually works.', image: artistHubImg },
     ],
     benefits: [
       { icon: 'fa-solid fa-clock', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Save Time', description: 'Eliminate repetitive manual work so your team focuses on what matters.' },
@@ -208,10 +202,10 @@ export const offerDetails: OfferDetail[] = [
       { title: 'Investor Readiness', description: 'We help founders pressure-test their strategy and present it with confidence.' },
     ],
     whatWeBuild: [
-      { icon: 'fa-solid fa-map', title: 'Product Roadmaps', description: 'A prioritized plan that shows what to build, when, and why — with full stakeholder alignment.', image: intro5 },
-      { icon: 'fa-solid fa-magnifying-glass-chart', title: 'Market Research', description: 'Deep-dive into your market to understand competitors, trends, and real opportunities.', image: intro6 },
-      { icon: 'fa-solid fa-rectangle-list', title: 'Pitch Decks & Narratives', description: 'Investor-ready decks that communicate your vision clearly and compellingly.', image: intro1 },
-      { icon: 'fa-solid fa-bullseye', title: 'Go-to-Market Strategy', description: 'A clear launch plan covering channels, positioning, and early customer acquisition.', image: intro2 },
+      { icon: 'fa-solid fa-map', title: 'Product Roadmaps', description: 'A prioritized plan that shows what to build, when, and why — with full stakeholder alignment.', image: trapiHausImg },
+      { icon: 'fa-solid fa-magnifying-glass-chart', title: 'Market Research', description: 'Deep-dive into your market to understand competitors, trends, and real opportunities.', image: acornImg },
+      { icon: 'fa-solid fa-rectangle-list', title: 'Pitch Decks & Narratives', description: 'Investor-ready decks that communicate your vision clearly and compellingly.', image: forensicLensImg },
+      { icon: 'fa-solid fa-bullseye', title: 'Go-to-Market Strategy', description: 'A clear launch plan covering channels, positioning, and early customer acquisition.', image: artistHubImg },
     ],
     benefits: [
       { icon: 'fa-solid fa-compass', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Clarity Before Code', description: 'Define what to build before spending on development.' },
