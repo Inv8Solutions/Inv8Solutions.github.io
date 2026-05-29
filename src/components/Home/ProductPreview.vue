@@ -216,22 +216,30 @@ defineExpose({
           <!-- Gradient overlay -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
-          <!-- Top: service tag -->
+          <!-- Top: service category tags -->
           <div class="absolute left-4 top-4 flex flex-wrap gap-1.5">
             <span
               v-if="project.service"
-              class="inline-flex items-center rounded-full border border-white/20 bg-black/40 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm"
+              class="inline-flex items-center rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-md"
             >
               {{ project.service }}
             </span>
           </div>
 
-          <!-- Bottom: title + 1-liner -->
-          <div class="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-6">
-            <h3 class="text-3xl font-black leading-none text-white">{{ project.title }}</h3>
-            <p v-if="project.shortDesc" class="max-w-[42%] shrink-0 text-right text-xs leading-relaxed text-white/70">
-              {{ project.shortDesc }}
-            </p>
+          <!-- Bottom: title + circle arrow -->
+          <div class="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-5">
+            <h3 class="text-2xl font-black leading-snug text-white">{{ project.title }}</h3>
+            <button
+              type="button"
+              @click.stop="handleProjectView(project)"
+              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-gray-900 shadow-lg transition duration-300 group-hover:scale-110"
+              aria-label="View project"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 -rotate-45">
+                <path d="M5 12h14" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
           </div>
         </article>
       </div>
