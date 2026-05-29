@@ -183,32 +183,34 @@ const handleSubmit = async () => {
             <div
               v-for="(item, idx) in currentOffer.whatWeBuild"
               :key="item.title"
-              class="flex flex-col"
+              class="group flex flex-col cursor-default"
               :class="{
                 'border-r border-white/10': idx % 2 === 0,
                 'border-b border-white/10': idx < 2,
               }"
             >
-              <!-- Image top -->
-              <div class="relative overflow-hidden bg-[#080a18]" style="height: 240px">
+              <!-- Image: hidden by default (h-0), expands on hover -->
+              <div class="relative overflow-hidden bg-[#080a18] transition-[height] duration-500 ease-in-out h-0 group-hover:h-56">
                 <img
                   v-if="item.image"
                   :src="item.image"
                   :alt="item.title"
-                  class="h-full w-full object-cover object-top"
+                  class="h-56 w-full object-cover object-top"
                   loading="lazy"
                 />
-                <!-- Fade to bg at bottom -->
-                <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0a0c1c] to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0a0c1c] to-transparent"></div>
               </div>
-              <!-- Text bottom -->
-              <div class="flex items-start justify-between gap-4 p-6">
+
+              <!-- Text: always visible -->
+              <div class="flex min-h-[160px] items-start justify-between gap-4 p-6">
                 <div>
                   <h4 class="text-xl font-black leading-snug text-white">{{ item.title }}</h4>
                   <p class="mt-2 text-sm leading-relaxed text-white/50">{{ item.description }}</p>
                 </div>
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl mt-0.5"
-                  :class="[accentColor(currentIndex).bg, accentColor(currentIndex).text]">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition duration-300 mt-0.5 opacity-0 group-hover:opacity-100"
+                  :class="[accentColor(currentIndex).bg, accentColor(currentIndex).text]"
+                >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
                     <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
