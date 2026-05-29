@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { offerDetails, DEFAULT_SERVICE_ID, type OfferDetail, type WhatWeBuild, type Benefit, type Example } from '@/data/offers'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
@@ -11,15 +11,29 @@ defineOptions({
   name: 'OffersBody',
 })
 const props = defineProps<{ selectedServiceId?: string }>()
+const emit = defineEmits<{ (e: 'update:selectedServiceId', id: string): void }>()
 
 const router = useRouter()
 const { observeElements } = useScrollAnimation()
 
-const currentOffer = computed<OfferDetail>(() => {
-  const resolvedId = props.selectedServiceId ?? DEFAULT_SERVICE_ID
-  const fallbackOffer = offerDetails[0]!
-  return offerDetails.find((offer) => offer.id === resolvedId) ?? fallbackOffer
+const localSelectedId = ref(props.selectedServiceId ?? DEFAULT_SERVICE_ID)
+
+watch(() => props.selectedServiceId, (val) => {
+  if (val) localSelectedId.value = val
 })
+
+const currentOffer = computed<OfferDetail>(() => {
+  const fallbackOffer = offerDetails[0]!
+  return offerDetails.find((offer) => offer.id === localSelectedId.value) ?? fallbackOffer
+})
+
+const selectService = (id: string) => {
+  localSelectedId.value = id
+  emit('update:selectedServiceId', id)
+  setTimeout(() => {
+    document.querySelector('#service-detail')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, 50)
+}
 
 // Modal state
 const isProjectModalOpen = ref(false)
@@ -226,7 +240,8 @@ onMounted(() => {
         <article
           v-for="(offer, index) in offerDetails"
           :key="offer.id"
-          class="offer-deliverable-item group flex flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#0d0f1f] transition duration-300 hover:border-white/20 hover:bg-[#111327] cursor-pointer"
+          :class="offer.id === localSelectedId ? 'ring-2 ring-blue-500 border-blue-500/50' : 'border-white/10 hover:border-white/20 hover:bg-[#111327]'"
+          class="offer-deliverable-item group flex flex-col overflow-hidden rounded-[24px] border bg-[#0d0f1f] transition duration-300 cursor-pointer"
           :style="`animation-delay: ${index * 0.08}s`"
           @click="selectService(offer.id)"
         >
@@ -262,7 +277,7 @@ onMounted(() => {
   </section>
 
   <!-- Service Detail Page -->
-  <section class="bg-[#03040f] px-4 pb-0 sm:px-6 lg:px-8">
+  <section id="service-detail" class="bg-[#03040f] px-4 pb-0 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
 
       <!-- Hero: icon + headline + image -->
