@@ -46,7 +46,7 @@ onMounted(() => {
     ></div>
 
     <div class="relative mx-auto flex min-h-screen max-w-7xl items-center">
-      <div class="flex w-full flex-col gap-12 py-24 lg:flex-row lg:items-center lg:gap-0">
+      <div class="flex w-full flex-col gap-12 py-16 lg:flex-row lg:items-center lg:gap-0">
 
         <!-- Left: text — takes ~55% -->
         <div class="offers-hero-left lg:w-[55%] lg:pr-12">
@@ -82,26 +82,6 @@ onMounted(() => {
             </button>
           </div>
 
-          <!-- Service filter pills -->
-          <div class="mt-12 border-t border-white/10 pt-8">
-            <p class="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">Browse by service</p>
-            <div class="flex flex-wrap gap-2">
-              <button
-                v-for="offer in offerDetails"
-                :key="offer.id"
-                type="button"
-                class="rounded-full border px-4 py-1.5 text-xs font-semibold transition-smooth hover:scale-105"
-                :class="[
-                  selectedId === offer.id
-                    ? 'border-blue-500 bg-blue-600 text-white shadow-md shadow-blue-900/40'
-                    : 'border-white/15 bg-white/5 text-white/60 hover:border-white/30 hover:text-white',
-                ]"
-                @click="selectService(offer.id)"
-              >
-                {{ offer.label }}
-              </button>
-            </div>
-          </div>
         </div>
 
         <!-- Right: hero mockup — takes ~45% -->
