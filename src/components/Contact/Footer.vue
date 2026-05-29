@@ -15,29 +15,29 @@ defineOptions({
 </script>
 
 <template>
-  <footer class="border-t border-gray-200 bg-white px-4 py-16 text-gray-600 sm:px-6 lg:px-8">
+  <footer class="border-t border-white/10 bg-[#03040f] px-4 py-16  sm:px-6 lg:px-8">
     <div class="mx-auto w-full max-w-7xl">
       <div
         class="grid gap-10 pb-10 md:grid-cols-[1.2fr_repeat(3,minmax(0,1fr))] md:gap-12 lg:pb-14"
       >
         <div class="space-y-3">
-          <h2 class="text-2xl font-semibold text-[#1363ff]">inv8 Studio</h2>
-          <p class="text-sm text-gray-500">Product design and development studio.</p>
+          <h2 class="text-xl font-black text-white">inv8 Studio</h2>
+          <p class="text-sm text-white/45">Product design and development studio.</p>
         </div>
 
         <div class="space-y-4">
-          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-white/30">
             Quick Navigation
           </h3>
           <ul class="space-y-2 text-sm">
             <li v-for="link in quickLinks" :key="link">
-              <a href="#" class="transition hover:text-gray-900">{{ link }}</a>
+              <a href="#" class="transition hover:text-white">{{ link }}</a>
             </li>
           </ul>
         </div>
 
         <div class="space-y-4">
-          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-white/30">
             Services List
           </h3>
           <ul class="space-y-2 text-sm">
@@ -48,21 +48,21 @@ defineOptions({
         </div>
 
         <div class="space-y-4">
-          <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+          <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-white/30">
             Get in Touch
           </h3>
           <a
-            href="mailto:hello@inv8.io"
-            class="inline-flex items-center gap-2 text-sm font-medium text-gray-900 transition hover:text-[#1363ff]"
+            href="mailto:inv8design@gmail.com"
+            class="inline-flex items-center gap-2 text-sm font-medium text-gray-900 transition hover:text-white"
           >
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="h-4 w-4 text-gray-500"
+                class="h-4 w-4 text-white/45"
                 aria-hidden="true"
               >
                 <path
@@ -72,18 +72,18 @@ defineOptions({
                 />
               </svg>
             </span>
-            hello@inv8.io
+            inv8design@gmail.com
           </a>
         </div>
       </div>
 
       <div
-        class="border-t border-gray-200 pt-6 text-sm text-gray-500 sm:flex sm:items-center sm:justify-between"
+        class="border-t border-gray-200 pt-6 text-sm text-white/45 sm:flex sm:items-center sm:justify-between"
       >
         <p>© 2025 inv8 Studio. All rights reserved.</p>
         <div class="mt-4 flex gap-6 sm:mt-0">
-          <a href="#" class="transition hover:text-gray-900">Privacy Policy</a>
-          <a href="#" class="transition hover:text-gray-900">Terms of Service</a>
+          <a href="#" class="transition hover:text-white">Privacy Policy</a>
+          <a href="#" class="transition hover:text-white">Terms of Service</a>
         </div>
       </div>
     </div>
