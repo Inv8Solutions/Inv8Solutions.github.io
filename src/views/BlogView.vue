@@ -9,10 +9,10 @@ defineOptions({ name: 'BlogView' })
 
 const router = useRouter()
 const { observeElements } = useScrollAnimation()
-const selectedCategory = ref('All')
+const selectedCategory = ref('All Posts')
 
 const filtered = computed(() =>
-  selectedCategory.value === 'All'
+  selectedCategory.value === 'All Posts'
     ? blogPosts
     : blogPosts.filter((p) => p.category === selectedCategory.value),
 )

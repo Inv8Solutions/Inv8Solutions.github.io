@@ -24,7 +24,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: '1',
     slug: 'from-idea-to-mvp-in-6-weeks',
-    category: 'Product Development',
+    category: 'Startup Insights',
     categoryColor: 'text-blue-400 bg-blue-400/10',
     coverImage: retasifyImg,
     title: 'From Idea to MVP in 6 Weeks: What We Learned Building Retasify',
@@ -65,7 +65,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: '2',
     slug: 'why-most-msme-digital-projects-fail',
-    category: 'Business Innovation',
+    category: 'Digital Transformation',
     categoryColor: 'text-green-400 bg-green-400/10',
     coverImage: innovImg,
     title: 'Why Most MSME Digital Projects Fail (And How to Fix It)',
@@ -98,7 +98,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: '3',
     slug: 'design-system-for-early-stage-startups',
-    category: 'UI/UX Design',
+    category: 'Startup Insights',
     categoryColor: 'text-purple-400 bg-purple-400/10',
     coverImage: uiuxImg,
     title: 'Why Early-Stage Startups Need a Design System (Even a Simple One)',
@@ -133,7 +133,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: '4',
     slug: 'pitch-deck-mistakes-founders-make',
-    category: 'Product Strategy',
+    category: 'Startup Insights',
     categoryColor: 'text-yellow-400 bg-yellow-400/10',
     coverImage: pitchdeckImg,
     title: '5 Pitch Deck Mistakes That Kill Investor Interest in the First 3 Slides',
@@ -166,7 +166,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: '5',
     slug: 'user-research-on-a-budget',
-    category: 'UI/UX Design',
+    category: 'Startup Insights',
     categoryColor: 'text-purple-400 bg-purple-400/10',
     coverImage: acornImg,
     title: 'User Research on a Startup Budget: 4 Methods That Actually Work',
@@ -198,7 +198,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: '6',
     slug: 'building-internal-tools-that-teams-actually-use',
-    category: 'Business Innovation',
+    category: 'Digital Transformation',
     categoryColor: 'text-green-400 bg-green-400/10',
     coverImage: mvpImg,
     title: 'Building Internal Tools That Teams Actually Use',
@@ -229,4 +229,4 @@ export const blogPosts: BlogPost[] = [
   },
 ]
 
-export const categories = ['All', 'Product Development', 'Business Innovation', 'UI/UX Design', 'Product Strategy']
+export const categories = ['All Posts', 'Startup Insights', 'Digital Transformation', 'Inv8 Updates']
