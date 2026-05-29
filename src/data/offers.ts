@@ -173,7 +173,7 @@ export const offerDetails: OfferDetail[] = [
     examples: [
       { image: retasifyImg, title: 'Operations Dashboard', description: 'A real-time dashboard that gave management full visibility into daily operations.' },
       { image: acornImg, title: 'Booking & Scheduling System', description: 'An automated booking system that eliminated manual scheduling for a service business.' },
-      { image: intro2, title: 'Inventory Management', description: 'A simple inventory and stock management system built for SMEs.' },
+      { image: bentoBasketImg, title: 'Inventory Management', description: 'A simple inventory and stock management system built for SMEs.' },
       { image: artistHubImg, title: 'Community Platform', description: 'A platform that brought people together and automated member management.' },
     ],
   },
