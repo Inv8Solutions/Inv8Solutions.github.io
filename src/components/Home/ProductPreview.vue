@@ -102,22 +102,22 @@ defineExpose({
 </script>
 
 <template>
-  <section class="bg-gray-50 px-4 py-24 text-gray-900">
+  <section class="bg-[#03040f] px-4 py-24">
     <div class="mx-auto w-full max-w-7xl space-y-10">
       <header class="flex flex-wrap items-center justify-between gap-6">
         <div>
-          <div class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600">
-            <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+          <div class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
+            <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400"></span>
             Our Works
           </div>
-          <h2 class="mt-4 text-4xl font-black leading-tight tracking-tight text-gray-900 md:text-5xl">
+          <h2 class="mt-4 text-4xl font-black leading-tight tracking-tight text-white md:text-5xl">
             Products and systems we<br class="hidden sm:block" /> have built
           </h2>
         </div>
         <button
           type="button"
           @click="handleViewAllProjects"
-          class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-bold text-gray-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 hover:scale-105"
         >
           View All Projects
           <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
@@ -160,7 +160,7 @@ defineExpose({
       <!-- Empty State -->
       <div v-else-if="projects.length === 0" class="text-center py-16">
         <svg
-          class="mx-auto h-16 w-16 text-gray-300"
+          class="mx-auto h-16 w-16 text-white/20"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -172,8 +172,8 @@ defineExpose({
             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
           />
         </svg>
-        <h3 class="mt-4 text-lg font-medium text-gray-900">No projects found</h3>
-        <p class="mt-2 text-sm text-gray-500">
+        <h3 class="mt-4 text-lg font-medium text-white">No projects found</h3>
+        <p class="mt-2 text-sm text-white/50">
           There are currently no projects in the sampleworks collection.
         </p>
         <div class="mt-6">
@@ -199,7 +199,7 @@ defineExpose({
         <article
           v-for="project in projects"
           :key="project.id || project.title"
-          class="preview-project-card group relative overflow-hidden rounded-[28px] cursor-pointer pb-[65%] bg-gray-900 transition duration-500 hover:scale-[1.02]"
+          class="preview-project-card group relative overflow-hidden rounded-[28px] cursor-pointer pb-[65%] bg-[#0d0f1f] transition duration-500 hover:scale-[1.02]"
           @click="handleProjectView(project)"
         >
           <!-- Cover image -->
@@ -232,7 +232,7 @@ defineExpose({
             <button
               type="button"
               @click.stop="handleProjectView(project)"
-              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-gray-900 shadow-lg transition duration-300 group-hover:scale-110"
+              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-white shadow-lg transition duration-300 group-hover:scale-110"
               aria-label="View project"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 -rotate-45">
