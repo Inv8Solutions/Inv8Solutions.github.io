@@ -214,7 +214,7 @@ defineExpose({
           />
 
           <!-- Gradient overlay -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
 
           <!-- Top: service category tags -->
           <div class="absolute left-4 top-4 flex flex-wrap gap-1.5">
