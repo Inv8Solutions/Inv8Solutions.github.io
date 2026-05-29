@@ -19,6 +19,30 @@
   font-display: block;
 }
 
+/* ── Light / Dark mode ──────────────────────────────────────────── */
+/*
+ * The site is dark-first. Light mode inverts the whole page
+ * then double-inverts images/videos so they stay natural.
+ * hue-rotate(180deg) keeps blues roughly blue after inversion.
+ */
+html.light {
+  filter: invert(1) hue-rotate(180deg);
+  color-scheme: light;
+}
+
+html.light img,
+html.light video,
+html.light iframe,
+html.light canvas,
+html.light .no-invert {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Smooth theme transition */
+html {
+  transition: filter 0.3s ease;
+}
+
 @layer base {
   /* Apply the site font without forcing via !important. */
   html,

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useTheme } from '@/composables/useTheme'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebase'
 import { getFunctions, httpsCallable } from 'firebase/functions'
@@ -13,6 +14,7 @@ const route = useRoute()
 const router = useRouter()
 const isMenuOpen = ref(false)
 const isProjectModalOpen = ref(false)
+const { isDark, toggleTheme } = useTheme()
 
 // Contact form state
 const formData = ref<Record<string, string>>({})
@@ -238,12 +240,33 @@ onUnmounted(() => {
           </a>
         </nav>
 
-        <!-- Mobile Menu Button -->
-        <div class="flex items-center gap-4">
+        <!-- Theme toggle + Mobile Menu Button -->
+        <div class="flex items-center gap-3">
+          <!-- Dark/Light toggle -->
+          <button
+            type="button"
+            @click="toggleTheme"
+            :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+            class="inline-flex h-9 w-9 items-center justify-center rounded-full border transition duration-200"
+            :class="route.path === '/services' || route.path.startsWith('/blog')
+              ? 'border-white/20 text-white/70 hover:bg-white/10 hover:text-white'
+              : 'border-gray-200 text-gray-500 hover:bg-gray-100 hover:text-gray-900'"
+          >
+            <!-- Sun icon (shown in dark mode → click to go light) -->
+            <svg v-if="isDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"/>
+              <path stroke-linecap="round" d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+            <!-- Moon icon (shown in light mode → click to go dark) -->
+            <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+            </svg>
+          </button>
+
           <button
             type="button"
             @click="toggleMenu"
-            class="inline-flex h-11 w-11 items-center justify-center rounded-full border transition md:hidden"
+            class="inline-flex h-9 w-9 items-center justify-center rounded-full border transition md:hidden"
             :class="route.path === '/services' || route.path.startsWith('/blog') ? 'border-white/20 text-white hover:bg-white/10' : 'border-gray-300 text-gray-700 hover:bg-gray-100'"
             :aria-expanded="isMenuOpen"
             :aria-label="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'"

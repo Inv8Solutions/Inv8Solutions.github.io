@@ -4,17 +4,18 @@ import { useRoute, useRouter } from 'vue-router'
 import AppHeader from '@/AppHeader.vue'
 import FooterSection from '@/components/Footer.vue'
 import BaguioDentalHeader from '@/components/BaguioDentalClinics/BaguioDentalHeader.vue'
+import { useTheme } from '@/composables/useTheme'
 
 const route = useRoute()
 const router = useRouter()
 const isDentalRoute = computed(() => route.path.startsWith('/BaguioDental/Clinics'))
+const { initTheme } = useTheme()
 
 // Check authentication for admin routes
 const checkAdminAuth = () => {
   if (route.path === '/admin' || route.path.startsWith('/admin/')) {
     const isAuthenticated = localStorage.getItem('isAuthenticated')
     if (isAuthenticated !== 'true') {
-      // Redirect to login page
       router.push('/admin/login')
     }
   }
@@ -22,6 +23,8 @@ const checkAdminAuth = () => {
 
 // Handle scroll behavior for hash links
 onMounted(() => {
+  initTheme()
+
   if (route.hash) {
     const element = document.querySelector(route.hash)
     if (element) {
@@ -29,7 +32,6 @@ onMounted(() => {
     }
   }
 
-  // Check admin auth on initial load
   checkAdminAuth()
 })
 
