@@ -1,3 +1,10 @@
+import retasifyImg from '@/assets/Retasify.png'
+import acornImg from '@/assets/Acorn.png'
+import uiuxImg from '@/assets/UI_UX.png'
+import pitchdeckImg from '@/assets/Pitchdeck.png'
+import innovImg from '@/assets/Innov_SME.png'
+import mvpImg from '@/assets/MVP_Dev.png'
+
 export type BlogPost = {
   id: string
   slug: string
@@ -10,6 +17,7 @@ export type BlogPost = {
   readTime: string
   author: string
   authorRole: string
+  coverImage: string
 }
 
 export const blogPosts: BlogPost[] = [
@@ -18,6 +26,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'from-idea-to-mvp-in-6-weeks',
     category: 'Product Development',
     categoryColor: 'text-blue-400 bg-blue-400/10',
+    coverImage: retasifyImg,
     title: 'From Idea to MVP in 6 Weeks: What We Learned Building Retasify',
     excerpt: 'Building a product fast doesn\'t mean cutting corners. Here\'s the exact process we used to ship Retasify from a napkin sketch to a working product in under two months.',
     date: 'May 20, 2026',
@@ -58,6 +67,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'why-most-msme-digital-projects-fail',
     category: 'Business Innovation',
     categoryColor: 'text-green-400 bg-green-400/10',
+    coverImage: innovImg,
     title: 'Why Most MSME Digital Projects Fail (And How to Fix It)',
     excerpt: 'Nine out of ten digital transformation projects in small businesses don\'t deliver what was promised. The cause is almost never the technology.',
     date: 'May 12, 2026',
@@ -90,6 +100,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'design-system-for-early-stage-startups',
     category: 'UI/UX Design',
     categoryColor: 'text-purple-400 bg-purple-400/10',
+    coverImage: uiuxImg,
     title: 'Why Early-Stage Startups Need a Design System (Even a Simple One)',
     excerpt: 'You don\'t need a 500-component library. But you do need a shared language for how your product looks and behaves — before it becomes too expensive to fix.',
     date: 'May 5, 2026',
@@ -124,6 +135,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'pitch-deck-mistakes-founders-make',
     category: 'Product Strategy',
     categoryColor: 'text-yellow-400 bg-yellow-400/10',
+    coverImage: pitchdeckImg,
     title: '5 Pitch Deck Mistakes That Kill Investor Interest in the First 3 Slides',
     excerpt: 'We\'ve helped founders across Southeast Asia sharpen their investor stories. The same five mistakes appear again and again — and they\'re all fixable.',
     date: 'April 28, 2026',
@@ -156,6 +168,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'user-research-on-a-budget',
     category: 'UI/UX Design',
     categoryColor: 'text-purple-400 bg-purple-400/10',
+    coverImage: acornImg,
     title: 'User Research on a Startup Budget: 4 Methods That Actually Work',
     excerpt: 'You don\'t need a research lab or a six-figure budget to understand your users. These four methods cost almost nothing and deliver insights that change what you build.',
     date: 'April 18, 2026',
@@ -187,6 +200,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'building-internal-tools-that-teams-actually-use',
     category: 'Business Innovation',
     categoryColor: 'text-green-400 bg-green-400/10',
+    coverImage: mvpImg,
     title: 'Building Internal Tools That Teams Actually Use',
     excerpt: 'Most internal tools end up as expensive shelf-ware. The difference between a tool people adopt and one they ignore comes down to four principles.',
     date: 'April 8, 2026',

@@ -80,8 +80,16 @@ onMounted(() => {
           :style="`animation-delay: ${i * 0.06}s`"
           @click="goToPost(post.slug)"
         >
-          <!-- Category color band -->
-          <div class="h-1 w-full" :class="post.categoryColor.includes('blue') ? 'bg-blue-500' : post.categoryColor.includes('green') ? 'bg-green-500' : post.categoryColor.includes('purple') ? 'bg-purple-500' : 'bg-yellow-500'"></div>
+          <!-- Cover image -->
+          <div class="relative h-48 overflow-hidden bg-[#080a18]">
+            <img
+              :src="post.coverImage"
+              :alt="post.title"
+              class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0d0f1f] via-transparent to-transparent"></div>
+          </div>
 
           <div class="flex flex-1 flex-col p-6">
             <div class="flex items-center justify-between">
