@@ -379,6 +379,62 @@
             </div>
 
             <!-- Settings Section -->
+            <!-- Community Gallery Section -->
+            <div v-else-if="activeSection === 'gallery'" class="space-y-6">
+              <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-gray-900">Community Gallery</h2>
+                <label
+                  class="cursor-pointer inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 transition"
+                >
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                  Upload Photos
+                  <input type="file" multiple accept="image/*" class="hidden" @change="handleGalleryUpload" :disabled="galleryUploading" />
+                </label>
+              </div>
+
+              <!-- Upload progress -->
+              <div v-if="galleryUploading" class="rounded-lg bg-blue-50 border border-blue-200 p-4 text-sm text-blue-700">
+                Uploading {{ galleryUploadProgress }}%…
+                <div class="mt-2 h-2 rounded-full bg-blue-100">
+                  <div class="h-2 rounded-full bg-blue-600 transition-all" :style="`width: ${galleryUploadProgress}%`"></div>
+                </div>
+              </div>
+
+              <!-- Gallery grid -->
+              <div v-if="galleryPhotos.length" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                <div
+                  v-for="photo in galleryPhotos"
+                  :key="photo.id"
+                  class="group relative overflow-hidden rounded-2xl bg-gray-100 aspect-square"
+                >
+                  <img :src="photo.url" :alt="photo.caption || ''" class="h-full w-full object-cover" loading="lazy" />
+                  <div class="absolute inset-0 flex items-center justify-center gap-2 bg-black/40 opacity-0 transition group-hover:opacity-100">
+                    <button
+                      @click="deleteGalleryPhoto(photo)"
+                      class="rounded-full bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-700"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 px-3 py-2">
+                    <input
+                      v-model="photo.caption"
+                      @blur="updateGalleryCaption(photo)"
+                      placeholder="Add caption…"
+                      class="w-full bg-transparent text-xs text-white placeholder-white/60 focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Empty -->
+              <div v-else-if="!galleryUploading" class="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 py-20 text-gray-400">
+                <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <p class="mt-3 text-sm font-medium">No photos yet</p>
+                <p class="mt-1 text-xs">Upload photos to display in the About page gallery</p>
+              </div>
+            </div>
+
             <div v-else-if="activeSection === 'settings'" class="space-y-6">
               <h2 class="text-2xl font-bold text-gray-900">Settings</h2>
 
@@ -1311,6 +1367,7 @@ const navigationItems: NavigationItem[] = [
   { id: 'projects', label: 'Projects', icon: ProjectsIcon },
   { id: 'inquiries', label: 'Inquiries', icon: InboxIcon },
   { id: 'calls', label: 'Calls', icon: PhoneIcon },
+  { id: 'gallery', label: 'Gallery', icon: () => '🖼️' },
   { id: 'settings', label: 'Settings', icon: SettingsIcon },
 ]
 
@@ -1319,6 +1376,60 @@ const projects = ref<Project[]>([])
 const recentActivity = ref<Activity[]>([])
 const inquiries = ref<Inquiry[]>([])
 const calls = ref<Call[]>([])
+
+// Community gallery
+interface GalleryPhoto { id: string; url: string; caption?: string; storagePath: string; order: number }
+const galleryPhotos = ref<GalleryPhoto[]>([])
+const galleryUploading = ref(false)
+const galleryUploadProgress = ref(0)
+
+async function loadGalleryPhotos() {
+  const q = query(collection(db, 'community_gallery'), orderBy('order', 'asc'))
+  const snap = await getDocs(q)
+  galleryPhotos.value = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<GalleryPhoto, 'id'>) }))
+}
+
+async function handleGalleryUpload(e: Event) {
+  const files = Array.from((e.target as HTMLInputElement).files || [])
+  if (!files.length) return
+  galleryUploading.value = true
+  galleryUploadProgress.value = 0
+  const baseOrder = Date.now()
+  let done = 0
+  for (const file of files) {
+    const path = `community_gallery/${Date.now()}_${file.name}`
+    const fileRef = storageRef(storage, path)
+    const task = uploadBytesResumable(fileRef, file)
+    await new Promise<void>((resolve, reject) => {
+      task.on('state_changed',
+        (snap) => { galleryUploadProgress.value = Math.round(((done + snap.bytesTransferred / snap.totalBytes) / files.length) * 100) },
+        reject,
+        async () => {
+          const url = await getDownloadURL(task.snapshot.ref)
+          const docRef = doc(collection(db, 'community_gallery'))
+          await setDoc(docRef, { url, storagePath: path, caption: '', order: baseOrder + done })
+          done++
+          resolve()
+        }
+      )
+    })
+  }
+  await loadGalleryPhotos()
+  galleryUploading.value = false
+  galleryUploadProgress.value = 0
+  ;(e.target as HTMLInputElement).value = ''
+}
+
+async function deleteGalleryPhoto(photo: GalleryPhoto) {
+  if (!confirm('Delete this photo?')) return
+  try { await deleteObject(storageRef(storage, photo.storagePath)) } catch {}
+  await deleteDoc(doc(db, 'community_gallery', photo.id))
+  galleryPhotos.value = galleryPhotos.value.filter((p) => p.id !== photo.id)
+}
+
+async function updateGalleryCaption(photo: GalleryPhoto) {
+  await updateDoc(doc(db, 'community_gallery', photo.id), { caption: photo.caption || '' })
+}
 
 // New project form data
 const newProject = ref({
@@ -1623,7 +1734,7 @@ async function loadData() {
   error.value = null
 
   try {
-    await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls()])
+    await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls(), loadGalleryPhotos()])
   } catch (err) {
     console.error('Error loading admin data:', err)
   } finally {

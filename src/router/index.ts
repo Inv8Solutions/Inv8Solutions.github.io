@@ -3,6 +3,7 @@ import Works from '../Works.vue'
 import Services from '@/Services.vue'
 import ContactUs from '@/components/ContactUs.vue'
 import HomeView from '@/views/HomeView.vue'
+import AboutView from '@/views/AboutView.vue'
 import AdminLogin from '@/AdminLogin.vue'
 import AdminPanel from '@/AdminPanel.vue'
 import ProjectDetails from '@/components/ProjectDetails.vue'
@@ -13,6 +14,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: HomeView,
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: AboutView,
   },
   {
     path: '/works',

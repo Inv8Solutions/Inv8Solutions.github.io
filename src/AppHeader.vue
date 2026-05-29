@@ -74,6 +74,7 @@ formFields.forEach((field) => {
 
 const navLinks = [
   { name: 'Home', path: '/' },
+  { name: 'About Us', path: '/about' },
   { name: 'Services', path: '/services' },
   { name: 'Works', path: '/works' },
   { name: 'Contact', path: '/contactus' },
