@@ -57,19 +57,18 @@ const availableDates = computed(() => {
 const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM']
 
 const quickLinks = [
-  { name: 'About Us', path: '/' },
+  { name: 'About Us', path: '/about' },
   { name: 'Services', path: '/services' },
   { name: 'Works', path: '/works' },
+  { name: 'Blog', path: '/blog' },
   { name: 'Contact Us', path: '/contactus' },
 ]
 
 const services = [
+  'Web & App Development',
   'UI/UX Design',
-  'MVP Development',
-  'Innovation Integration',
-  'IoT Development',
-  'Pitchdeck Design',
-  'IP Registration',
+  'Business Innovation Solutions',
+  'Innovation & Product Strategy',
 ]
 
 const policies = [
