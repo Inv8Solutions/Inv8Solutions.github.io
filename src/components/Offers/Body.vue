@@ -185,8 +185,9 @@ const handleSubmit = async () => {
               :key="item.title"
               class="group flex flex-col cursor-default"
               :class="{
-                'border-r border-white/10': idx % 2 === 0,
-                'border-b border-white/10': idx < 2,
+                'border-r border-white/10': idx % 2 === 0 && !(idx === currentOffer.whatWeBuild.length - 1 && currentOffer.whatWeBuild.length % 2 === 1),
+                'border-b border-white/10': idx < currentOffer.whatWeBuild.length - (currentOffer.whatWeBuild.length % 2 === 0 ? 2 : 1),
+                'sm:col-span-2': idx === currentOffer.whatWeBuild.length - 1 && currentOffer.whatWeBuild.length % 2 === 1,
               }"
             >
               <!-- Image: hidden by default (h-0), expands on hover -->

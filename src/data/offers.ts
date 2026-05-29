@@ -75,10 +75,10 @@ export const offerDetails: OfferDetail[] = [
       { title: 'Ongoing Support', description: 'We help deploy, monitor, and iterate through the first user feedback cycles.' },
     ],
     whatWeBuild: [
-      { icon: 'fa-solid fa-rocket', title: 'Startup MVPs', description: 'Launch your idea without spending months or building unnecessary features.', image: retasifyImg },
-      { icon: 'fa-solid fa-users', title: 'Customer Portals', description: 'Give customers a better way to interact with your business online.', image: acornImg },
-      { icon: 'fa-solid fa-briefcase', title: 'Internal Business Systems', description: 'Replace spreadsheets and manual processes with tools designed around your workflow.', image: forensicLensImg },
-      { icon: 'fa-solid fa-mobile-screen', title: 'Web & Mobile Apps', description: 'Create digital experiences customers can access anywhere.', image: bentoBasketImg },
+      { icon: 'fa-solid fa-rocket', title: 'MVP Development', description: 'Turn your idea into a working product you can test with real users.', image: retasifyImg },
+      { icon: 'fa-solid fa-globe', title: 'Web Applications', description: 'Build custom websites and platforms designed around your business.', image: acornImg },
+      { icon: 'fa-solid fa-mobile-screen', title: 'Mobile Applications', description: 'Create mobile apps that help customers connect with your business.', image: forensicLensImg },
+      { icon: 'fa-solid fa-cloud', title: 'SaaS Products', description: 'Develop software products that can grow with your users.', image: bentoBasketImg },
     ],
     benefits: [
       { icon: 'fa-solid fa-rocket', iconColor: 'text-green-400 bg-green-400/15', title: 'Launch Faster', description: 'Turn ideas into working products in weeks, not months.' },
@@ -117,10 +117,10 @@ export const offerDetails: OfferDetail[] = [
       { title: 'Usability Testing & Refinement', description: 'We validate designs with real users and refine them for clarity and performance.' },
     ],
     whatWeBuild: [
-      { icon: 'fa-solid fa-mobile-screen', title: 'Mobile App Designs', description: 'Native-feeling mobile experiences that users actually want to open every day.', image: forensicLensImg },
-      { icon: 'fa-solid fa-desktop', title: 'Web App & Dashboard UI', description: 'Clean, data-rich interfaces that make complex systems easy to understand.', image: retasifyImg },
-      { icon: 'fa-solid fa-swatchbook', title: 'Design Systems', description: 'Scalable component libraries that keep your product consistent as it grows.', image: artistHubImg },
-      { icon: 'fa-solid fa-object-group', title: 'Prototypes & Concepts', description: 'Clickable prototypes to validate ideas before a single line of code is written.', image: trapiHausImg },
+      { icon: 'fa-solid fa-magnifying-glass', title: 'UX Research', description: 'Learn what your users need before building a solution.', image: forensicLensImg },
+      { icon: 'fa-solid fa-pen-nib', title: 'UI Design', description: 'Design simple and engaging experiences people enjoy using.', image: retasifyImg },
+      { icon: 'fa-solid fa-object-group', title: 'Interactive Prototypes', description: 'Visualize and test ideas before investing in development.', image: artistHubImg },
+      { icon: 'fa-solid fa-clipboard-check', title: 'Product Audits', description: 'Review existing products and identify areas for improvement.', image: trapiHausImg },
     ],
     benefits: [
       { icon: 'fa-solid fa-users', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Higher Adoption', description: 'Intuitive designs reduce friction and increase product engagement.' },
@@ -159,10 +159,11 @@ export const offerDetails: OfferDetail[] = [
       { title: 'Performance Measurement', description: 'We implement dashboards and KPIs to track impact post-launch.' },
     ],
     whatWeBuild: [
-      { icon: 'fa-solid fa-gears', title: 'Workflow Automation', description: 'Replace manual, error-prone tasks with automated systems that run 24/7.', image: acornImg },
-      { icon: 'fa-solid fa-chart-pie', title: 'Business Dashboards', description: 'Real-time visibility into operations, sales, and performance metrics.', image: retasifyImg },
-      { icon: 'fa-solid fa-plug', title: 'System Integrations', description: 'Connect your CRM, ERP, and tools so your data flows where it needs to go.', image: bentoBasketImg },
-      { icon: 'fa-solid fa-toolbox', title: 'Internal Tools', description: 'Custom-built tools designed around how your team actually works.', image: artistHubImg },
+      { icon: 'fa-solid fa-gears', title: 'Workflow Automation', description: 'Reduce manual work and save time through automation.', image: acornImg },
+      { icon: 'fa-solid fa-chart-pie', title: 'Business Dashboards', description: 'Track your business performance in one place.', image: retasifyImg },
+      { icon: 'fa-solid fa-toolbox', title: 'Internal Business Tools', description: 'Create systems that help your team work more efficiently.', image: bentoBasketImg },
+      { icon: 'fa-solid fa-calendar-check', title: 'Booking & Scheduling Systems', description: 'Make it easier for customers to book and schedule services.', image: artistHubImg },
+      { icon: 'fa-solid fa-lightbulb', title: 'Digital Transformation Consulting', description: 'Find better ways to use technology in your business.', image: forensicLensImg },
     ],
     benefits: [
       { icon: 'fa-solid fa-clock', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Save Time', description: 'Eliminate repetitive manual work so your team focuses on what matters.' },
@@ -202,10 +203,11 @@ export const offerDetails: OfferDetail[] = [
       { title: 'Investor Readiness', description: 'We help founders pressure-test their strategy and present it with confidence.' },
     ],
     whatWeBuild: [
-      { icon: 'fa-solid fa-map', title: 'Product Roadmaps', description: 'A prioritized plan that shows what to build, when, and why — with full stakeholder alignment.', image: trapiHausImg },
-      { icon: 'fa-solid fa-magnifying-glass-chart', title: 'Market Research', description: 'Deep-dive into your market to understand competitors, trends, and real opportunities.', image: acornImg },
-      { icon: 'fa-solid fa-rectangle-list', title: 'Pitch Decks & Narratives', description: 'Investor-ready decks that communicate your vision clearly and compellingly.', image: forensicLensImg },
-      { icon: 'fa-solid fa-bullseye', title: 'Go-to-Market Strategy', description: 'A clear launch plan covering channels, positioning, and early customer acquisition.', image: artistHubImg },
+      { icon: 'fa-solid fa-magnifying-glass-chart', title: 'Market Research', description: 'Understand your customers, competitors, and opportunities.', image: trapiHausImg },
+      { icon: 'fa-solid fa-map', title: 'Business Plan Development', description: 'Turn your ideas into a clear plan for growth.', image: acornImg },
+      { icon: 'fa-solid fa-rectangle-list', title: 'Presentation Design', description: 'Present your ideas with confidence and clarity.', image: forensicLensImg },
+      { icon: 'fa-solid fa-users-gear', title: 'Innovation Workshops', description: 'Explore new ideas and solve challenges with your team.', image: artistHubImg },
+      { icon: 'fa-solid fa-robot', title: 'AI for MSMEs', description: 'Discover practical ways AI can support your business.', image: retasifyImg },
     ],
     benefits: [
       { icon: 'fa-solid fa-compass', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Clarity Before Code', description: 'Define what to build before spending on development.' },
