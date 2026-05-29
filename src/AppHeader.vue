@@ -210,13 +210,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 shadow-sm">
+  <div
+    class="sticky top-0 z-50 w-full backdrop-blur-md shadow-sm transition-colors duration-300"
+    :class="route.path === '/services' ? 'bg-[#03040f]/90 border-b border-white/10' : 'bg-white/80'"
+  >
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
       <header class="flex items-center justify-between gap-6 py-6">
-        <a href="/" class="text-2xl font-semibold text-blue-600">inv8 Studio</a>
+        <a href="/" class="text-2xl font-semibold" :class="route.path === '/services' ? 'text-white' : 'text-blue-600'">inv8 Studio</a>
 
         <!-- Desktop Navigation -->
-        <nav class="hidden items-center gap-8 text-sm font-medium text-gray-700 md:flex">
+        <nav class="hidden items-center gap-8 text-sm font-medium md:flex" :class="route.path === '/services' ? 'text-white/70' : 'text-gray-700'">
           <a
             v-for="link in navLinks"
             :key="link.name"
@@ -224,8 +227,10 @@ onUnmounted(() => {
             @click.prevent="navigate(link.path)"
             class="transition-colors duration-200 cursor-pointer"
             :class="{
-              'text-blue-600': isActive(link.path),
-              'hover:text-gray-900': !isActive(link.path),
+              'text-blue-400': isActive(link.path) && route.path === '/services',
+              'text-blue-600': isActive(link.path) && route.path !== '/services',
+              'hover:text-white': !isActive(link.path) && route.path === '/services',
+              'hover:text-gray-900': !isActive(link.path) && route.path !== '/services',
             }"
           >
             {{ link.name }}
@@ -237,7 +242,8 @@ onUnmounted(() => {
           <button
             type="button"
             @click="toggleMenu"
-            class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:bg-gray-100 md:hidden"
+            class="inline-flex h-11 w-11 items-center justify-center rounded-full border transition md:hidden"
+            :class="route.path === '/services' ? 'border-white/20 text-white hover:bg-white/10' : 'border-gray-300 text-gray-700 hover:bg-gray-100'"
             :aria-expanded="isMenuOpen"
             :aria-label="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'"
           >

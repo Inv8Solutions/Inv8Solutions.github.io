@@ -46,7 +46,7 @@ onMounted(() => {
     ></div>
 
     <div class="relative mx-auto flex min-h-screen max-w-7xl items-center">
-      <div class="flex w-full flex-col gap-12 py-16 lg:flex-row lg:items-center lg:gap-0">
+      <div class="flex w-full flex-col gap-8 py-10 lg:flex-row lg:items-center lg:gap-0">
 
         <!-- Left: text — takes ~55% -->
         <div class="offers-hero-left lg:w-[55%] lg:pr-12">
@@ -84,12 +84,12 @@ onMounted(() => {
 
         </div>
 
-        <!-- Right: hero mockup — takes ~45% -->
-        <div class="offers-hero-right relative hidden lg:block lg:w-[45%]">
+        <!-- Right: hero mockup — takes ~50% -->
+        <div class="offers-hero-right relative hidden lg:block lg:w-[50%]">
           <img
             :src="imgMockup"
             alt="inv8 product dashboard and mobile app mockup"
-            class="w-full object-contain drop-shadow-[0_40px_80px_rgba(59,130,246,0.15)]"
+            class="w-full scale-110 object-contain drop-shadow-[0_40px_80px_rgba(59,130,246,0.2)]"
             loading="eager"
           />
         </div>
