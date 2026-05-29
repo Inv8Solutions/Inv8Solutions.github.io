@@ -1,25 +1,12 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
   name: 'StepsSection',
 })
 
-const observeElements = (selector: string) => {
-  if (typeof window === 'undefined') return
-  
-  const elements = document.querySelectorAll(selector)
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in')
-        observer.unobserve(entry.target)
-      }
-    })
-  })
-  
-  elements.forEach((el) => observer.observe(el))
-}
+const { observeElements } = useScrollAnimation()
 
 const steps = [
   {
@@ -67,63 +54,57 @@ const tools = [
 ]
 
 onMounted(() => {
+  observeElements('.steps-header')
   observeElements('.step-card')
   observeElements('.tools-section')
 })
 </script>
 
 <template>
-  <section class="bg-[#050505] py-20 text-white" aria-labelledby="steps-heading">
-    <div class="mx-auto max-w-7xl px-4">
-      <div class="text-center">
+  <section class="bg-[#050505] py-24 text-white" aria-labelledby="steps-heading">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="steps-header mb-14 text-center">
         <div
-          class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-semibold text-blue-200"
+          class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-300"
         >
           <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-400"></span>
           Our Process
         </div>
-        <h2 id="steps-heading" class="mt-6 text-3xl font-semibold text-white md:text-5xl">
+        <h2 id="steps-heading" class="mt-5 text-4xl font-black leading-tight text-white md:text-5xl">
           A proven process for
+          <span class="text-white/50"> purposeful innovation</span>
         </h2>
-        <h3 class="mt-2 text-3xl font-semibold text-white/70 md:text-5xl">purposeful innovation</h3>
+        <p class="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/50">
+          Every engagement follows a disciplined four-step framework built to reduce risk, accelerate learning, and ship products that work.
+        </p>
       </div>
 
-      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <article
           v-for="(step, index) in steps"
           :key="step.number"
-          class="step-card rounded-[28px] border border-white/5 bg-white/5 px-6 py-8 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.8)] transition-smooth hover:bg-white/10 hover:-translate-y-1"
+          class="step-card group flex flex-col rounded-[28px] border border-white/5 bg-white/[0.04] p-7 transition-smooth hover:bg-white/[0.08] hover:-translate-y-1 hover:border-blue-500/20"
           :style="`animation-delay: ${index * 0.1}s`"
         >
-          <p class="text-sm font-semibold uppercase tracking-wider text-white/60">
-            {{ step.number }}
-          </p>
-          <h3 class="mt-2 text-2xl font-semibold">{{ step.title }}</h3>
-          <p class="mt-6 text-sm leading-relaxed text-white/70">{{ step.description }}</p>
+          <span class="text-xs font-bold uppercase tracking-widest text-blue-500/80">{{ step.number }}</span>
+          <h3 class="mt-3 text-2xl font-black text-white">{{ step.title }}</h3>
+          <div class="mt-2 h-px w-8 rounded-full bg-blue-600 transition-all group-hover:w-12"></div>
+          <p class="mt-5 text-sm leading-relaxed text-white/55 flex-1">{{ step.description }}</p>
         </article>
       </div>
 
-      <div class="tools-section mt-12 rounded-[32px] border border-white/5 bg-white/5 px-6 py-5">
-        <div
-          class="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/50"
-        >
-          <span>Tools we trust to build with clarity</span>
-        </div>
-        <div class="mt-6 flex flex-wrap items-center gap-6 text-white/70">
+      <div class="tools-section mt-10 rounded-3xl border border-white/5 bg-white/[0.03] px-7 py-6">
+        <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-white/40">Tools we trust to build with clarity</p>
+        <div class="mt-5 flex flex-wrap items-center gap-4 text-white/60">
           <div
             v-for="tool in tools"
             :key="tool.name"
-            class="group relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-xl transition-smooth hover:bg-white/10 hover:scale-110 hover:border-white/20"
+            class="group/t relative flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-lg transition-smooth hover:bg-white/10 hover:scale-110 hover:border-white/20 hover:text-white"
           >
             <i :class="tool.icon" aria-hidden="true"></i>
             <span class="sr-only">{{ tool.name }}</span>
-            <span
-              class="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100"
-            >
+            <span class="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-gray-800 px-2 py-1 text-[11px] font-medium text-white opacity-0 transition group-hover/t:opacity-100">
               {{ tool.name }}
-              <span
-                class="absolute bottom-0 left-1/2 -mb-1 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-800"
-              ></span>
             </span>
           </div>
         </div>

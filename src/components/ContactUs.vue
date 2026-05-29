@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ContactHeroSection from './Contact/HeroSection.vue'
 import ContactBodySection from './Contact/Body.vue'
 import ContactFooter from './Contact/Footer.vue'
 
@@ -10,7 +9,6 @@ defineOptions({
 
 <template>
   <div class="contact-page">
-    <contact-hero-section />
     <contact-body-section />
     <contact-footer />
   </div>

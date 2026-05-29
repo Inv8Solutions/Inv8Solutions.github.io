@@ -8,7 +8,7 @@ const heroBg = '/images/about-hero.jpg'
 const { observeElements } = useScrollAnimation()
 
 const openStartProjectModal = () => {
-  window.dispatchEvent(new CustomEvent('open-start-project-modal'))
+  router.push('/contactus')
 }
 
 const valueProps = [

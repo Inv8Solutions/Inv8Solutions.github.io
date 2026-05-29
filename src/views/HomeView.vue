@@ -8,6 +8,7 @@ import StepsSection from '@/components/Home/Steps.vue'
 import ProductPreview from '@/components/Home/ProductPreview.vue'
 import WhyChooseUs from '@/components/Home/WhyChooseUs.vue'
 import LatestInsights from '@/components/Home/LatestInsights.vue'
+import WorkWithUs from '@/components/Home/WorkWithUs.vue'
 import Faq from '@/components/Home/Faq.vue'
 </script>
 
@@ -21,5 +22,6 @@ import Faq from '@/components/Home/Faq.vue'
   <ProductPreview />
   <WhyChooseUs />
   <LatestInsights />
+  <WorkWithUs />
   <Faq />
 </template>

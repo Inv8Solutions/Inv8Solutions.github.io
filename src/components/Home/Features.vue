@@ -60,30 +60,30 @@ onMounted(() => {
 
 <template>
   <section
-    class="bg-white py-24 min-h-[720px] flex items-center"
+    class="bg-white py-24"
     aria-labelledby="features-heading"
   >
-    <div class="mx-auto w-full max-w-7xl px-4" :aria-describedby="'features-intro'">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8" :aria-describedby="'features-intro'">
       <div class="text-center">
         <div
-          class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1 text-xs font-semibold text-blue-600"
+          class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-bold text-blue-600 uppercase tracking-widest"
         >
           <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-500"></span>
           What We Do
         </div>
-        <h2 id="features-heading" class="mt-6 text-3xl font-semibold text-gray-900 md:text-5xl">
+        <h2 id="features-heading" class="mt-5 text-4xl font-black leading-tight tracking-tight text-gray-900 md:text-5xl">
           We help founders launch faster
         </h2>
-        <p class="mt-2 text-2xl font-light text-gray-500 md:text-4xl">
+        <p class="mt-2 text-3xl font-light text-gray-400 md:text-4xl">
           and help businesses operate smarter.
         </p>
       </div>
 
-      <div class="mt-12 grid gap-10 md:grid-cols-2 max-w-7xl">
+      <div class="mt-14 grid gap-8 md:grid-cols-2 mx-auto max-w-7xl">
         <article
           v-for="feature in features"
           :key="feature.title"
-          class="feature-card flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_25px_70px_-40px_rgba(15,23,42,0.5)] transition-smooth hover:shadow-[0_30px_80px_-40px_rgba(15,23,42,0.6)] hover:-translate-y-1"
+          class="feature-card flex flex-col rounded-[28px] border border-gray-100 bg-white p-6 shadow-[0_8px_40px_-12px_rgba(15,23,42,0.12)] transition-smooth hover:shadow-[0_16px_50px_-12px_rgba(15,23,42,0.2)] hover:-translate-y-1 hover:border-blue-100"
         >
           <div class="rounded-3xl bg-gradient-to-b from-gray-100 to-gray-50 p-4 overflow-hidden">
             <img

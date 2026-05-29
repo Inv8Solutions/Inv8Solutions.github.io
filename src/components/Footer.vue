@@ -107,7 +107,7 @@ const openBookingModal = () => {
 }
 
 const openStartProjectModal = () => {
-  window.dispatchEvent(new CustomEvent('open-start-project-modal'))
+  router.push('/contactus')
 }
 
 const closeBookingModal = () => {

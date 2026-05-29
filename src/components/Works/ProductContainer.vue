@@ -93,20 +93,14 @@ defineExpose({
   <section class="w-full px-4 py-10 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
       <!-- Loading State -->
-      <div v-if="isLoading" class="grid gap-10 md:grid-cols-2">
+      <div v-if="isLoading" class="grid gap-5 md:grid-cols-2">
         <div
           v-for="n in 4"
           :key="n"
-          class="flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.05)]"
+          class="loading-skeleton rounded-[28px] pb-[65%]"
           role="status"
           aria-label="Loading project"
-        >
-          <div class="loading-skeleton rounded-[26px] pb-[60%]"></div>
-          <div class="mt-6 space-y-3">
-            <div class="loading-skeleton h-6 w-3/4 rounded"></div>
-            <div class="loading-skeleton h-4 w-full rounded"></div>
-          </div>
-        </div>
+        ></div>
       </div>
 
       <!-- Error State -->
@@ -169,12 +163,12 @@ defineExpose({
       </div>
 
       <!-- Projects Grid -->
-      <div v-else class="grid gap-10 md:grid-cols-2">
+      <div v-else class="grid gap-5 md:grid-cols-2">
         <article
           v-for="project in projects"
           :key="project.id || project.title"
           data-project-card
-          class="work-project-card flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.05)] transition-smooth hover:scale-[1.02] hover:shadow-[0_25px_70px_rgba(15,23,42,0.08)] cursor-pointer"
+          class="work-project-card group relative overflow-hidden rounded-[28px] cursor-pointer pb-[65%] bg-gray-900 transition duration-500 hover:scale-[1.02]"
           @click="handleProjectView(project)"
           @keydown.enter="handleProjectView(project)"
           @keydown.space.prevent="handleProjectView(project)"
@@ -182,52 +176,34 @@ defineExpose({
           role="button"
           :aria-label="`View ${project.title} project details`"
         >
-          <div
-            class="rounded-[26px] bg-gradient-to-b from-gray-100 to-gray-50 pb-[60%] relative overflow-hidden"
-          >
-            <img
-              v-if="project.coverPhoto"
-              :src="project.coverPhoto"
-              :alt="`${project.title} cover image`"
-              class="absolute inset-0 w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
-              @error="handleImageError"
-            />
+          <!-- Cover image -->
+          <img
+            v-if="project.coverPhoto"
+            :src="project.coverPhoto"
+            :alt="`${project.title} cover image`"
+            class="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:opacity-90 group-hover:scale-105"
+            loading="lazy"
+            decoding="async"
+            @error="handleImageError"
+          />
+
+          <!-- Gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+          <!-- Top: service tags -->
+          <div class="absolute left-4 top-4 flex flex-wrap gap-1.5">
+            <span
+              v-if="project.service"
+              class="inline-flex items-center rounded-full border border-white/20 bg-black/40 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm"
+            >
+              {{ project.service }}
+            </span>
           </div>
 
-          <div class="mt-6 flex flex-col gap-3">
-            <div class="flex items-start justify-between">
-              <div class="flex-1">
-                <h3 class="text-xl font-semibold text-gray-900">{{ project.title }}</h3>
-                <div v-if="project.service" class="mt-1">
-                  <span
-                    data-project-service
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-                  >
-                    {{ project.service }}
-                  </span>
-                </div>
-              </div>
-              <button
-                type="button"
-                @click.stop="handleProjectView(project)"
-                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:-translate-y-0.5 hover:border-gray-400 flex-shrink-0 ml-4"
-                aria-label="View project"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  class="h-4 w-4"
-                >
-                  <path d="M7 17l10-10" />
-                  <path d="M9 7h8v8" />
-                </svg>
-              </button>
-            </div>
-            <p class="text-sm leading-relaxed text-gray-500">
+          <!-- Bottom: title + description -->
+          <div class="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-6">
+            <h3 class="text-3xl font-black text-white leading-none">{{ project.title }}</h3>
+            <p class="max-w-[40%] text-right text-xs leading-relaxed text-white/70 shrink-0">
               {{ project.shortDesc }}
             </p>
           </div>

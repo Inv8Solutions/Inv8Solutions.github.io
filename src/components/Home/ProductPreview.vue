@@ -16,6 +16,7 @@ interface SampleWork {
   title: string
   shortDesc: string
   imageUrl?: string
+  service?: string
 }
 
 const router = useRouter()
@@ -36,6 +37,7 @@ async function fetchSampleWorks(): Promise<SampleWork[]> {
         title: data.title || 'Untitled Project',
         shortDesc: data.shortDesc || data.description || '',
         imageUrl: data.imageUrl || data.coverPhoto || '',
+        service: data.service || '',
       })
     })
     return works
@@ -100,53 +102,37 @@ defineExpose({
 </script>
 
 <template>
-  <section class="bg-[#f8f8fc] px-4 py-24 min-h-[720px] text-gray-900 flex items-center">
+  <section class="bg-gray-50 px-4 py-24 text-gray-900">
     <div class="mx-auto w-full max-w-7xl space-y-10">
       <header class="flex flex-wrap items-center justify-between gap-6">
-        <div class="space-y-5">
-          <div
-            class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-blue-600"
-          >
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600">
             <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-500"></span>
             Our Works
           </div>
-          <div>
-            <h2 class="text-4xl font-semibold leading-tight md:text-5xl">
-              Products and systems we<br class="hidden sm:block" />
-              have designed
-            </h2>
-          </div>
+          <h2 class="mt-4 text-4xl font-black leading-tight tracking-tight text-gray-900 md:text-5xl">
+            Products and systems we<br class="hidden sm:block" /> have built
+          </h2>
         </div>
         <button
           type="button"
           @click="handleViewAllProjects"
-          class="inline-flex items-center gap-3 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.7)] transition hover:-translate-y-0.5"
+          class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-bold text-gray-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
         >
           View All Projects
-          <span
-            class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-lg"
-            aria-hidden="true"
-          >
-            →
-          </span>
+          <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
         </button>
       </header>
 
       <!-- Loading State -->
-      <div v-if="isLoading" class="grid gap-10 md:grid-cols-2">
+      <div v-if="isLoading" class="grid gap-5 md:grid-cols-2">
         <div
           v-for="n in 4"
           :key="n"
-          class="flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_25px_70px_-40px_rgba(15,23,42,0.35)]"
+          class="loading-skeleton rounded-[28px] pb-[65%]"
           role="status"
           aria-label="Loading project"
-        >
-          <div class="loading-skeleton rounded-3xl pb-[60%]"></div>
-          <div class="mt-6 space-y-3">
-            <div class="loading-skeleton h-6 w-3/4 rounded"></div>
-            <div class="loading-skeleton h-4 w-full rounded"></div>
-          </div>
-        </div>
+        ></div>
       </div>
 
       <!-- Error State -->
@@ -209,49 +195,41 @@ defineExpose({
       </div>
 
       <!-- Projects Grid -->
-      <div v-else class="grid gap-10 md:grid-cols-2">
+      <div v-else class="grid gap-5 md:grid-cols-2">
         <article
           v-for="project in projects"
           :key="project.id || project.title"
-          class="preview-project-card flex flex-col rounded-[32px] border border-gray-200 bg-white p-6 shadow-[0_25px_70px_-40px_rgba(15,23,42,0.35)] transition-smooth hover:scale-[1.02] hover:shadow-[0_30px_80px_-40px_rgba(15,23,42,0.5)] cursor-pointer"
+          class="preview-project-card group relative overflow-hidden rounded-[28px] cursor-pointer pb-[65%] bg-gray-900 transition duration-500 hover:scale-[1.02]"
           @click="handleProjectView(project)"
         >
-          <div
-            class="rounded-3xl bg-gradient-to-b from-gray-100 to-gray-50 pb-[60%] relative overflow-hidden"
-          >
-            <img
-              v-if="project.imageUrl"
-              :src="project.imageUrl"
-              :alt="`${project.title} preview image`"
-              class="absolute inset-0 w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
-              @error="handleImageError"
-            />
+          <!-- Cover image -->
+          <img
+            v-if="project.imageUrl"
+            :src="project.imageUrl"
+            :alt="`${project.title} preview image`"
+            class="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:opacity-90 group-hover:scale-105"
+            loading="lazy"
+            decoding="async"
+            @error="handleImageError"
+          />
+
+          <!-- Gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+          <!-- Top: service tag -->
+          <div class="absolute left-4 top-4 flex flex-wrap gap-1.5">
+            <span
+              v-if="project.service"
+              class="inline-flex items-center rounded-full border border-white/20 bg-black/40 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm"
+            >
+              {{ project.service }}
+            </span>
           </div>
 
-          <div class="mt-6">
-            <div class="flex items-center justify-between">
-              <h3 class="text-lg font-semibold text-gray-900">{{ project.title }}</h3>
-              <button
-                type="button"
-                @click.stop="handleProjectView(project)"
-                class="group flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-gray-200 text-gray-600 transition hover:border-gray-300 hover:text-gray-900"
-                aria-label="View project"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  class="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                >
-                  <path d="M7 17l10-10" />
-                  <path d="M9 7h8v8" />
-                </svg>
-              </button>
-            </div>
-            <p class="mt-2 text-sm leading-relaxed text-gray-500">
+          <!-- Bottom: title + 1-liner -->
+          <div class="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-6">
+            <h3 class="text-3xl font-black leading-none text-white">{{ project.title }}</h3>
+            <p v-if="project.shortDesc" class="max-w-[42%] shrink-0 text-right text-xs leading-relaxed text-white/70">
               {{ project.shortDesc }}
             </p>
           </div>

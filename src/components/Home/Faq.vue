@@ -74,18 +74,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-[#f6f7fb] px-4 pt-8 pb-12 text-gray-900">
+  <section class="bg-gray-50 px-4 py-24 text-gray-900">
     <div class="mx-auto flex max-w-7xl flex-col gap-12 p-4 lg:flex-row lg:items-center lg:gap-16">
       <div class="faq-section-header flex-1 space-y-6">
         <span
-          class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600"
+          class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600"
         >
           <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-500"></span>
           FAQ
         </span>
-        <div class="space-y-4">
-          <h2 class="text-4xl font-semibold text-gray-900 sm:text-5xl">Have questions?</h2>
-          <h3 class="text-4xl font-semibold text-gray-500 sm:text-5xl">We've got answers</h3>
+        <div class="space-y-2 mt-4">
+          <h2 class="text-4xl font-black leading-tight tracking-tight text-gray-900 sm:text-5xl">Have questions?</h2>
+          <p class="text-4xl font-black leading-tight text-gray-400 sm:text-5xl">We've got answers.</p>
         </div>
       </div>
 

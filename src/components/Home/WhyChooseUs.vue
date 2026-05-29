@@ -51,37 +51,37 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-[#f6f7fb] px-4 py-24 min-h-[720px] text-gray-900 flex flex-col justify-center">
+  <section class="bg-gray-50 px-4 py-24 text-gray-900">
     <div class="mx-auto max-w-5xl space-y-10 text-center">
       <div
-        class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-blue-600"
+        class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600"
       >
         <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-500"></span>
         Why Choose Us
       </div>
-      <div class="space-y-3">
-        <h2 class="text-3xl font-semibold text-gray-900 md:text-5xl">
+      <div class="space-y-2 mt-4">
+        <h2 class="text-4xl font-black leading-tight tracking-tight text-gray-900 md:text-5xl">
           We deliver clarity, speed, and disciplined
         </h2>
-        <h3 class="text-3xl font-semibold text-gray-600 md:text-5xl">
+        <p class="text-4xl font-black leading-tight text-gray-400 md:text-5xl">
           execution in every product we build.
-        </h3>
+        </p>
       </div>
     </div>
 
-    <div class="mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-5 px-4 sm:grid-cols-2 lg:grid-cols-3">
       <article
         v-for="(reason, index) in reasons"
         :key="reason.title"
-        class="reason-card rounded-[28px] border border-gray-200 bg-white px-8 py-6 text-left shadow-[0_30px_80px_-60px_rgba(15,23,42,0.5)] transition-smooth hover:shadow-lg hover:-translate-y-1 hover:border-blue-200"
+        class="reason-card rounded-[24px] border border-gray-100 bg-white px-7 py-6 text-left shadow-sm transition-smooth hover:shadow-md hover:-translate-y-1 hover:border-blue-100"
         :style="`animation-delay: ${index * 0.1}s`"
       >
         <div
-          class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 transition-smooth group-hover:scale-110"
+          class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
         >
-          <i :class="`${reason.icon} text-xl`"></i>
+          <i :class="`${reason.icon} text-lg`"></i>
         </div>
-        <h3 class="text-lg font-semibold text-gray-900">{{ reason.title }}</h3>
+        <h3 class="text-base font-black text-gray-900">{{ reason.title }}</h3>
         <p class="mt-2 text-sm leading-relaxed text-gray-500">{{ reason.description }}</p>
       </article>
     </div>

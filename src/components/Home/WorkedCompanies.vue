@@ -27,7 +27,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-white py-12 min-h-[380px] flex flex-col justify-center">
+  <section class="bg-white py-16">
     <div class="mx-auto w-full max-w-8xl px-4">
       <div class="text-center">
         <h2 class="text-xs font-semibold uppercase tracking-[0.35em] text-gray-400">
