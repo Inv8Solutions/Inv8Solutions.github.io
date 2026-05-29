@@ -2,9 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { offerDetails, DEFAULT_SERVICE_ID } from '@/data/offers'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
-import imgPhone from '@/assets/introImage3.png'
-import imgDashboard from '@/assets/introImage4.png'
-import imgCard from '@/assets/introImage6.png'
+import imgMockup from '@/assets/services-hero-mockup.png'
 
 const { observeElements } = useScrollAnimation()
 
@@ -106,29 +104,16 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Right: floating mockups -->
-        <div class="offers-hero-right relative hidden lg:flex lg:w-[520px] lg:shrink-0 lg:items-end">
-          <!-- Background dashboard -->
-          <div class="relative w-full overflow-hidden rounded-t-3xl shadow-2xl shadow-blue-900/30 ring-1 ring-white/10">
-            <img
-              :src="imgDashboard"
-              alt="Dashboard product preview"
-              class="w-full object-cover"
-              loading="eager"
-            />
-            <!-- fade bottom into background -->
-            <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#03040f] to-transparent"></div>
-          </div>
-
-          <!-- Floating phone -->
-          <div class="absolute -left-12 bottom-16 w-44 overflow-hidden rounded-3xl shadow-2xl shadow-black/60 ring-1 ring-white/10">
-            <img :src="imgPhone" alt="Mobile app preview" class="w-full object-cover" loading="lazy" />
-          </div>
-
-          <!-- Floating card top-right -->
-          <div class="absolute -right-6 top-12 w-52 overflow-hidden rounded-2xl bg-white/5 p-0 shadow-xl shadow-black/50 ring-1 ring-white/10 backdrop-blur-sm">
-            <img :src="imgCard" alt="Project card preview" class="w-full object-cover rounded-2xl" loading="lazy" />
-          </div>
+        <!-- Right: hero mockup -->
+        <div class="offers-hero-right relative hidden lg:block lg:w-[580px] lg:shrink-0">
+          <img
+            :src="imgMockup"
+            alt="inv8 product dashboard and mobile app mockup"
+            class="w-full object-contain drop-shadow-2xl"
+            loading="eager"
+          />
+          <!-- fade bottom into dark background -->
+          <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#03040f] to-transparent"></div>
         </div>
 
       </div>
