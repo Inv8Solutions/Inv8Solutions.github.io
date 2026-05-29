@@ -318,20 +318,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Example Solutions -->
-        <div class="mt-12">
-          <h3 class="mb-8 text-center text-2xl font-black text-white">Example Solutions We've Built</h3>
-          <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <div v-for="example in offer.examples" :key="example.title" class="group cursor-pointer" @click="viewProjects">
-              <div class="h-44 overflow-hidden rounded-2xl bg-[#0d0f1f]">
-                <img :src="example.image" :alt="example.title" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
-              </div>
-              <h4 class="mt-3 text-sm font-bold text-white">{{ example.title }}</h4>
-              <p class="mt-1 text-xs leading-relaxed text-white/50">{{ example.description }}</p>
-            </div>
-          </div>
-        </div>
-
         <!-- Bottom CTA banner -->
         <div class="mt-12 flex flex-col items-start justify-between gap-6 rounded-[24px] bg-[#0d1a3a] p-8 sm:flex-row sm:items-center sm:p-10">
           <div class="flex items-start gap-5">
