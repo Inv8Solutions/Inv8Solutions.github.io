@@ -179,7 +179,8 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { supabase } from '@/supabase'
+import { auth } from '@/firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
 interface LoginFormData {
   email: string
@@ -241,19 +242,13 @@ const handleLogin = async () => {
   isLoading.value = true
 
   try {
-    const { error } = await supabase.auth.signInWithPassword({
-      email: formData.email,
-      password: formData.password,
-    })
-    if (error) {
-      loginError.value = error.message
-      return
-    }
+    await signInWithEmailAndPassword(auth, formData.email, formData.password)
+    
     localStorage.setItem('isAuthenticated', 'true')
     localStorage.setItem('adminEmail', formData.email)
     router.push('/admin')
-  } catch {
-    loginError.value = 'An error occurred during login. Please try again.'
+  } catch (error: any) {
+    loginError.value = error.message || 'An error occurred during login. Please try again.'
   } finally {
     isLoading.value = false
   }
