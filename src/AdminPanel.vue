@@ -541,6 +541,75 @@
           </div>
         </div>
 
+        <!-- ── COMPANIES ─────────────────────────────────────── -->
+        <div v-else-if="activeSection === 'companies'" class="space-y-5">
+          <!-- Add company form -->
+          <div class="rounded-xl border border-white/[0.08] bg-[#0d1117] p-5 space-y-3">
+            <h3 class="text-sm font-bold text-white">Add Company</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-white/40 mb-1">Name *</label>
+                <input v-model="companyForm.name" type="text" placeholder="Company name"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-white/40 mb-1">Logo URL</label>
+                <input v-model="companyForm.logo_url" type="text" placeholder="https://…"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+              </div>
+            </div>
+            <button @click="addCompany" :disabled="companySubmitting"
+              class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50">
+              {{ companySubmitting ? 'Saving…' : 'Add Company' }}
+            </button>
+          </div>
+
+          <!-- Company list -->
+          <div class="overflow-hidden rounded-xl border border-white/[0.08] bg-[#0d1117]">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-white/[0.06]">
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wider">Name</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wider">Logo</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wider">Logo URL</th>
+                  <th class="px-4 py-3 text-right text-xs font-semibold text-white/40 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="company in companies" :key="company.id" class="border-b border-white/[0.04] hover:bg-white/[0.02]">
+                  <td class="px-4 py-3">
+                    <div v-if="editingCompanyId !== company.id" class="text-white/80 font-medium">{{ company.name }}</div>
+                    <input v-else v-model="editCompanyForm.name" type="text"
+                      class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white focus:border-blue-500 focus:outline-none" />
+                  </td>
+                  <td class="px-4 py-3">
+                    <img v-if="company.logo_url" :src="company.logo_url" :alt="company.name" class="h-8 w-auto object-contain opacity-60 brightness-0 invert" />
+                    <span v-else class="text-white/30 text-xs">—</span>
+                  </td>
+                  <td class="px-4 py-3">
+                    <div v-if="editingCompanyId !== company.id" class="truncate max-w-xs text-xs text-white/40">{{ company.logo_url || '—' }}</div>
+                    <input v-else v-model="editCompanyForm.logo_url" type="text"
+                      class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white focus:border-blue-500 focus:outline-none" />
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <template v-if="editingCompanyId !== company.id">
+                      <button @click="editingCompanyId = company.id; editCompanyForm = { name: company.name, logo_url: company.logo_url }" class="mr-3 text-xs font-semibold text-blue-400 hover:text-blue-300">Edit</button>
+                      <button @click="deleteCompany(company)" class="text-red-400 hover:text-red-300 text-xs">Delete</button>
+                    </template>
+                    <template v-else>
+                      <button @click="saveCompanyEdit(company)" class="mr-3 text-xs font-semibold text-blue-400 hover:text-blue-300">Save</button>
+                      <button @click="editingCompanyId = null" class="text-xs text-white/40 hover:text-white">Cancel</button>
+                    </template>
+                  </td>
+                </tr>
+                <tr v-if="!companies.length">
+                  <td colspan="4" class="px-4 py-12 text-center text-sm text-white/30">No companies yet. Add your first one above.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         <!-- ── GALLERY ────────────────────────────────────────── -->
         <div v-else-if="activeSection === 'gallery'" class="space-y-4">
           <div class="flex items-center justify-between">
@@ -975,6 +1044,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { supabase } from '@/supabase'
 import { auth, db, storage } from '@/firebase'
 import { signOut } from 'firebase/auth'
 import { collection, doc, query, orderBy, getDocs, getDoc, addDoc, updateDoc, deleteDoc } from 'firebase/firestore'
@@ -1070,12 +1140,13 @@ watch(() => blogForm.value.category, (cat) => {
 
 async function fetchBlogPosts() {
   try {
-    const snapshot = await getDocs(query(collection(db, 'blogposts'), orderBy('created_at', 'desc')))
-    blogPosts.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).map((d: any) => ({
+    const { data } = await supabase.from('blog_posts').select('*').order('created_at', { ascending: false })
+    blogPosts.value = (data ?? []).map((d: any) => ({
       id: d.id, title: d.title, slug: d.slug, category: d.category,
-      categoryColor: d.category_color, excerpt: d.excerpt, content: d.content,
-      coverImage: d.cover_image, author: d.author, authorRole: d.author_role,
-      date: d.date, readTime: d.read_time,
+      categoryColor: d.category_color || '', excerpt: d.excerpt || '',
+      content: d.content || '', coverImage: d.cover_image || '',
+      author: d.author || '', authorRole: d.author_role || '',
+      date: d.date || '', readTime: d.read_time || '',
     }))
   } catch { /* collection may not exist yet */ }
 }
@@ -1084,15 +1155,16 @@ async function addBlogPost() {
   if (!blogForm.value.title || !blogForm.value.slug) { blogFormError.value = 'Title and slug are required'; return }
   isBlogSubmitting.value = true; blogFormError.value = null
   try {
-    const docRef = await addDoc(collection(db, 'blogposts'), {
-      title: blogForm.value.title, slug: blogForm.value.slug, category: blogForm.value.category,
-      category_color: blogForm.value.categoryColor, excerpt: blogForm.value.excerpt,
-      content: blogForm.value.content, cover_image: blogForm.value.coverImage,
-      author: blogForm.value.author, author_role: blogForm.value.authorRole,
-      date: blogForm.value.date, read_time: blogForm.value.readTime,
-      created_at: new Date().toISOString()
-    })
-    blogPosts.value.unshift({ id: docRef.id, ...blogForm.value })
+    const { data, error } = await supabase.from('blog_posts').insert({
+      title: blogForm.value.title, slug: blogForm.value.slug,
+      category: blogForm.value.category, category_color: blogForm.value.categoryColor,
+      excerpt: blogForm.value.excerpt, content: blogForm.value.content,
+      cover_image: blogForm.value.coverImage, author: blogForm.value.author,
+      author_role: blogForm.value.authorRole, date: blogForm.value.date,
+      read_time: blogForm.value.readTime,
+    }).select('id').single()
+    if (error) throw error
+    blogPosts.value.unshift({ id: data!.id, ...blogForm.value })
     closeBlogModal()
   } catch { blogFormError.value = 'Failed to save post' } finally { isBlogSubmitting.value = false }
 }
@@ -1101,14 +1173,15 @@ async function updateBlogPost() {
   if (!blogForm.value.title || !selectedBlogId.value) { blogFormError.value = 'Title is required'; return }
   isBlogSubmitting.value = true; blogFormError.value = null
   try {
-    await updateDoc(doc(db, 'blogposts', selectedBlogId.value), {
-      title: blogForm.value.title, slug: blogForm.value.slug, category: blogForm.value.category,
-      category_color: blogForm.value.categoryColor, excerpt: blogForm.value.excerpt,
-      content: blogForm.value.content, cover_image: blogForm.value.coverImage,
-      author: blogForm.value.author, author_role: blogForm.value.authorRole,
-      date: blogForm.value.date, read_time: blogForm.value.readTime,
-      updated_at: new Date().toISOString(),
-    })
+    const { error } = await supabase.from('blog_posts').update({
+      title: blogForm.value.title, slug: blogForm.value.slug,
+      category: blogForm.value.category, category_color: blogForm.value.categoryColor,
+      excerpt: blogForm.value.excerpt, content: blogForm.value.content,
+      cover_image: blogForm.value.coverImage, author: blogForm.value.author,
+      author_role: blogForm.value.authorRole, date: blogForm.value.date,
+      read_time: blogForm.value.readTime,
+    }).eq('id', selectedBlogId.value)
+    if (error) throw error
     const idx = blogPosts.value.findIndex(p => p.id === selectedBlogId.value)
     if (idx !== -1) blogPosts.value[idx] = { ...blogPosts.value[idx]!, ...blogForm.value }
     closeBlogModal()
@@ -1117,7 +1190,7 @@ async function updateBlogPost() {
 
 async function deleteBlogPost(post: BlogPost) {
   if (!confirm(`Delete "${post.title}"? This cannot be undone.`)) return
-  await deleteDoc(doc(db, 'blogposts', post.id))
+  await supabase.from('blog_posts').delete().eq('id', post.id)
   blogPosts.value = blogPosts.value.filter(p => p.id !== post.id)
 }
 
@@ -1357,9 +1430,49 @@ async function deleteTeamMember(member: TeamMember) {
   teamMembers.value = teamMembers.value.filter(t => t.id !== member.id)
 }
 
+// ── Companies ────────────────────────────────────────────────────
+interface Company { id: string; name: string; logo_url: string; order: number }
+const companies = ref<Company[]>([])
+const companyForm = ref({ name: '', logo_url: '' })
+const editingCompanyId = ref<string | null>(null)
+const editCompanyForm = ref({ name: '', logo_url: '' })
+const companySubmitting = ref(false)
+
+async function fetchCompanies() {
+  try {
+    const { data } = await supabase.from('companies').select('id, name, logo_url, order').order('order', { ascending: true })
+    companies.value = (data ?? []).map((d: any) => ({ id: d.id, name: d.name || '', logo_url: d.logo_url || '', order: d.order ?? 0 }))
+  } catch { /* ignore */ }
+}
+
+async function addCompany() {
+  if (!companyForm.value.name) return
+  companySubmitting.value = true
+  try {
+    const maxOrder = companies.value.length ? Math.max(...companies.value.map(c => c.order)) + 1 : 0
+    const { data, error: e } = await supabase.from('companies').insert({ name: companyForm.value.name, logo_url: companyForm.value.logo_url, order: maxOrder }).select('id').single()
+    if (e) throw e
+    companies.value.push({ id: data!.id, name: companyForm.value.name, logo_url: companyForm.value.logo_url, order: maxOrder })
+    companyForm.value = { name: '', logo_url: '' }
+  } catch { /* ignore */ } finally { companySubmitting.value = false }
+}
+
+async function saveCompanyEdit(company: Company) {
+  await supabase.from('companies').update({ name: editCompanyForm.value.name, logo_url: editCompanyForm.value.logo_url }).eq('id', company.id)
+  company.name = editCompanyForm.value.name
+  company.logo_url = editCompanyForm.value.logo_url
+  editingCompanyId.value = null
+}
+
+async function deleteCompany(company: Company) {
+  if (!confirm(`Delete "${company.name}"?`)) return
+  await supabase.from('companies').delete().eq('id', company.id)
+  companies.value = companies.value.filter(c => c.id !== company.id)
+}
+
 async function loadData() {
   isLoading.value = true; error.value = null
-  try { await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls(), loadGalleryPhotos(), fetchBlogPosts(), fetchReferrals(), fetchFaqs(), fetchTeam()]) }
+  try { await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls(), loadGalleryPhotos(), fetchBlogPosts(), fetchReferrals(), fetchFaqs(), fetchTeam(), fetchCompanies()]) }
   catch (e) { console.error(e) } finally { isLoading.value = false }
 }
 
@@ -1387,6 +1500,7 @@ const navItems = computed(() => [
   { id:'referrals', label:'Referrals', icon:'fa-solid fa-handshake', badge: newReferralsCount.value > 0 ? newReferralsCount.value : undefined },
   { id:'faqs',      label:'FAQs',      icon:'fa-solid fa-circle-question' },
   { id:'team',      label:'Team',      icon:'fa-solid fa-users' },
+  { id:'companies', label:'Companies', icon:'fa-solid fa-building' },
   { id:'gallery',   label:'Gallery',   icon:'fa-solid fa-image' },
   { id:'settings',  label:'Settings',  icon:'fa-solid fa-gear' },
 ])
@@ -1597,7 +1711,7 @@ onMounted(async () => {
 
   const blogChannel = supabase
     .channel('realtime-blogposts')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'blogposts' }, (payload) => {
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'blog_posts' }, (payload) => {
       const d = payload.new as Record<string, unknown>
       blogPosts.value.unshift({
         id: d.id as string, title: (d.title as string) || '', slug: (d.slug as string) || '',

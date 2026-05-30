@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { blogPosts, categories } from '@/data/blogs'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({ name: 'BlogView' })
@@ -9,16 +9,58 @@ defineOptions({ name: 'BlogView' })
 const router = useRouter()
 const { observeElements } = useScrollAnimation()
 const selectedCategory = ref('All Posts')
+const loading = ref(true)
+
+interface BlogPost {
+  id: string
+  title: string
+  slug: string
+  category: string
+  categoryColor: string
+  coverImage: string
+  author: string
+  authorRole: string
+  date: string
+  readTime: string
+  excerpt: string
+}
+
+const blogPosts = ref<BlogPost[]>([])
+
+const categories = computed(() => ['All Posts', ...new Set(blogPosts.value.map(p => p.category))])
 
 const filtered = computed(() =>
   selectedCategory.value === 'All Posts'
-    ? blogPosts
-    : blogPosts.filter((p) => p.category === selectedCategory.value),
+    ? blogPosts.value
+    : blogPosts.value.filter((p) => p.category === selectedCategory.value),
 )
 
 const goToPost = (slug: string) => router.push(`/blog/${slug}`)
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+    if (!error && data) {
+      blogPosts.value = data.map((d: any) => ({
+        id: d.id,
+        title: d.title || '',
+        slug: d.slug || '',
+        category: d.category || '',
+        categoryColor: d.category_color || '',
+        coverImage: d.cover_image || '',
+        author: d.author || '',
+        authorRole: d.author_role || '',
+        date: d.date || '',
+        readTime: d.read_time || '',
+        excerpt: d.excerpt || '',
+      }))
+    }
+  } catch { /* ignore */ } finally {
+    loading.value = false
+  }
   observeElements('.blog-card')
   observeElements('.blog-hero')
 })
@@ -69,9 +111,14 @@ onMounted(() => {
 
     <!-- Posts grid -->
     <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <p class="mb-6 text-xs text-white/30">{{ filtered.length }} article{{ filtered.length !== 1 ? 's' : '' }}</p>
+      <p class="mb-6 text-xs text-white/30">{{ loading ? '…' : `${filtered.length} article${filtered.length !== 1 ? 's' : ''}` }}</p>
 
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Loading spinner -->
+      <div v-if="loading" class="flex items-center justify-center py-20">
+        <div class="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></div>
+      </div>
+
+      <div v-else class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <article
           v-for="(post, i) in filtered"
           :key="post.id"
@@ -119,7 +166,7 @@ onMounted(() => {
       </div>
 
       <!-- Empty state -->
-      <div v-if="filtered.length === 0" class="py-20 text-center">
+      <div v-if="!loading && filtered.length === 0" class="py-20 text-center">
         <p class="text-white/30">No articles in this category yet.</p>
       </div>
     </section>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
@@ -9,11 +10,13 @@ defineOptions({
 const { observeElements } = useScrollAnimation()
 
 type FaqItem = {
+  id?: string
   question: string
   answer: string
+  order?: number
 }
 
-const faqs: FaqItem[] = [
+const FALLBACK_FAQS: FaqItem[] = [
   {
     question: 'What types of projects does inv8 work on?',
     answer:
@@ -25,12 +28,12 @@ const faqs: FaqItem[] = [
       'Yes. We prioritize lean, high-impact solutions that help founders validate ideas quickly and scale responsibly.',
   },
   {
-    question: 'How do you ensure we’re building the right features?',
+    question: "How do you ensure we're building the right features?",
     answer:
       'We combine user research, rapid prototyping, and validation sprints to make sure we are aligned with real user needs.',
   },
   {
-    question: 'What’s your process for working with SMEs?',
+    question: "What's your process for working with SMEs?",
     answer:
       'We collaborate closely with SME stakeholders, define measurable goals, and build modular solutions that fit existing operations.',
   },
@@ -61,13 +64,30 @@ const faqs: FaqItem[] = [
   },
 ]
 
+const faqs = ref<FaqItem[]>([])
+const loading = ref(true)
 const openIndex = ref<null | number>(0)
 
 const toggleFAQ = (index: number) => {
   openIndex.value = openIndex.value === index ? null : index
 }
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    const { data, error } = await supabase
+      .from('faqs')
+      .select('*')
+      .order('order', { ascending: true })
+    if (!error && data && data.length > 0) {
+      faqs.value = data.map((d: any) => ({ id: d.id, question: d.question, answer: d.answer, order: d.order }))
+    } else {
+      faqs.value = FALLBACK_FAQS
+    }
+  } catch {
+    faqs.value = FALLBACK_FAQS
+  } finally {
+    loading.value = false
+  }
   observeElements('.faq-section-header')
   observeElements('.faq-item')
 })
@@ -88,7 +108,18 @@ onMounted(() => {
       </div>
 
       <div class="flex-1 rounded-[40px] border border-white/10 bg-[#0d0f1f] p-6 sm:p-8">
-        <ul class="divide-y divide-white/10">
+        <!-- Loading skeleton -->
+        <ul v-if="loading" class="divide-y divide-white/10">
+          <li v-for="n in 3" :key="n" class="py-4 first:pt-0 last:pb-0">
+            <div class="flex items-center justify-between gap-6">
+              <div class="flex-1 space-y-2">
+                <div class="h-4 w-3/4 animate-pulse rounded bg-white/10"></div>
+              </div>
+              <div class="h-6 w-6 shrink-0 animate-pulse rounded-full bg-white/10"></div>
+            </div>
+          </li>
+        </ul>
+        <ul v-else class="divide-y divide-white/10">
           <li v-for="(faq, index) in faqs" :key="faq.question" class="faq-item py-4 first:pt-0 last:pb-0" :style="`animation-delay: ${index * 0.05}s`">
             <button
               class="flex w-full items-start justify-between gap-6 text-left transition hover:opacity-80"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 import acornLogo from '@/assets/Acorn.png'
 import artistHubLogo from '@/assets/ArtistHub.png'
@@ -9,7 +10,14 @@ import layer2Logo from '@/assets/layer2.png'
 import retasifyLogo from '@/assets/Retasify.png'
 import trapiHausLogo from '@/assets/TrapiHaus.png'
 
-const companies = [
+interface Company {
+  name: string
+  image?: string
+  logo_url?: string
+  fromSupabase?: boolean
+}
+
+const FALLBACK_COMPANIES: Company[] = [
   { name: 'Retasify', image: retasifyLogo },
   { name: 'TrapiHaus', image: trapiHausLogo },
   { name: 'Acorn', image: acornLogo },
@@ -19,9 +27,20 @@ const companies = [
   { name: 'Layer2', image: layer2Logo },
 ]
 
+const companies = ref<Company[]>(FALLBACK_COMPANIES)
+
 const { observeElements } = useScrollAnimation()
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    const { data, error } = await supabase
+      .from('companies')
+      .select('id, name, logo_url, order')
+      .order('order', { ascending: true })
+    if (!error && data && data.length > 0) {
+      companies.value = data.map((d: any) => ({ name: d.name || '', logo_url: d.logo_url || '', fromSupabase: true }))
+    }
+  } catch { /* fall through to keep hardcoded defaults */ }
   observeElements('.company-logo')
 })
 </script>
@@ -48,7 +67,7 @@ onMounted(() => {
           :style="`animation-delay: ${index * 0.1}s`"
         >
           <img
-            :src="company.image"
+            :src="company.fromSupabase ? company.logo_url : company.image"
             :alt="`${company.name} logo`"
             class="h-8 w-auto object-contain opacity-30 brightness-0 invert transition hover:opacity-70 hover:scale-110"
             loading="lazy"

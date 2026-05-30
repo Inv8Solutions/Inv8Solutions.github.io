@@ -1,28 +1,87 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { blogPosts } from '@/data/blogs'
+import { supabase } from '@/supabase'
 
 defineOptions({ name: 'BlogPostView' })
 
 const route = useRoute()
 const router = useRouter()
+const loading = ref(true)
 
-const post = computed(() => blogPosts.find((p) => p.slug === route.params.slug))
+interface BlogPost {
+  id: string
+  title: string
+  slug: string
+  category: string
+  categoryColor: string
+  coverImage: string
+  author: string
+  authorRole: string
+  date: string
+  readTime: string
+  excerpt: string
+  content: string
+}
 
-const relatedPosts = computed(() =>
-  blogPosts
-    .filter((p) => p.id !== post.value?.id && p.category === post.value?.category)
-    .slice(0, 2),
-)
+const post = ref<BlogPost | null>(null)
+const relatedPosts = ref<BlogPost[]>([])
 
-onMounted(() => {
-  if (!post.value) router.replace('/blog')
-})
+function mapPost(d: any): BlogPost {
+  return {
+    id: d.id,
+    title: d.title || '',
+    slug: d.slug || '',
+    category: d.category || '',
+    categoryColor: d.category_color || '',
+    coverImage: d.cover_image || '',
+    author: d.author || '',
+    authorRole: d.author_role || '',
+    date: d.date || '',
+    readTime: d.read_time || '',
+    excerpt: d.excerpt || '',
+    content: d.content || '',
+  }
+}
+
+async function loadPost(slug: string) {
+  loading.value = true
+  try {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('slug', slug)
+      .single()
+    if (error || !data) {
+      router.replace('/blog')
+      return
+    }
+    post.value = mapPost(data)
+
+    // Load related posts
+    const { data: related } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('category', post.value.category)
+      .neq('id', post.value.id)
+      .limit(2)
+    relatedPosts.value = (related ?? []).map(mapPost)
+  } catch {
+    router.replace('/blog')
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => loadPost(route.params.slug as string))
+watch(() => route.params.slug, (slug) => { if (slug) loadPost(slug as string) })
 </script>
 
 <template>
-  <div v-if="post" class="min-h-screen bg-[#03040f]">
+  <div v-if="loading" class="flex min-h-screen items-center justify-center bg-[#03040f]">
+    <div class="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></div>
+  </div>
+  <div v-else-if="post" class="min-h-screen bg-[#03040f]">
 
     <!-- Back nav -->
     <div class="sticky top-[57px] z-40 border-b border-white/10 bg-[#03040f]/90 backdrop-blur-md">

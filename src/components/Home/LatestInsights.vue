@@ -1,57 +1,81 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const router = useRouter()
 const { observeElements } = useScrollAnimation()
+const loading = ref(true)
 
-type Category = 'All Insights' | 'Product Insights' | 'inv8 Updates' | 'Ecosystem Insights' | 'Case Studies'
+type Category = string
 
 const activeCategory = ref<Category>('All Insights')
 
 const categories: Category[] = ['All Insights', 'Product Insights', 'inv8 Updates', 'Ecosystem Insights', 'Case Studies']
 
-const posts = [
-  {
-    category: 'Product Insights' as Category,
-    categoryIcon: 'fa-solid fa-lightbulb',
-    date: 'May 14, 2026',
-    title: 'Why Most MVPs Fail Before Launch',
-    excerpt: 'Common mistakes startups make—and how to build products users actually need.',
-    readTime: '5 min read',
-    image: '/images/blog/mvp-fail.jpg',
-    slug: 'why-most-mvps-fail-before-launch',
-  },
-  {
-    category: 'inv8 Updates' as Category,
-    categoryIcon: 'fa-solid fa-bullhorn',
-    date: 'May 8, 2026',
-    title: 'inv8 Begins Supporting MSMEs Through Innovation Programs',
-    excerpt: "We're partnering with innovation initiatives to help MSMEs digitize and grow sustainably.",
-    readTime: '3 min read',
-    image: '/images/blog/msme-support.jpg',
-    slug: 'inv8-begins-supporting-msmes',
-  },
-  {
-    category: 'Ecosystem Insights' as Category,
-    categoryIcon: 'fa-solid fa-globe',
-    date: 'Apr 30, 2026',
-    title: 'What We Learned From Startup Builders Across Northern Luzon',
-    excerpt: 'Key takeaways from recent engagements with founders and innovation ecosystem partners.',
-    readTime: '6 min read',
-    image: '/images/blog/northern-luzon.jpg',
-    slug: 'startup-builders-northern-luzon',
-  },
-]
+const CATEGORY_ICON_MAP: Record<string, string> = {
+  'Startup Insights': 'fa-solid fa-rocket',
+  'Digital Transformation': 'fa-solid fa-arrows-rotate',
+  'Product Insights': 'fa-solid fa-lightbulb',
+  'inv8 Updates': 'fa-solid fa-bullhorn',
+  'Ecosystem Insights': 'fa-solid fa-globe',
+  'Case Studies': 'fa-solid fa-microscope',
+  'UI/UX Insights': 'fa-solid fa-pen-ruler',
+  'Case Study': 'fa-solid fa-microscope',
+}
+
+function getCategoryIcon(category: string): string {
+  return CATEGORY_ICON_MAP[category] ?? 'fa-solid fa-lightbulb'
+}
+
+function formatDate(isoString: string): string {
+  try {
+    return new Date(isoString).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  } catch { return isoString }
+}
+
+interface Post {
+  slug: string
+  category: Category
+  categoryIcon: string
+  date: string
+  title: string
+  excerpt: string
+  readTime: string
+  image: string
+}
+
+const posts = ref<Post[]>([])
 
 const filtered = computed(() =>
   activeCategory.value === 'All Insights'
-    ? posts
-    : posts.filter((p) => p.category === activeCategory.value)
+    ? posts.value
+    : posts.value.filter((p) => p.category === activeCategory.value)
 )
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('id,title,slug,category,excerpt,cover_image,created_at,read_time')
+      .order('created_at', { ascending: false })
+      .limit(6)
+    if (!error && data && data.length > 0) {
+      posts.value = data.map((d: any) => ({
+        slug: d.slug || '',
+        category: d.category || '',
+        categoryIcon: getCategoryIcon(d.category || ''),
+        date: formatDate(d.created_at),
+        title: d.title || '',
+        excerpt: d.excerpt || '',
+        readTime: d.read_time || '',
+        image: d.cover_image || '',
+      }))
+    }
+  } catch { /* ignore */ } finally {
+    loading.value = false
+  }
   observeElements('.insights-header')
   observeElements('.insight-card')
 })
@@ -87,8 +111,20 @@ onMounted(() => {
         </div>
       </div>
 
+      <!-- Skeleton cards while loading -->
+      <div v-if="loading" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div v-for="n in 3" :key="n" class="flex flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#0d0f1f]">
+          <div class="h-48 animate-pulse bg-white/5"></div>
+          <div class="flex flex-col gap-3 p-6">
+            <div class="h-3 w-1/3 animate-pulse rounded bg-white/10"></div>
+            <div class="h-4 w-3/4 animate-pulse rounded bg-white/10"></div>
+            <div class="h-3 w-full animate-pulse rounded bg-white/10"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Cards -->
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div v-else class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <article
           v-for="(post, i) in filtered"
           :key="post.slug"
