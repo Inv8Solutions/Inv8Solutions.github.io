@@ -18,8 +18,5 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-      - uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEAM_10_SG250815064105 }}
       - run: npm install -g firebase-tools
-      - run: firebase deploy --only hosting --project team-10-sg250815064105
+      - run: firebase deploy --only hosting --project team-10-sg250815064105 --token ${{ secrets.FIREBASE_TOKEN }}
