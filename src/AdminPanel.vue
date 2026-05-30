@@ -556,26 +556,39 @@
                 <input type="text" v-model="newProject.shortDescription" class="input-field" placeholder="Brief description shown on works cards" />
               </div>
               <div>
-                <label class="form-label">Service</label>
-                <select v-model="newProject.service" class="input-field">
-                  <option value="">Select Service</option>
-                  <option value="UI/UX Design">UI/UX Design</option>
-                  <option value="MVP Development">MVP Development</option>
-                  <option value="Innovation for SMEs">Innovation for SMEs</option>
-                  <option value="IoT Development">IoT Development</option>
-                  <option value="PitchDeck Design">PitchDeck Design</option>
+                <label class="form-label">Category</label>
+                <select v-model="newProject.service" class="input-field" @change="newProject.platform = ''">
+                  <option value="">Select Category</option>
+                  <option value="Founders & Startups">Founders &amp; Startups</option>
+                  <option value="Organizations & LGUs">Organizations &amp; LGUs</option>
+                  <option value="MSMEs & Social Enterprises">MSMEs &amp; Social Enterprises</option>
                 </select>
               </div>
               <div>
-                <label class="form-label">Platform</label>
-                <select v-model="newProject.platform" class="input-field">
-                  <option value="">Select Platform</option>
-                  <option value="Website">Web</option>
-                  <option value="Mobile Application">Mobile</option>
-                  <option value="Desktop Application">Desktop</option>
-                  <option value="IoT/Hardware">IoT/Hardware</option>
-                  <option value="UI/UX Design">UI/UX Design</option>
-                  <option value="Other">Other</option>
+                <label class="form-label">Specific Service</label>
+                <select v-model="newProject.platform" class="input-field" :disabled="!newProject.service">
+                  <option value="">Select Service</option>
+                  <template v-if="newProject.service === 'Founders & Startups'">
+                    <option>MVP Development</option>
+                    <option>Product Design (UI/UX)</option>
+                    <option>Web and Mobile App Design</option>
+                    <option>Pitch Deck Design</option>
+                    <option>Landing Page</option>
+                  </template>
+                  <template v-else-if="newProject.service === 'Organizations & LGUs'">
+                    <option>Incubation Program Design</option>
+                    <option>Innovation Workshops and Facilitation</option>
+                    <option>Startup Competition Design</option>
+                    <option>Capacity Building</option>
+                    <option>Program Documentation and Reporting</option>
+                  </template>
+                  <template v-else-if="newProject.service === 'MSMEs & Social Enterprises'">
+                    <option>Business Innovation Discovery</option>
+                    <option>Website Redesign</option>
+                    <option>Digital Presence Setup</option>
+                    <option>Business Model Design</option>
+                    <option>Pitch and Proposal Design</option>
+                  </template>
                 </select>
               </div>
               <div>
@@ -665,26 +678,39 @@
                 <input type="text" v-model="editProjectData.shortDescription" class="input-field" />
               </div>
               <div>
-                <label class="form-label">Service</label>
-                <select v-model="editProjectData.service" class="input-field">
-                  <option value="">Select Service</option>
-                  <option value="UI/UX Design">UI/UX Design</option>
-                  <option value="MVP Development">MVP Development</option>
-                  <option value="Innovation for SMEs">Innovation for SMEs</option>
-                  <option value="IoT Development">IoT Development</option>
-                  <option value="PitchDeck Design">PitchDeck Design</option>
+                <label class="form-label">Category</label>
+                <select v-model="editProjectData.service" class="input-field" @change="editProjectData.platform = ''">
+                  <option value="">Select Category</option>
+                  <option value="Founders & Startups">Founders &amp; Startups</option>
+                  <option value="Organizations & LGUs">Organizations &amp; LGUs</option>
+                  <option value="MSMEs & Social Enterprises">MSMEs &amp; Social Enterprises</option>
                 </select>
               </div>
               <div>
-                <label class="form-label">Platform</label>
-                <select v-model="editProjectData.platform" class="input-field">
-                  <option value="">Select Platform</option>
-                  <option value="Website">Web</option>
-                  <option value="Mobile Application">Mobile</option>
-                  <option value="Desktop Application">Desktop</option>
-                  <option value="IoT/Hardware">IoT/Hardware</option>
-                  <option value="UI/UX Design">UI/UX Design</option>
-                  <option value="Other">Other</option>
+                <label class="form-label">Specific Service</label>
+                <select v-model="editProjectData.platform" class="input-field" :disabled="!editProjectData.service">
+                  <option value="">Select Service</option>
+                  <template v-if="editProjectData.service === 'Founders & Startups'">
+                    <option>MVP Development</option>
+                    <option>Product Design (UI/UX)</option>
+                    <option>Web and Mobile App Design</option>
+                    <option>Pitch Deck Design</option>
+                    <option>Landing Page</option>
+                  </template>
+                  <template v-else-if="editProjectData.service === 'Organizations & LGUs'">
+                    <option>Incubation Program Design</option>
+                    <option>Innovation Workshops and Facilitation</option>
+                    <option>Startup Competition Design</option>
+                    <option>Capacity Building</option>
+                    <option>Program Documentation and Reporting</option>
+                  </template>
+                  <template v-else-if="editProjectData.service === 'MSMEs & Social Enterprises'">
+                    <option>Business Innovation Discovery</option>
+                    <option>Website Redesign</option>
+                    <option>Digital Presence Setup</option>
+                    <option>Business Model Design</option>
+                    <option>Pitch and Proposal Design</option>
+                  </template>
                 </select>
               </div>
               <div>
