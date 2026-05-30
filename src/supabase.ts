@@ -22,8 +22,7 @@ try {
     ? `${supabaseAnonKey.slice(0,8)}...${supabaseAnonKey.slice(-4)}`
     : supabaseAnonKey || ''
   const source = nodeAnon ? 'process.env (CI/server)' : (viteAnon ? 'import.meta.env (.env.local or Vite)' : 'none')
-  console.log('[supabase] VITE_SUPABASE_URL=', supabaseUrl)
-  console.log('[supabase] VITE_SUPABASE_ANON_KEY present=', !!supabaseAnonKey, 'source=', source, 'sample=', maskedKey)
+
 } catch (e) {
   /* ignore logging errors in environments where import.meta.env isn't available */
 }
