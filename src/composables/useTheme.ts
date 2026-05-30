@@ -20,8 +20,8 @@ export function useTheme() {
 
   const initTheme = () => {
     const saved = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    isDark.value = saved ? saved === 'dark' : prefersDark
+    // Default to dark mode regardless of OS preference — site is designed dark-first
+    isDark.value = saved ? saved === 'dark' : true
     applyTheme(isDark.value)
   }
 
