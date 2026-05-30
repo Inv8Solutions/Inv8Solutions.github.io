@@ -1123,7 +1123,7 @@ async function addProject() {
     if (insertErr) throw insertErr
     projects.value.unshift({ id: inserted!.id, name: newProject.value.title, clientName: newProject.value.clientName, status: 'Planning', date: new Date().toISOString().split('T')[0], description: newProject.value.shortDescription || '', imageUrl: imageUrl || undefined, imagePath: imagePath || undefined, additionalImageUrls, additionalImagePaths } as Project)
     closeAddProjectModal()
-  } catch (e) { formError.value = e instanceof Error ? e.message : 'Failed to add project.' }
+  } catch (e: any) { formError.value = e?.message || e?.error_description || JSON.stringify(e) || 'Failed to add project.' }
   finally { isSubmitting.value = false }
 }
 
