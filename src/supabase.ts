@@ -10,9 +10,22 @@ if (!supabaseUrl || !supabaseAnonKey) {
   )
 }
 
+// Debug: show whether Vite loaded the vars (masked key for safety)
+try {
+  const maskedKey = supabaseAnonKey && supabaseAnonKey.length > 12
+    ? `${supabaseAnonKey.slice(0,8)}...${supabaseAnonKey.slice(-4)}`
+    : supabaseAnonKey || ''
+  console.log('[supabase] VITE_SUPABASE_URL=', supabaseUrl)
+  console.log('[supabase] VITE_SUPABASE_ANON_KEY present=', !!supabaseAnonKey, 'sample=', maskedKey)
+} catch (e) {
+  /* ignore logging errors in environments where import.meta.env isn't available */
+}
+
 // Fallback to placeholder strings so createClient does not throw on missing env vars;
 // all requests will fail gracefully instead of crashing the app at import time.
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder-key'
 )
+
+
