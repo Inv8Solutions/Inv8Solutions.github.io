@@ -335,6 +335,11 @@
             </label>
           </div>
 
+          <div v-if="galleryError" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 flex items-start gap-2">
+            <svg class="h-4 w-4 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>{{ galleryError }}</span>
+          </div>
+
           <div v-if="galleryUploading" class="rounded-xl border border-blue-200 bg-blue-50 p-4">
             <div class="flex items-center justify-between text-sm text-blue-700">
               <span>Uploading…</span><span>{{ galleryUploadProgress }}%</span>
@@ -916,31 +921,42 @@ const galleryUploadProgress = ref(0)
 const galleryError = ref('')
 
 async function loadGalleryPhotos() {
-  const { data } = await supabase.from('community_gallery').select('*').order('order', { ascending: true })
+  const { data, error } = await supabase.from('community_gallery').select('*').order('order', { ascending: true })
+  if (error) { console.error('[Gallery] load error:', error); galleryError.value = `Failed to load gallery: ${error.message}`; return }
   galleryPhotos.value = (data ?? []).map((d: any) => ({
     id: d.id, url: d.url, caption: d.caption ?? '', storagePath: d.storage_path ?? '', order: d.order ?? 0,
   }))
 }
 
 async function handleGalleryUpload(e: Event) {
-  const files = Array.from((e.target as HTMLInputElement).files || [])
+  const input = e.target as HTMLInputElement
+  const files = Array.from(input.files || [])
   if (!files.length) return
   galleryUploading.value = true; galleryUploadProgress.value = 0; galleryError.value = ''
   const base = Date.now(); let done = 0
   for (const file of files) {
     const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
     const path = `community-gallery/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
+    console.log('[Gallery] uploading to storage path:', path)
     const { error: upErr } = await supabase.storage.from('gallery').upload(path, file, { contentType: file.type || 'image/jpeg', upsert: false })
-    if (upErr) { galleryError.value = `Storage error: ${upErr.message}`; galleryUploading.value = false; (e.target as HTMLInputElement).value = ''; return }
+    if (upErr) {
+      console.error('[Gallery] storage error:', upErr)
+      galleryError.value = `Storage upload failed: ${upErr.message}. Make sure the "gallery" bucket exists in Supabase Storage and is set to public.`
+      galleryUploading.value = false; input.value = ''; return
+    }
     const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path)
+    console.log('[Gallery] public url:', urlData.publicUrl)
     const { error: dbErr } = await supabase.from('community_gallery').insert({ url: urlData.publicUrl, storage_path: path, caption: '', order: base + done })
-    if (dbErr) { galleryError.value = `DB error: ${dbErr.message}`; galleryUploading.value = false; (e.target as HTMLInputElement).value = ''; return }
+    if (dbErr) {
+      console.error('[Gallery] db error:', dbErr)
+      galleryError.value = `Database insert failed: ${dbErr.message}. Make sure the "community_gallery" table exists in Supabase.`
+      galleryUploading.value = false; input.value = ''; return
+    }
     done++
     galleryUploadProgress.value = Math.round((done / files.length) * 100)
   }
   await loadGalleryPhotos()
-  galleryUploading.value = false; galleryUploadProgress.value = 0;
-  (e.target as HTMLInputElement).value = ''
+  galleryUploading.value = false; galleryUploadProgress.value = 0; input.value = ''
 }
 
 async function deleteGalleryPhoto(photo: GalleryPhoto) {
