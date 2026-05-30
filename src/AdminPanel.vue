@@ -1203,9 +1203,9 @@ const galleryUploading = ref(false)
 const galleryUploadProgress = ref(0)
 
 async function loadGalleryPhotos() {
-  const snapshot = await getDocs(query(collection(db, 'community_gallery'), orderBy('order', 'asc')))
-  galleryPhotos.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).map((d: any) => ({
-    id: d.id, url: d.url, caption: d.caption ?? '', storagePath: d.storage_path, order: d.order,
+  const { data } = await supabase.from('community_gallery').select('*').order('order', { ascending: true })
+  galleryPhotos.value = (data ?? []).map((d: any) => ({
+    id: d.id, url: d.url, caption: d.caption ?? '', storagePath: d.storage_path ?? '', order: d.order ?? 0,
   }))
 }
 
@@ -1215,11 +1215,13 @@ async function handleGalleryUpload(e: Event) {
   galleryUploading.value = true; galleryUploadProgress.value = 0
   const base = Date.now(); let done = 0
   for (const file of files) {
-    const path = `community-gallery/${Date.now()}_${file.name}`
-    const fileRef = storageRef(storage, path)
-    try { await uploadBytes(fileRef, file, { contentType: file.type || 'image/jpeg' }) } catch(upErr) { console.error(upErr); done++; continue }
-    const publicUrl = await getDownloadURL(fileRef)
-    await addDoc(collection(db, 'community_gallery'), { url: publicUrl, storage_path: path, caption: '', order: base + done })
+    const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+    const path = `community-gallery/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
+    const { error: upErr } = await supabase.storage.from('gallery').upload(path, file, { contentType: file.type || 'image/jpeg', upsert: false })
+    if (upErr) { console.error('Upload error:', upErr); done++; galleryUploadProgress.value = Math.round((done / files.length) * 100); continue }
+    const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path)
+    const publicUrl = urlData.publicUrl
+    await supabase.from('community_gallery').insert({ url: publicUrl, storage_path: path, caption: '', order: base + done })
     done++
     galleryUploadProgress.value = Math.round((done / files.length) * 100)
   }
@@ -1230,13 +1232,15 @@ async function handleGalleryUpload(e: Event) {
 
 async function deleteGalleryPhoto(photo: GalleryPhoto) {
   if (!confirm('Delete this photo?')) return
-  try { await deleteObject(storageRef(storage, photo.storagePath)) } catch {}
-  await deleteDoc(doc(db, 'community_gallery', photo.id))
+  if (photo.storagePath) {
+    await supabase.storage.from('gallery').remove([photo.storagePath])
+  }
+  await supabase.from('community_gallery').delete().eq('id', photo.id)
   galleryPhotos.value = galleryPhotos.value.filter(p => p.id !== photo.id)
 }
 
 async function updateGalleryCaption(photo: GalleryPhoto) {
-  await updateDoc(doc(db, 'community_gallery', photo.id), { caption: photo.caption || '' })
+  await supabase.from('community_gallery').update({ caption: photo.caption || '' }).eq('id', photo.id)
 }
 
 // ── Projects ────────────────────────────────────────────────────
