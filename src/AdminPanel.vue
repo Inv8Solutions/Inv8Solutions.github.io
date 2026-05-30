@@ -613,7 +613,7 @@
         <!-- ── GALLERY ────────────────────────────────────────── -->
         <div v-else-if="activeSection === 'gallery'" class="space-y-4">
           <div class="flex items-center justify-between">
-            <p class="text-sm text-gray-500">{{ galleryPhotos.length }} photos</p>
+            <p class="text-sm text-white/50">{{ galleryPhotos.length }} photos</p>
             <label class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
               Upload Photos
@@ -621,11 +621,15 @@
             </label>
           </div>
 
-          <div v-if="galleryUploading" class="rounded-xl border border-blue-200 bg-blue-50 p-4">
-            <div class="flex items-center justify-between text-sm text-blue-700">
+          <div v-if="galleryError" class="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
+            <strong>Upload error:</strong> {{ galleryError }}
+          </div>
+
+          <div v-if="galleryUploading" class="rounded-xl border border-blue-500/30 bg-blue-500/10 p-4">
+            <div class="flex items-center justify-between text-sm text-blue-400">
               <span>Uploading…</span><span>{{ galleryUploadProgress }}%</span>
             </div>
-            <div class="mt-2 h-1.5 rounded-full bg-blue-100">
+            <div class="mt-2 h-1.5 rounded-full bg-white/10">
               <div class="h-1.5 rounded-full bg-blue-600 transition-all" :style="`width: ${galleryUploadProgress}%`"></div>
             </div>
           </div>
@@ -1201,6 +1205,7 @@ function closeBlogModal() { showAddBlogModal.value = false; showEditBlogModal.va
 // ── Gallery ─────────────────────────────────────────────────────
 const galleryUploading = ref(false)
 const galleryUploadProgress = ref(0)
+const galleryError = ref('')
 
 async function loadGalleryPhotos() {
   const { data } = await supabase.from('community_gallery').select('*').order('order', { ascending: true })
@@ -1212,16 +1217,27 @@ async function loadGalleryPhotos() {
 async function handleGalleryUpload(e: Event) {
   const files = Array.from((e.target as HTMLInputElement).files || [])
   if (!files.length) return
-  galleryUploading.value = true; galleryUploadProgress.value = 0
+  galleryUploading.value = true; galleryUploadProgress.value = 0; galleryError.value = ''
   const base = Date.now(); let done = 0
   for (const file of files) {
     const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
     const path = `community-gallery/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
     const { error: upErr } = await supabase.storage.from('gallery').upload(path, file, { contentType: file.type || 'image/jpeg', upsert: false })
-    if (upErr) { console.error('Upload error:', upErr); done++; galleryUploadProgress.value = Math.round((done / files.length) * 100); continue }
+    if (upErr) {
+      galleryError.value = `Storage error: ${upErr.message}. Make sure the 'gallery' bucket exists in Supabase Storage.`
+      galleryUploading.value = false
+      ;(e.target as HTMLInputElement).value = ''
+      return
+    }
     const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path)
     const publicUrl = urlData.publicUrl
-    await supabase.from('community_gallery').insert({ url: publicUrl, storage_path: path, caption: '', order: base + done })
+    const { error: dbErr } = await supabase.from('community_gallery').insert({ url: publicUrl, storage_path: path, caption: '', order: base + done })
+    if (dbErr) {
+      galleryError.value = `DB error: ${dbErr.message}. Make sure the 'community_gallery' table exists in Supabase.`
+      galleryUploading.value = false
+      ;(e.target as HTMLInputElement).value = ''
+      return
+    }
     done++
     galleryUploadProgress.value = Math.round((done / files.length) * 100)
   }
