@@ -246,7 +246,7 @@ const handleLogin = async () => {
       password: formData.password,
     })
     if (error) {
-      loginError.value = 'Invalid email or password. Please try again.'
+      loginError.value = error.message
       return
     }
     localStorage.setItem('isAuthenticated', 'true')
