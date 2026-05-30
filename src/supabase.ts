@@ -1,22 +1,29 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string
+// Resolve env vars with precedence: first `process.env` (CI / server), then `import.meta.env` (Vite), then fallback
+const nodeUrl = typeof process !== 'undefined' && process.env && process.env.VITE_SUPABASE_URL ? String(process.env.VITE_SUPABASE_URL) : ''
+const nodeAnon = typeof process !== 'undefined' && process.env && process.env.VITE_SUPABASE_ANON_KEY ? String(process.env.VITE_SUPABASE_ANON_KEY) : ''
+const viteUrl = (import.meta.env.VITE_SUPABASE_URL as string) || ''
+const viteAnon = (import.meta.env.VITE_SUPABASE_ANON_KEY as string) || ''
+
+const supabaseUrl = nodeUrl || viteUrl || ''
+const supabaseAnonKey = nodeAnon || viteAnon || ''
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error(
     '[supabase] Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY.\n' +
-    'Add them as GitHub repository secrets (Settings → Secrets → Actions).'
+    'Set them in your CI (GitHub Actions) or in .env.local at project root.'
   )
 }
 
-// Debug: show whether Vite loaded the vars (masked key for safety)
+// Debug: show which source provided the values (mask key)
 try {
   const maskedKey = supabaseAnonKey && supabaseAnonKey.length > 12
     ? `${supabaseAnonKey.slice(0,8)}...${supabaseAnonKey.slice(-4)}`
     : supabaseAnonKey || ''
+  const source = nodeAnon ? 'process.env (CI/server)' : (viteAnon ? 'import.meta.env (.env.local or Vite)' : 'none')
   console.log('[supabase] VITE_SUPABASE_URL=', supabaseUrl)
-  console.log('[supabase] VITE_SUPABASE_ANON_KEY present=', !!supabaseAnonKey, 'sample=', maskedKey)
+  console.log('[supabase] VITE_SUPABASE_ANON_KEY present=', !!supabaseAnonKey, 'source=', source, 'sample=', maskedKey)
 } catch (e) {
   /* ignore logging errors in environments where import.meta.env isn't available */
 }
