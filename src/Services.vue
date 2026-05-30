@@ -1,22 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import HeroSection from '@/components/Offers/HeroSection.vue'
 import OffersBody from '@/components/Offers/Body.vue'
-import WorkWithUs from '@/components/Home/WorkWithUs.vue'
-import { DEFAULT_SERVICE_ID } from '@/data/offers'
+import ServicesClosing from '@/components/Offers/ServicesClosing.vue'
 
 defineOptions({
   name: 'ServicesPage',
 })
-
-const selectedServiceId = ref(DEFAULT_SERVICE_ID)
 </script>
 
 <template>
   <div class="services-page">
-    <hero-section v-model:selected-service-id="selectedServiceId" />
-    <offers-body :selected-service-id="selectedServiceId" />
-    <work-with-us />
+    <hero-section />
+    <offers-body />
+    <services-closing />
   </div>
 </template>
 

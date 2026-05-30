@@ -3,7 +3,6 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { blogPosts, categories } from '@/data/blogs'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
-import AppFooter from '@/components/Footer.vue'
 
 defineOptions({ name: 'BlogView' })
 
@@ -125,6 +124,5 @@ onMounted(() => {
       </div>
     </section>
 
-    <AppFooter />
   </div>
 </template>

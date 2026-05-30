@@ -2,7 +2,6 @@
 import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { blogPosts } from '@/data/blogs'
-import AppFooter from '@/components/Footer.vue'
 
 defineOptions({ name: 'BlogPostView' })
 
@@ -126,26 +125,25 @@ onMounted(() => {
       </div>
     </section>
 
-    <AppFooter />
   </div>
 </template>
 
 <style scoped>
 .blog-content :deep(p) {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(var(--blog-text-rgb, 255 255 255) / 0.6);
   font-size: 1rem;
   line-height: 1.8;
   margin-bottom: 1.25rem;
 }
 .blog-content :deep(h2) {
-  color: #fff;
+  color: rgb(var(--blog-heading-rgb, 255 255 255));
   font-size: 1.25rem;
   font-weight: 900;
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
 }
 .blog-content :deep(ul) {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(var(--blog-text-rgb, 255 255 255) / 0.6);
   font-size: 1rem;
   line-height: 1.8;
   margin-bottom: 1.25rem;
@@ -156,7 +154,18 @@ onMounted(() => {
   margin-bottom: 0.4rem;
 }
 .blog-content :deep(strong) {
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(var(--blog-text-rgb, 255 255 255) / 0.85);
   font-weight: 700;
+}
+
+:global(html.light) .blog-content :deep(p),
+:global(html.light) .blog-content :deep(ul) {
+  color: rgba(15, 23, 42, 0.65);
+}
+:global(html.light) .blog-content :deep(h2) {
+  color: #0f172a;
+}
+:global(html.light) .blog-content :deep(strong) {
+  color: rgba(15, 23, 42, 0.9);
 }
 </style>

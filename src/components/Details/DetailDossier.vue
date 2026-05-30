@@ -112,8 +112,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '../../firebase'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const { observeElements } = useScrollAnimation()
@@ -138,22 +137,18 @@ const defaultProjectDossier: ProjectDossierContent = {
 
 async function fetchProjectDossierFromFirebase(id: string): Promise<ProjectDossierContent | null> {
   try {
-    const docRef = doc(db, 'sampleworks', id)
-    const docSnap = await getDoc(docRef)
-
-    if (!docSnap.exists()) {
+    const { data } = await supabase.from('sampleworks').select('client_name, service_id, duration_weeks, tech_stack').eq('id', id).single()
+    if (!data) {
       console.warn(`No dossier found for ID: ${id}`)
       return null
     }
-
-    const data = docSnap.data()
-    const techStackField = Array.isArray(data.techStack) ? data.techStack : []
-    const durationWeeks = typeof data.durationWeeks === 'number' ? data.durationWeeks : null
+    const techStackField = Array.isArray(data.tech_stack) ? data.tech_stack : []
+    const durationWeeks = typeof data.duration_weeks === 'number' ? data.duration_weeks : null
     const timeline = durationWeeks ? `${durationWeeks} week${durationWeeks === 1 ? '' : 's'}` : null
 
     return {
-      clientName: data.clientName ?? defaultProjectDossier.clientName,
-      service: data.serviceId ?? defaultProjectDossier.service,
+      clientName: data.client_name ?? defaultProjectDossier.clientName,
+      service: data.service_id ?? defaultProjectDossier.service,
       timeline: timeline ?? defaultProjectDossier.timeline,
       techStack: techStackField.length ? techStackField : [...defaultProjectDossier.techStack],
     }

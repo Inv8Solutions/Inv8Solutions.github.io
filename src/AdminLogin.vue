@@ -5,7 +5,7 @@
     <div class="max-w-md w-full space-y-8">
       <!-- Header -->
       <div class="text-center">
-        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">Inv8 Solutions</h1>
+        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">inv8 Studio</h1>
         <p class="mt-2 text-lg text-gray-600">Admin Panel</p>
       </div>
 
@@ -169,7 +169,7 @@
 
         <!-- Footer -->
         <div class="mt-6 text-center">
-          <p class="text-sm text-gray-500">© 2024 Inv8 Solutions. All rights reserved.</p>
+          <p class="text-sm text-gray-500">© 2026 inv8 Studio. All rights reserved.</p>
         </div>
       </div>
     </div>
@@ -179,6 +179,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { supabase } from '@/supabase'
 
 interface LoginFormData {
   email: string
@@ -240,29 +241,18 @@ const handleLogin = async () => {
   isLoading.value = true
 
   try {
-    // TODO: Replace with actual authentication logic (Firebase, etc.)
-    // Example Firebase implementation:
-    // import { signInWithEmailAndPassword } from 'firebase/auth'
-    // import { auth } from '@/firebase/config'
-    //
-    // await signInWithEmailAndPassword(auth, formData.email, formData.password)
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    // Mock authentication - replace with real auth
-    if (formData.email === 'admin@inv8solutions.com' && formData.password === 'admin123') {
-      // Store auth state (could use localStorage, Vuex, Pinia, etc.)
-      localStorage.setItem('isAuthenticated', 'true')
-      localStorage.setItem('adminEmail', formData.email)
-
-      // Redirect to admin panel
-      router.push('/admin')
-    } else {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    })
+    if (error) {
       loginError.value = 'Invalid email or password. Please try again.'
+      return
     }
-  } catch (error) {
-    console.error('Login error:', error)
+    localStorage.setItem('isAuthenticated', 'true')
+    localStorage.setItem('adminEmail', formData.email)
+    router.push('/admin')
+  } catch {
     loginError.value = 'An error occurred during login. Please try again.'
   } finally {
     isLoading.value = false

@@ -2,9 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from '@/composables/useTheme'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
-import { db } from '@/firebase'
-import { getFunctions, httpsCallable } from 'firebase/functions'
+import { supabase } from '@/supabase'
 
 defineOptions({
   name: 'AppHeader',
@@ -161,28 +159,15 @@ const handleSubmit = async () => {
   errorMessage.value = ''
 
   try {
-    const inquiryData = {
+    await supabase.from('inquiries').insert({
       name: formData.value.name,
       email: formData.value.email,
       company: formData.value.company || null,
       service: formData.value.service,
       budget: formData.value.budget || null,
       timeline: formData.value.timeline || null,
-      projectDetails: projectDetails.value,
+      project_details: projectDetails.value,
       status: 'new',
-      createdAt: serverTimestamp(),
-    }
-
-    // Save to Firestore
-    const docRef = await addDoc(collection(db, 'inquiries'), inquiryData)
-
-    // Send confirmation email
-    const functions = getFunctions()
-    const sendEmail = httpsCallable(functions, 'sendInquiryConfirmation')
-
-    await sendEmail({
-      ...inquiryData,
-      id: docRef.id,
     })
 
     // Reset form and close modal on success

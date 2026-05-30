@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
-import { db } from '@/firebase'
+import { supabase } from '@/supabase'
 
 defineOptions({
   name: 'FooterSection',
@@ -62,6 +61,7 @@ const quickLinks = [
   { name: 'Works', path: '/works' },
   { name: 'Blog', path: '/blog' },
   { name: 'Contact Us', path: '/contactus' },
+  { name: 'Referral Program', path: '/referrals' },
 ]
 
 const services = [
@@ -74,6 +74,7 @@ const services = [
 const policies = [
   { label: 'Privacy Policy', href: '#' },
   { label: 'Terms of Service', href: '#' },
+  { label: 'Referral Program', href: '/referrals' },
 ]
 
 const currentYear = new Date().getFullYear()
@@ -151,20 +152,16 @@ const handleSubmitBooking = async () => {
   errorMessage.value = ''
 
   try {
-    const bookingData = {
+    await supabase.from('calls').insert({
       email: bookingForm.value.email,
-      name: bookingForm.value.name || 'Not provided',
+      name: bookingForm.value.name || null,
       company: bookingForm.value.company || null,
-      selectedDate: bookingForm.value.selectedDate,
-      selectedTime: bookingForm.value.selectedTime,
-      projectDetails: bookingForm.value.projectDetails || null,
+      selected_date: bookingForm.value.selectedDate,
+      selected_time: bookingForm.value.selectedTime,
+      project_details: bookingForm.value.projectDetails || null,
       type: 'consultation_call',
       status: 'pending',
-      createdAt: serverTimestamp(),
-    }
-
-    // Save to Firestore
-    await addDoc(collection(db, 'calls'), bookingData)
+    })
 
     // Reset form and show success
     resetForm()

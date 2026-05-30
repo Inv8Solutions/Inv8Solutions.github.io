@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { collection, getDocs, query, limit } from 'firebase/firestore'
-import { db } from '@/firebase'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
@@ -26,25 +25,18 @@ const sampleWorks = ref<SampleWork[]>([])
 
 // Fetch data from Firebase sampleworks collection
 async function fetchSampleWorks(): Promise<SampleWork[]> {
-  try {
-    const q = query(collection(db, 'sampleworks'), limit(8))
-    const querySnapshot = await getDocs(q)
-    const works: SampleWork[] = []
-    querySnapshot.forEach((doc) => {
-      const data = doc.data()
-      works.push({
-        id: doc.id,
-        title: data.title || 'Untitled Project',
-        shortDesc: data.shortDesc || data.description || '',
-        imageUrl: data.imageUrl || data.coverPhoto || '',
-        service: data.service || '',
-      })
-    })
-    return works
-  } catch (err) {
-    console.error('Error fetching sample works:', err)
-    throw err
-  }
+  const { data, error: err } = await supabase
+    .from('sampleworks')
+    .select('id, title, short_desc, image_url, service_id')
+    .limit(8)
+  if (err) throw err
+  return (data ?? []).map(d => ({
+    id: d.id,
+    title: d.title || 'Untitled Project',
+    shortDesc: d.short_desc || '',
+    imageUrl: d.image_url || '',
+    service: d.service_id || '',
+  }))
 }
 
 // Load sample works data
@@ -195,47 +187,44 @@ defineExpose({
       </div>
 
       <!-- Projects Grid -->
-      <div v-else class="grid gap-5 md:grid-cols-2">
+      <div v-else class="grid gap-4 md:grid-cols-2">
         <article
           v-for="project in projects"
           :key="project.id || project.title"
-          class="preview-project-card group relative overflow-hidden rounded-[28px] cursor-pointer pb-[65%] bg-[#0d0f1f] transition duration-500 hover:scale-[1.02]"
+          class="preview-project-card group overflow-hidden rounded-[20px] cursor-pointer bg-[#0d0f1f] border border-white/[0.07] transition duration-500 hover:scale-[1.015] hover:-translate-y-1"
           @click="handleProjectView(project)"
         >
-          <!-- Cover image -->
-          <img
-            v-if="project.imageUrl"
-            :src="project.imageUrl"
-            :alt="`${project.title} preview image`"
-            class="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:opacity-90 group-hover:scale-105"
-            loading="lazy"
-            decoding="async"
-            @error="handleImageError"
-          />
-
-          <!-- Gradient overlay -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-
-          <!-- Top: service category tags -->
-          <div class="absolute left-4 top-4 flex flex-wrap gap-1.5">
+          <!-- Image area -->
+          <div class="relative h-72 overflow-hidden bg-[#080a18]">
+            <img
+              v-if="project.imageUrl"
+              :src="project.imageUrl"
+              :alt="`${project.title} preview image`"
+              class="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
+              @error="handleImageError"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            <!-- Service tag -->
             <span
               v-if="project.service"
-              class="inline-flex items-center rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-md"
+              class="absolute left-3.5 top-3.5 rounded-full bg-black/30 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white backdrop-blur-md"
             >
               {{ project.service }}
             </span>
           </div>
 
-          <!-- Bottom: title + circle arrow -->
-          <div class="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-5">
-            <h3 class="text-2xl font-black leading-snug text-white">{{ project.title }}</h3>
+          <!-- Content row -->
+          <div class="flex items-center justify-between gap-4 border-t border-white/[0.07] px-5 py-4">
+            <h3 class="text-base font-black leading-snug text-white">{{ project.title }}</h3>
             <button
               type="button"
               @click.stop="handleProjectView(project)"
-              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-gray-900 shadow-lg transition duration-300 group-hover:scale-110"
+              class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/60 transition duration-300 group-hover:border-blue-500 group-hover:bg-blue-600 group-hover:text-white group-hover:scale-110"
               aria-label="View project"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 -rotate-45">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5 -rotate-45">
                 <path d="M5 12h14" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
               </svg>

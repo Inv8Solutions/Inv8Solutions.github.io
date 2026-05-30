@@ -76,8 +76,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '../../firebase'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const { observeElements } = useScrollAnimation()
@@ -107,15 +106,11 @@ const defaultSolutionContent: SolutionContent = {
 
 async function fetchSolutionFromFirebase(id: string): Promise<SolutionContent | null> {
   try {
-    const docRef = doc(db, 'sampleworks', id)
-    const docSnap = await getDoc(docRef)
-
-    if (!docSnap.exists()) {
+    const { data } = await supabase.from('sampleworks').select('solution, features, image_url').eq('id', id).single()
+    if (!data) {
       console.warn(`No solution found for ID: ${id}`)
       return null
     }
-
-    const data = docSnap.data()
     const features = Array.isArray(data.features) ? data.features : []
 
     const bullets = features.map((feature: { name?: string; description?: string } | string) => {
@@ -133,7 +128,7 @@ async function fetchSolutionFromFirebase(id: string): Promise<SolutionContent | 
       subtitle: 'Solution',
       description: data.solution ?? defaultSolutionContent.description,
       bullets,
-      coverPhoto: data.imageUrl ?? null,
+      coverPhoto: data.image_url ?? null,
     }
   } catch (error) {
     console.error('Failed to fetch solution data from Firestore', error)

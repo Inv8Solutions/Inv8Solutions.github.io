@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick } from 'vue'
-import { collection, query, where, limit, getDocs } from 'firebase/firestore'
-import { db } from '@/firebase'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 export interface SampleWork {
@@ -43,23 +42,21 @@ const fetchSampleWorks = async (serviceId?: string) => {
   try {
     const serviceName = serviceId ? serviceIdMapping[serviceId] : null
 
-    let q = query(collection(db, 'sampleworks'), limit(2))
+    let query = supabase.from('sampleworks').select('id, title, short_desc, image_url, service_id, platform, client_name').limit(2)
+    if (serviceName) query = query.eq('service_id', serviceId ?? '')
 
-    if (serviceName) {
-      q = query(collection(db, 'sampleworks'), where('service', '==', serviceName), limit(2))
-    }
+    const { data, error: err } = await query
+    if (err) throw err
 
-    const querySnapshot = await getDocs(q)
-    const fetchedProjects: SampleWork[] = []
-
-    querySnapshot.forEach((doc) => {
-      fetchedProjects.push({
-        id: doc.id,
-        ...doc.data(),
-      } as SampleWork)
-    })
-
-    projects.value = fetchedProjects
+    projects.value = (data ?? []).map(d => ({
+      id: d.id,
+      title: d.title,
+      shortDesc: d.short_desc || '',
+      coverPhoto: d.image_url || '',
+      service: d.service_id || '',
+      platform: d.platform || '',
+      clientName: d.client_name || '',
+    }))
   } catch (err) {
     console.error('Error fetching sample works:', err)
     error.value = 'Failed to load sample projects'

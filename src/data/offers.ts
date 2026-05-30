@@ -9,31 +9,167 @@ import bentoBasketImg from '@/assets/BentoBasket.png'
 import forensicLensImg from '@/assets/ForensicLens.png'
 import trapiHausImg from '@/assets/TrapiHaus.png'
 
-export type Capability = {
+export type Service = {
   title: string
   description: string
-}
-
-export type WhatWeBuild = {
-  icon: string
-  title: string
-  description: string
-  image?: string
-}
-
-export type Benefit = {
-  icon: string
-  iconColor: string
-  title: string
-  description: string
-}
-
-export type Example = {
+  bestFor: string
   image: string
-  title: string
-  description: string
 }
 
+export type Audience = {
+  id: string
+  label: string
+  icon: string
+  sectionHeader: string
+  sectionTagline: string
+  sectionIntro: string
+  services: Service[]
+}
+
+export const audiences: Audience[] = [
+  {
+    id: 'founders',
+    label: 'Founders & Startups',
+    icon: 'fa-solid fa-rocket',
+    sectionHeader: 'For Founders & Startups',
+    sectionTagline: 'You have an idea. Let\'s figure out what to build first.',
+    sectionIntro:
+      'Starting is hard. We help early-stage founders focus on what matters most, move faster, and show up prepared in front of the people who can help them grow.',
+    services: [
+      {
+        title: 'MVP Development',
+        description:
+          'Your first product should answer one question: do real people want this? We build simple, working web apps that you can put in front of actual users and learn from. No overbuilding. No wasted months. Just something real you can test.',
+        bestFor: 'First-time founders, hackathon winners, grant recipients who need to show progress',
+        image: mvpImage,
+      },
+      {
+        title: 'Product Design (UI/UX)',
+        description:
+          'Before we design a single screen, we talk to your users. We map how they think, what they need, and where they get stuck. Then we design something that actually works for them. From sketches to interactive prototypes, ready to test or present.',
+        bestFor: 'Founders preparing for launch or investor presentations',
+        image: uiuxImage,
+      },
+      {
+        title: 'Web and Mobile App Design',
+        description:
+          'Whether you need a customer-facing web platform or a mobile app your users will actually enjoy using, we design it from the ground up. We focus on clarity, ease of use, and experiences that keep people coming back.',
+        bestFor: 'Founders and early-stage teams ready to build their core product',
+        image: retasifyImg,
+      },
+      {
+        title: 'Pitch Deck Design',
+        description:
+          'A good pitch tells a clear story. We help you figure out what that story is, then design a deck that communicates it simply and confidently. Structure, visuals, and flow that keeps people engaged from the first slide to the last.',
+        bestFor: 'Founders applying to accelerators, government grants, or angel investors',
+        image: strategyImage,
+      },
+      {
+        title: 'Landing Page',
+        description:
+          'Test your idea before you build the full product. We design and build a simple, focused page that explains what you do, who it is for, and what people should do next. A good landing page can save you months of building the wrong thing.',
+        bestFor: 'Founders still validating their idea, early marketing, pre-launch signups',
+        image: acornImg,
+      },
+    ],
+  },
+  {
+    id: 'organizations',
+    label: 'Organizations & LGUs',
+    icon: 'fa-solid fa-building-columns',
+    sectionHeader: 'For Organizations & LGUs',
+    sectionTagline: 'You want to support innovation in your community. We help you do it well.',
+    sectionIntro:
+      'Running an innovation program takes more than good intentions. It takes the right structure, the right facilitation, and a clear plan. We have designed and operated programs from scratch and we bring that experience to your team.',
+    services: [
+      {
+        title: 'Incubation Program Design',
+        description:
+          'A well-designed program changes the direction of every participant who goes through it. We help you build the right structure, set meaningful milestones, connect founders with the right mentors, and define what success actually looks like for your community.',
+        bestFor: 'State universities, LGUs, technology business incubators setting up or improving programs',
+        image: innovImage,
+      },
+      {
+        title: 'Innovation Workshops and Facilitation',
+        description:
+          'The best ideas come from people who feel heard. We design and facilitate workshops that help your team or community understand a problem, explore solutions, and walk away with something they can act on. No lectures. Real conversations.',
+        bestFor: 'Organizations starting a new initiative, community problem-solving sessions, pre-program discovery',
+        image: strategyImage,
+      },
+      {
+        title: 'Startup Competition Design',
+        description:
+          'A competition is only as good as what it produces. We design the full experience from concept to mechanics to judging, so your event creates real momentum for participants and real value for your organization.',
+        bestFor: 'LGUs, universities, corporate programs, government agencies',
+        image: acornImg,
+      },
+      {
+        title: 'Capacity Building',
+        description:
+          'When we leave, the knowledge should stay. We train your internal team on the tools and methods they need to run innovation programs confidently on their own. Practical, hands-on, built around how your team actually works.',
+        bestFor: 'TBI staff, LGU innovation officers, university faculty running startup programs',
+        image: innovImage,
+      },
+      {
+        title: 'Program Documentation and Reporting',
+        description:
+          'Good programs deserve good documentation. We produce reports, playbooks, monitoring and evaluation frameworks, and impact stories that satisfy funder requirements and communicate your program\'s value clearly to partners and stakeholders.',
+        bestFor: 'Organizations reporting to DOST, DICT, or international development partners',
+        image: strategyImage,
+      },
+    ],
+  },
+  {
+    id: 'msmes',
+    label: 'MSMEs & Social Enterprises',
+    icon: 'fa-solid fa-store',
+    sectionHeader: 'For MSMEs and Social Enterprises',
+    sectionTagline: 'You have built something real. Let us help you take it further.',
+    sectionIntro:
+      'You do not need to be the biggest business in the room to operate like one. You need a digital presence that works, a website people trust, and a clear picture of where your business is going. We work with small businesses and mission-driven organizations who are ready to grow with intention.',
+    services: [
+      {
+        title: 'Business Innovation Discovery',
+        description:
+          'Before you invest in anything new, understand what is actually holding you back. We run a structured discovery process that looks at your business model, your customers, and your operations, then surfaces the most important opportunities for growth and innovation. You walk away with a clear picture of what to fix, what to double down on, and what to do next.',
+        bestFor: 'MSMEs and social enterprises ready to grow but unsure where to start, organizations wanting to innovate but needing a grounded starting point',
+        image: innovImage,
+      },
+      {
+        title: 'Website Redesign',
+        description:
+          'Your website should work as hard as you do. We redesign sites that are slow, confusing, or hard to find into something clean, fast, and easy to navigate, so visitors understand what you offer and know how to reach you.',
+        bestFor: 'Businesses with outdated or underperforming websites',
+        image: trapiHausImg,
+      },
+      {
+        title: 'Digital Presence Setup',
+        description:
+          'If people cannot find you online, they will find someone else. We set up and organize your Google Business Profile, social media pages, and basic digital presence so you show up where your customers are already looking.',
+        bestFor: 'Businesses stepping into online channels for the first time',
+        image: artistHubImg,
+      },
+      {
+        title: 'Business Model Design',
+        description:
+          'Sometimes the product is not the problem. Sometimes it is the model. We sit with you, map out how your business creates and delivers value, and help you find the changes that will make the biggest difference.',
+        bestFor: 'Social enterprises working on long-term sustainability, MSMEs ready to grow but unsure how',
+        image: bentoBasketImg,
+      },
+      {
+        title: 'Pitch and Proposal Design',
+        description:
+          'Whether you are applying for a grant, building a partnership, or presenting your work to funders, how you tell your story matters. We help you shape that story and design materials that are clear, compelling, and easy to act on.',
+        bestFor: 'Social enterprises applying to foundations, MSMEs seeking government or LGU partnerships',
+        image: forensicLensImg,
+      },
+    ],
+  },
+]
+
+export const DEFAULT_AUDIENCE_ID = audiences[0]?.id ?? 'founders'
+
+// Legacy exports kept for any components that still reference them
 export type OfferDetail = {
   id: string
   label: string
@@ -42,186 +178,12 @@ export type OfferDetail = {
   heroIcon: string
   blurb: string
   deliverables: string[]
-  capabilities: Capability[]
-  whatWeBuild: WhatWeBuild[]
-  benefits: Benefit[]
-  examples: Example[]
+  capabilities: { title: string; description: string }[]
+  whatWeBuild: { icon: string; title: string; description: string; image?: string }[]
+  benefits: { icon: string; iconColor: string; title: string; description: string }[]
+  examples: { image: string; title: string; description: string }[]
   image?: string
 }
 
-export const offerDetails: OfferDetail[] = [
-  {
-    id: 'webdev',
-    label: 'Web & App Development',
-    title: 'Web & App Development',
-    headline: 'Build digital products\nthat people actually use.',
-    heroIcon: 'fa-solid fa-code',
-    blurb:
-      'Whether you\'re launching a startup, modernizing a business, or creating a new digital service, we help turn ideas into products that are simple, scalable, and ready for the real world.',
-    image: mvpImage,
-    deliverables: [
-      'Prioritized feature roadmap',
-      'Technical architecture & stack selection',
-      'Clickable prototypes for stakeholder buy-in',
-      'Production-ready build with QA',
-      'Launch support & post-deploy monitoring',
-    ],
-    capabilities: [
-      { title: 'Product Strategy Sprint', description: 'Align business goals with user needs to define the right scope before we write a line of code.' },
-      { title: 'Full-Stack Engineering', description: 'Ship reliable web or mobile builds using modern frameworks and cloud infrastructure.' },
-      { title: 'Experience Design', description: 'Map user journeys, stories, and UI flows to ensure the product feels complete from day one.' },
-      { title: 'QA & Release Prep', description: 'Automated and manual testing ensure stability and confidence before every launch.' },
-      { title: 'Analytics & Instrumentation', description: 'Implement product analytics so you capture the right learning signals post-launch.' },
-      { title: 'Ongoing Support', description: 'We help deploy, monitor, and iterate through the first user feedback cycles.' },
-    ],
-    whatWeBuild: [
-      { icon: 'fa-solid fa-rocket', title: 'MVP Development', description: 'Turn your idea into a working product you can test with real users.', image: retasifyImg },
-      { icon: 'fa-solid fa-globe', title: 'Web Applications', description: 'Build custom websites and platforms designed around your business.', image: acornImg },
-      { icon: 'fa-solid fa-mobile-screen', title: 'Mobile Applications', description: 'Create mobile apps that help customers connect with your business.', image: forensicLensImg },
-      { icon: 'fa-solid fa-cloud', title: 'SaaS Products', description: 'Develop software products that can grow with your users.', image: bentoBasketImg },
-    ],
-    benefits: [
-      { icon: 'fa-solid fa-rocket', iconColor: 'text-green-400 bg-green-400/15', title: 'Launch Faster', description: 'Turn ideas into working products in weeks, not months.' },
-      { icon: 'fa-solid fa-shield-halved', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Reduce Risk', description: 'Validate assumptions before investing heavily.' },
-      { icon: 'fa-solid fa-star', iconColor: 'text-yellow-400 bg-yellow-400/15', title: 'Improve Customer Experience', description: 'Create intuitive digital experiences people enjoy using.' },
-      { icon: 'fa-solid fa-chart-line', iconColor: 'text-purple-400 bg-purple-400/15', title: 'Scale Efficiently', description: 'Build systems that support growth without increasing complexity.' },
-    ],
-    examples: [
-      { image: retasifyImg, title: 'Retasify', description: 'A task and project management platform built for growing teams.' },
-      { image: acornImg, title: 'Acorn Brands Academy', description: 'An online learning and booking system for a growing brand education platform.' },
-      { image: forensicLensImg, title: 'Forensic Lens', description: 'A mobile-first case management system for forensic professionals.' },
-      { image: bentoBasketImg, title: 'BentoBasket', description: 'A marketplace platform that connects buyers and sellers of curated products.' },
-    ],
-  },
-  {
-    id: 'uiux',
-    label: 'UI/UX Design',
-    title: 'UI/UX Design',
-    headline: 'Design experiences\npeople love to use.',
-    heroIcon: 'fa-solid fa-pen-nib',
-    blurb:
-      'User-centered interfaces designed to improve usability, adoption, and business outcomes. We turn complex ideas into clear, engaging experiences that feel natural from the very first use.',
-    image: uiuxImage,
-    deliverables: [
-      'A clear, validated user flow',
-      'A complete, modern UI design system',
-      'Interactive prototypes for testing and pitching',
-      'High-fidelity screens ready for development',
-    ],
-    capabilities: [
-      { title: 'User Research & Insights', description: 'We understand user needs, behaviors, and pain points to guide design decisions with clarity.' },
-      { title: 'Information Architecture', description: 'We organize content and flows to create intuitive structures that feel effortless to navigate.' },
-      { title: 'Wireframing & Prototyping', description: 'We turn ideas into interactive prototypes that visualize the experience before development begins.' },
-      { title: 'High-Fidelity UI Design', description: 'We craft clean, modern interfaces built for usability and aesthetic precision.' },
-      { title: 'Design Systems & Components', description: 'We build scalable systems that keep your product consistent and easy to grow.' },
-      { title: 'Usability Testing & Refinement', description: 'We validate designs with real users and refine them for clarity and performance.' },
-    ],
-    whatWeBuild: [
-      { icon: 'fa-solid fa-magnifying-glass', title: 'UX Research', description: 'Learn what your users need before building a solution.', image: forensicLensImg },
-      { icon: 'fa-solid fa-pen-nib', title: 'UI Design', description: 'Design simple and engaging experiences people enjoy using.', image: retasifyImg },
-      { icon: 'fa-solid fa-object-group', title: 'Interactive Prototypes', description: 'Visualize and test ideas before investing in development.', image: artistHubImg },
-      { icon: 'fa-solid fa-clipboard-check', title: 'Product Audits', description: 'Review existing products and identify areas for improvement.', image: trapiHausImg },
-    ],
-    benefits: [
-      { icon: 'fa-solid fa-users', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Higher Adoption', description: 'Intuitive designs reduce friction and increase product engagement.' },
-      { icon: 'fa-solid fa-bolt', iconColor: 'text-yellow-400 bg-yellow-400/15', title: 'Faster Development', description: 'Detailed specs and design systems reduce back-and-forth with engineers.' },
-      { icon: 'fa-solid fa-heart', iconColor: 'text-pink-400 bg-pink-400/15', title: 'Better Retention', description: 'Great UX turns first-time users into loyal, returning customers.' },
-      { icon: 'fa-solid fa-chart-line', iconColor: 'text-green-400 bg-green-400/15', title: 'Stronger Conversions', description: 'Well-designed flows guide users toward the actions that matter.' },
-    ],
-    examples: [
-      { image: retasifyImg, title: 'Retasify Dashboard', description: 'A clean project management UI built for clarity and fast navigation.' },
-      { image: forensicLensImg, title: 'Forensic Lens App', description: 'A mobile UI designed for professionals working in demanding field conditions.' },
-      { image: acornImg, title: 'Acorn Academy Portal', description: 'An e-learning portal designed for intuitive course discovery and enrollment.' },
-      { image: artistHubImg, title: 'ArtistHub Platform', description: 'A community platform UI connecting artists and collaborators.' },
-    ],
-  },
-  {
-    id: 'bizsolutions',
-    label: 'Business Innovation Solutions',
-    title: 'Business Innovation Solutions',
-    headline: 'Streamline operations,\ndrive real business growth.',
-    heroIcon: 'fa-solid fa-chart-bar',
-    blurb:
-      'Streamline operations through automation, internal tools, and digital transformation initiatives. We help businesses replace manual processes with systems that scale.',
-    image: innovImage,
-    deliverables: [
-      'Innovation roadmap & success metrics',
-      'System architecture & integrations plan',
-      'Custom tooling prototypes',
-      'Implementation support & team enablement',
-    ],
-    capabilities: [
-      { title: 'Stakeholder Discovery', description: 'We uncover constraints and opportunities across teams and existing systems.' },
-      { title: 'Process Mapping & Redesign', description: 'We redesign workflows for automation, visibility, and better decision-making.' },
-      { title: 'Solution Prototyping', description: 'We demo concepts quickly to align leadership around the right initiatives.' },
-      { title: 'Systems Integration', description: 'We connect ERPs, CRMs, and bespoke tools with secure, scalable interfaces.' },
-      { title: 'Change Enablement', description: 'We train teams and create documentation to accelerate adoption.' },
-      { title: 'Performance Measurement', description: 'We implement dashboards and KPIs to track impact post-launch.' },
-    ],
-    whatWeBuild: [
-      { icon: 'fa-solid fa-gears', title: 'Workflow Automation', description: 'Reduce manual work and save time through automation.', image: acornImg },
-      { icon: 'fa-solid fa-chart-pie', title: 'Business Dashboards', description: 'Track your business performance in one place.', image: retasifyImg },
-      { icon: 'fa-solid fa-toolbox', title: 'Internal Business Tools', description: 'Create systems that help your team work more efficiently.', image: bentoBasketImg },
-      { icon: 'fa-solid fa-calendar-check', title: 'Booking & Scheduling Systems', description: 'Make it easier for customers to book and schedule services.', image: artistHubImg },
-      { icon: 'fa-solid fa-lightbulb', title: 'Digital Transformation Consulting', description: 'Find better ways to use technology in your business.', image: forensicLensImg },
-    ],
-    benefits: [
-      { icon: 'fa-solid fa-clock', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Save Time', description: 'Eliminate repetitive manual work so your team focuses on what matters.' },
-      { icon: 'fa-solid fa-shield-halved', iconColor: 'text-green-400 bg-green-400/15', title: 'Reduce Errors', description: 'Automated systems minimize human error and improve data accuracy.' },
-      { icon: 'fa-solid fa-eye', iconColor: 'text-yellow-400 bg-yellow-400/15', title: 'Full Visibility', description: 'See exactly what\'s happening in your business at any given moment.' },
-      { icon: 'fa-solid fa-chart-line', iconColor: 'text-purple-400 bg-purple-400/15', title: 'Scale Operations', description: 'Build systems that grow with your business without adding headcount.' },
-    ],
-    examples: [
-      { image: retasifyImg, title: 'Operations Dashboard', description: 'A real-time dashboard that gave management full visibility into daily operations.' },
-      { image: acornImg, title: 'Booking & Scheduling System', description: 'An automated booking system that eliminated manual scheduling for a service business.' },
-      { image: bentoBasketImg, title: 'Inventory Management', description: 'A simple inventory and stock management system built for SMEs.' },
-      { image: artistHubImg, title: 'Community Platform', description: 'A platform that brought people together and automated member management.' },
-    ],
-  },
-  {
-    id: 'strategy',
-    label: 'Innovation & Product Strategy',
-    title: 'Innovation & Product Strategy',
-    headline: 'Turn your ideas into\nan actionable product plan.',
-    heroIcon: 'fa-solid fa-lightbulb',
-    blurb:
-      'Turn ideas into actionable product plans through research, validation, and strategic direction. We help founders and teams move from uncertainty to a clear, funded, executable roadmap.',
-    image: strategyImage,
-    deliverables: [
-      'Validated problem-solution fit',
-      'Opportunity sizing & market framing',
-      'Product roadmap & prioritization framework',
-      'Go-to-market strategy outline',
-      'Investor-ready narrative and deck',
-    ],
-    capabilities: [
-      { title: 'Opportunity Discovery', description: 'We research markets, users, and competitors to identify where real value can be created.' },
-      { title: 'Problem Validation', description: 'We run structured interviews and experiments to confirm the problem is worth solving.' },
-      { title: 'Product Roadmapping', description: 'We translate insights into a prioritized roadmap that balances impact and feasibility.' },
-      { title: 'Story Strategy', description: 'We align market context, traction, and vision into a compelling product narrative.' },
-      { title: 'Go-to-Market Planning', description: 'We define the channels, positioning, and launch sequence to reach early customers.' },
-      { title: 'Investor Readiness', description: 'We help founders pressure-test their strategy and present it with confidence.' },
-    ],
-    whatWeBuild: [
-      { icon: 'fa-solid fa-magnifying-glass-chart', title: 'Market Research', description: 'Understand your customers, competitors, and opportunities.', image: trapiHausImg },
-      { icon: 'fa-solid fa-map', title: 'Business Plan Development', description: 'Turn your ideas into a clear plan for growth.', image: acornImg },
-      { icon: 'fa-solid fa-rectangle-list', title: 'Presentation Design', description: 'Present your ideas with confidence and clarity.', image: forensicLensImg },
-      { icon: 'fa-solid fa-users-gear', title: 'Innovation Workshops', description: 'Explore new ideas and solve challenges with your team.', image: artistHubImg },
-      { icon: 'fa-solid fa-robot', title: 'AI for MSMEs', description: 'Discover practical ways AI can support your business.', image: retasifyImg },
-    ],
-    benefits: [
-      { icon: 'fa-solid fa-compass', iconColor: 'text-blue-400 bg-blue-400/15', title: 'Clarity Before Code', description: 'Define what to build before spending on development.' },
-      { icon: 'fa-solid fa-shield-halved', iconColor: 'text-green-400 bg-green-400/15', title: 'Reduce Costly Pivots', description: 'Validate your assumptions early to avoid building the wrong thing.' },
-      { icon: 'fa-solid fa-handshake', iconColor: 'text-yellow-400 bg-yellow-400/15', title: 'Investor Confidence', description: 'Walk into any room with a story that\'s clear, credible, and compelling.' },
-      { icon: 'fa-solid fa-rocket', iconColor: 'text-purple-400 bg-purple-400/15', title: 'Faster Execution', description: 'A solid strategy means your team moves faster with less back-and-forth.' },
-    ],
-    examples: [
-      { image: forensicLensImg, title: 'Forensic Lens Strategy', description: 'Defined the product vision, roadmap, and pitch narrative for a forensic tech startup.' },
-      { image: bentoBasketImg, title: 'BentoBasket GTM', description: 'Developed the go-to-market strategy and early acquisition playbook for a new marketplace.' },
-      { image: trapiHausImg, title: 'TrapiHaus Roadmap', description: 'Created a product roadmap and investor narrative from an early-stage idea.' },
-      { image: acornImg, title: 'Acorn Brand Strategy', description: 'Shaped the product positioning and pitch deck for an Amazon brand education platform.' },
-    ],
-  },
-]
-
-export const DEFAULT_SERVICE_ID = offerDetails[0]?.id ?? 'webdev'
+export const offerDetails: OfferDetail[] = []
+export const DEFAULT_SERVICE_ID = DEFAULT_AUDIENCE_ID

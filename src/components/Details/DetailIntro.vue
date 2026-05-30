@@ -47,8 +47,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '../../firebase'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const { observeElements } = useScrollAnimation()
@@ -79,21 +78,14 @@ const defaultProjectIntro: ProjectIntroContent = {
 
 async function fetchProjectIntroFromFirebase(id: string): Promise<ProjectIntroContent | null> {
   try {
-    const docRef = doc(db, 'sampleworks', id)
-    const docSnap = await getDoc(docRef)
-    if (docSnap.exists()) {
-      const data = docSnap.data()
-      // Use imageUrl from Firestore directly to render the preview.
-      // If imageUrl is not present, do not attempt Storage fallbacks here.
-      const mediaPreviewUrl = typeof data.imageUrl === 'string' && data.imageUrl.trim().length > 0
-        ? data.imageUrl
-        : null
-
+    const { data } = await supabase.from('sampleworks').select('id, title, short_desc, description, platform, image_url').eq('id', id).single()
+    if (data) {
+      const mediaPreviewUrl = typeof data.image_url === 'string' && data.image_url.trim().length > 0 ? data.image_url : null
       const result = {
-        id: docSnap.id,
+        id: data.id,
         title: data.title || '',
         categoryLabel: data.platform || 'Project',
-        description: data.description ?? data.shortDesc ?? '',
+        description: data.description ?? data.short_desc ?? '',
         mediaPreviewUrl,
         platform: data.platform,
       }

@@ -10,11 +10,9 @@ const { observeElements } = useScrollAnimation()
 
 const categories = [
   'All Projects',
-  'UI/UX Design',
-  'MVP Development',
-  'Innovation for SMEs',
-  'IoT Solutions',
-  'Pitchdeck Design',
+  'Founders & Startups',
+  'Organizations & LGUs',
+  'MSMEs & Social Enterprises',
 ]
 
 // State

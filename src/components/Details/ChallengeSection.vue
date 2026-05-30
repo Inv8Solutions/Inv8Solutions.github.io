@@ -17,8 +17,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '../../firebase'
+import { supabase } from '@/supabase'
 import{ useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const { observeElements } = useScrollAnimation()
@@ -40,19 +39,15 @@ const defaultChallengeContent: ChallengeContent = {
 
 async function fetchChallengeFromFirebase(id: string): Promise<ChallengeContent | null> {
   try {
-    const docRef = doc(db, 'sampleworks', id)
-    const docSnap = await getDoc(docRef)
-
-    if (!docSnap.exists()) {
+    const { data } = await supabase.from('sampleworks').select('challenge_statement').eq('id', id).single()
+    if (!data) {
       console.warn(`No challenge found for ID: ${id}`)
       return null
     }
 
-    const data = docSnap.data()
-
     return {
       subtitle: 'Challenge',
-      description: data.challengeStatement ?? defaultChallengeContent.description,
+      description: data.challenge_statement ?? defaultChallengeContent.description,
     }
   } catch (error) {
     console.error('Failed to fetch challenge data from Firestore', error)

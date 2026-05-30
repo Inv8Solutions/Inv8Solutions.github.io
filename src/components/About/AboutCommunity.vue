@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { collection, getDocs, orderBy, query } from 'firebase/firestore'
-import { db } from '@/firebase'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 interface GalleryPhoto {
@@ -27,9 +26,8 @@ onMounted(async () => {
   observeElements('.discord-cta')
 
   try {
-    const q = query(collection(db, 'community_gallery'), orderBy('order', 'asc'))
-    const snap = await getDocs(q)
-    photos.value = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<GalleryPhoto, 'id'>) }))
+    const { data } = await supabase.from('community_gallery').select('id, url, caption').order('order', { ascending: true })
+    photos.value = (data ?? []) as GalleryPhoto[]
   } catch {
     // gallery stays empty
   } finally {

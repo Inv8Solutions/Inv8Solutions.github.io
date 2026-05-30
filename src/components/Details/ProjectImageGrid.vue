@@ -76,8 +76,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '../../firebase'
+import { supabase } from '@/supabase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const { observeElements } = useScrollAnimation()
@@ -97,24 +96,14 @@ const defaultProjectImages: ProjectImage[] = []
 
 async function fetchProjectImagesFromFirebase(id: string): Promise<ProjectImage[]> {
   try {
-    const docRef = doc(db, 'sampleworks', id)
-    const docSnap = await getDoc(docRef)
-
-    if (!docSnap.exists()) {
+    const { data } = await supabase.from('sampleworks').select('image_url, additional_image_urls').eq('id', id).single()
+    if (!data) {
       console.warn(`No project found for ID: ${id}`)
       return defaultProjectImages
     }
-
-    const data = docSnap.data()
-    const coverImageUrl =
-      typeof data.imageUrl === 'string' && data.imageUrl.trim().length > 0
-        ? data.imageUrl
-        : typeof data.coverPhoto === 'string' && data.coverPhoto.trim().length > 0
-          ? data.coverPhoto
-          : null
-
-    const additionalImageUrls = Array.isArray(data.additionalImageUrls)
-      ? data.additionalImageUrls.filter((item: unknown) => typeof item === 'string' && item.trim().length > 0)
+    const coverImageUrl = typeof data.image_url === 'string' && data.image_url.trim().length > 0 ? data.image_url : null
+    const additionalImageUrls = Array.isArray(data.additional_image_urls)
+      ? data.additional_image_urls.filter((item: unknown) => typeof item === 'string' && (item as string).trim().length > 0)
       : []
 
     const projectImages: ProjectImage[] = []
