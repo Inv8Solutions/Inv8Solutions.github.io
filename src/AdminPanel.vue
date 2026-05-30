@@ -784,10 +784,9 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { auth, db, storage } from '@/firebase'
+import { supabase } from '@/supabase'
+import { auth } from '@/firebase'
 import { signOut } from 'firebase/auth'
-import { collection, doc, query, orderBy, getDocs, getDoc, addDoc, updateDoc, deleteDoc } from 'firebase/firestore'
-import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 
 // ── Icon FA class strings ────────────────────────────────────────
 const IconGrid   = 'fa-solid fa-table-cells-large'
@@ -856,29 +855,29 @@ watch(() => blogForm.value.category, (cat) => {
 
 async function fetchBlogPosts() {
   try {
-    const snapshot = await getDocs(query(collection(db, 'blogposts'), orderBy('created_at', 'desc')))
-    blogPosts.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).map((d: any) => ({
+    const { data } = await supabase.from('blog_posts').select('*').order('created_at', { ascending: false })
+    blogPosts.value = (data ?? []).map((d: any) => ({
       id: d.id, title: d.title, slug: d.slug, category: d.category,
-      categoryColor: d.category_color, excerpt: d.excerpt, content: d.content,
-      coverImage: d.cover_image, author: d.author, authorRole: d.author_role,
-      date: d.date, readTime: d.read_time,
+      categoryColor: d.category_color || '', excerpt: d.excerpt || '', content: d.content || '',
+      coverImage: d.cover_image || '', author: d.author || '', authorRole: d.author_role || '',
+      date: d.date || '', readTime: d.read_time || '',
     }))
-  } catch { /* collection may not exist yet */ }
+  } catch { /* table may not exist yet */ }
 }
 
 async function addBlogPost() {
   if (!blogForm.value.title || !blogForm.value.slug) { blogFormError.value = 'Title and slug are required'; return }
   isBlogSubmitting.value = true; blogFormError.value = null
   try {
-    const docRef = await addDoc(collection(db, 'blogposts'), {
+    const { data, error } = await supabase.from('blog_posts').insert({
       title: blogForm.value.title, slug: blogForm.value.slug, category: blogForm.value.category,
       category_color: blogForm.value.categoryColor, excerpt: blogForm.value.excerpt,
       content: blogForm.value.content, cover_image: blogForm.value.coverImage,
       author: blogForm.value.author, author_role: blogForm.value.authorRole,
       date: blogForm.value.date, read_time: blogForm.value.readTime,
-      created_at: new Date().toISOString()
-    })
-    blogPosts.value.unshift({ id: docRef.id, ...blogForm.value })
+    }).select('id').single()
+    if (error) throw error
+    blogPosts.value.unshift({ id: data!.id, ...blogForm.value })
     closeBlogModal()
   } catch { blogFormError.value = 'Failed to save post' } finally { isBlogSubmitting.value = false }
 }
@@ -887,14 +886,14 @@ async function updateBlogPost() {
   if (!blogForm.value.title || !selectedBlogId.value) { blogFormError.value = 'Title is required'; return }
   isBlogSubmitting.value = true; blogFormError.value = null
   try {
-    await updateDoc(doc(db, 'blogposts', selectedBlogId.value), {
+    const { error } = await supabase.from('blog_posts').update({
       title: blogForm.value.title, slug: blogForm.value.slug, category: blogForm.value.category,
       category_color: blogForm.value.categoryColor, excerpt: blogForm.value.excerpt,
       content: blogForm.value.content, cover_image: blogForm.value.coverImage,
       author: blogForm.value.author, author_role: blogForm.value.authorRole,
       date: blogForm.value.date, read_time: blogForm.value.readTime,
-      updated_at: new Date().toISOString(),
-    })
+    }).eq('id', selectedBlogId.value)
+    if (error) throw error
     const idx = blogPosts.value.findIndex(p => p.id === selectedBlogId.value)
     if (idx !== -1) blogPosts.value[idx] = { ...blogPosts.value[idx]!, ...blogForm.value }
     closeBlogModal()
@@ -903,7 +902,7 @@ async function updateBlogPost() {
 
 async function deleteBlogPost(post: BlogPost) {
   if (!confirm(`Delete "${post.title}"? This cannot be undone.`)) return
-  await deleteDoc(doc(db, 'blogposts', post.id))
+  await supabase.from('blog_posts').delete().eq('id', post.id)
   blogPosts.value = blogPosts.value.filter(p => p.id !== post.id)
 }
 
@@ -914,25 +913,28 @@ function closeBlogModal() { showAddBlogModal.value = false; showEditBlogModal.va
 // ── Gallery ─────────────────────────────────────────────────────
 const galleryUploading = ref(false)
 const galleryUploadProgress = ref(0)
+const galleryError = ref('')
 
 async function loadGalleryPhotos() {
-  const snapshot = await getDocs(query(collection(db, 'community_gallery'), orderBy('order', 'asc')))
-  galleryPhotos.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).map((d: any) => ({
-    id: d.id, url: d.url, caption: d.caption ?? '', storagePath: d.storage_path, order: d.order,
+  const { data } = await supabase.from('community_gallery').select('*').order('order', { ascending: true })
+  galleryPhotos.value = (data ?? []).map((d: any) => ({
+    id: d.id, url: d.url, caption: d.caption ?? '', storagePath: d.storage_path ?? '', order: d.order ?? 0,
   }))
 }
 
 async function handleGalleryUpload(e: Event) {
   const files = Array.from((e.target as HTMLInputElement).files || [])
   if (!files.length) return
-  galleryUploading.value = true; galleryUploadProgress.value = 0
+  galleryUploading.value = true; galleryUploadProgress.value = 0; galleryError.value = ''
   const base = Date.now(); let done = 0
   for (const file of files) {
-    const path = `community-gallery/${Date.now()}_${file.name}`
-    const fileRef = storageRef(storage, path)
-    try { await uploadBytes(fileRef, file, { contentType: file.type || 'image/jpeg' }) } catch(upErr) { console.error(upErr); done++; continue }
-    const publicUrl = await getDownloadURL(fileRef)
-    await addDoc(collection(db, 'community_gallery'), { url: publicUrl, storage_path: path, caption: '', order: base + done })
+    const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+    const path = `community-gallery/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
+    const { error: upErr } = await supabase.storage.from('gallery').upload(path, file, { contentType: file.type || 'image/jpeg', upsert: false })
+    if (upErr) { galleryError.value = `Storage error: ${upErr.message}`; galleryUploading.value = false; (e.target as HTMLInputElement).value = ''; return }
+    const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path)
+    const { error: dbErr } = await supabase.from('community_gallery').insert({ url: urlData.publicUrl, storage_path: path, caption: '', order: base + done })
+    if (dbErr) { galleryError.value = `DB error: ${dbErr.message}`; galleryUploading.value = false; (e.target as HTMLInputElement).value = ''; return }
     done++
     galleryUploadProgress.value = Math.round((done / files.length) * 100)
   }
@@ -943,13 +945,13 @@ async function handleGalleryUpload(e: Event) {
 
 async function deleteGalleryPhoto(photo: GalleryPhoto) {
   if (!confirm('Delete this photo?')) return
-  try { await deleteObject(storageRef(storage, photo.storagePath)) } catch {}
-  await deleteDoc(doc(db, 'community_gallery', photo.id))
+  if (photo.storagePath) await supabase.storage.from('gallery').remove([photo.storagePath])
+  await supabase.from('community_gallery').delete().eq('id', photo.id)
   galleryPhotos.value = galleryPhotos.value.filter(p => p.id !== photo.id)
 }
 
 async function updateGalleryCaption(photo: GalleryPhoto) {
-  await updateDoc(doc(db, 'community_gallery', photo.id), { caption: photo.caption || '' })
+  await supabase.from('community_gallery').update({ caption: photo.caption || '' }).eq('id', photo.id)
 }
 
 // ── Projects ────────────────────────────────────────────────────
@@ -983,18 +985,18 @@ async function uploadProjectImages(files: File[], projectId: string, folder: 'co
   for (const [i, file] of files.entries()) {
     const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
     const path = folder === 'cover' ? `${projectId}/cover-${Date.now()}.${ext}` : `${projectId}/gallery-${Date.now()}-${i}.${ext}`
-    const fileRef = storageRef(storage, path)
-    try { await uploadBytes(fileRef, file, { contentType: file.type || 'image/jpeg' }) } catch(upErr) { console.error(upErr); continue }
-    const publicUrl = await getDownloadURL(fileRef)
-    imageUrls.push(publicUrl); imagePaths.push(path)
+    const { error: upErr } = await supabase.storage.from('sampleworks').upload(path, file, { contentType: file.type || 'image/jpeg', upsert: true })
+    if (upErr) { console.error(upErr); continue }
+    const { data: urlData } = supabase.storage.from('sampleworks').getPublicUrl(path)
+    imageUrls.push(urlData.publicUrl); imagePaths.push(path)
     onProgress(Math.round(((i + 1) / files.length) * 100))
   }
   return { imageUrls, imagePaths }
 }
 
 async function fetchProjects() {
-  const snapshot = await getDocs(query(collection(db, 'sampleworks'), orderBy('title', 'asc')))
-  projects.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).map((d: any) => ({
+  const { data } = await supabase.from('sampleworks').select('*').order('title', { ascending: true })
+  projects.value = (data ?? []).map((d: any) => ({
     id: d.id, name: d.title || '', clientName: d.client_name || 'Unknown', status: d.status || 'Planning',
     date: d.date || '', description: d.description || '', imageUrl: d.image_url,
     imagePath: d.image_path, additionalImageUrls: Array.isArray(d.additional_image_urls) ? d.additional_image_urls : [],
@@ -1003,8 +1005,8 @@ async function fetchProjects() {
 }
 
 async function fetchInquiries() {
-  const snapshot = await getDocs(query(collection(db, 'inquiries'), orderBy('created_at', 'desc')))
-  inquiries.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).map((d: any) => ({
+  const { data } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false })
+  inquiries.value = (data ?? []).map((d: any) => ({
     id: d.id, name: d.name || '', email: d.email || '', company: d.company,
     service: d.service || '', budget: d.budget || '', timeline: d.timeline || '',
     projectDetails: d.project_details || '', status: d.status || 'new',
@@ -1013,8 +1015,8 @@ async function fetchInquiries() {
 }
 
 async function fetchCalls() {
-  const snapshot = await getDocs(query(collection(db, 'calls'), orderBy('created_at', 'desc')))
-  calls.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).map((d: any) => ({
+  const { data } = await supabase.from('calls').select('*').order('created_at', { ascending: false })
+  calls.value = (data ?? []).map((d: any) => ({
     id: d.id, name: d.name || '', email: d.email || '', company: d.company,
     selectedDate: d.selected_date || '', selectedTime: d.selected_time || '',
     projectDetails: d.project_details, type: d.type || 'consultation_call',
@@ -1063,7 +1065,7 @@ async function updateInquiryStatus(status: 'done'|'contacted'|'forwarded') {
   if (!selectedInquiry.value) return
   const map = { done:'client_secured', contacted:'contacted', forwarded:'client_cancelled' } as const
   const newStatus = map[status]
-  await updateDoc(doc(db, 'inquiries', selectedInquiry.value.id), { status: newStatus, updated_at: new Date().toISOString() })
+  await supabase.from('inquiries').update({ status: newStatus, updated_at: new Date().toISOString() }).eq('id', selectedInquiry.value.id)
   const idx = inquiries.value.findIndex(i => i.id === selectedInquiry.value?.id)
   if (idx !== -1 && inquiries.value[idx]) inquiries.value[idx]!.status = newStatus
   closeInquiryModal()
@@ -1078,7 +1080,7 @@ function closeCallModal() { showCallModal.value = false; selectedCall.value = nu
 
 async function updateCallStatus(status: 'contacted') {
   if (!selectedCall.value) return
-  await updateDoc(doc(db, 'calls', selectedCall.value.id), { status, updated_at: new Date().toISOString() })
+  await supabase.from('calls').update({ status, updated_at: new Date().toISOString() }).eq('id', selectedCall.value.id)
   const idx = calls.value.findIndex(c => c.id === selectedCall.value?.id)
   if (idx !== -1 && calls.value[idx]) calls.value[idx]!.status = status
   closeCallModal()
@@ -1108,7 +1110,7 @@ async function addProject() {
       const r = await uploadProjectImages(newProject.value.additionalImages, tempId, 'gallery', p => { addAdditionalUploadProgress.value = p })
       additionalImageUrls = r.imageUrls; additionalImagePaths = r.imagePaths
     }
-    const docRef = await addDoc(collection(db, 'sampleworks'), {
+    const { data: inserted, error: insertErr } = await supabase.from('sampleworks').insert({
       title: newProject.value.title, client_name: newProject.value.clientName,
       short_desc: newProject.value.shortDescription || '', description: newProject.value.shortDescription || '',
       platform: newProject.value.platform || '', service_id: newProject.value.service || null,
@@ -1117,8 +1119,9 @@ async function addProject() {
       tech_stack: newProject.value.techStack || [], image_url: imageUrl, image_path: imagePath,
       additional_image_urls: additionalImageUrls, additional_image_paths: additionalImagePaths,
       status: 'Planning', date: new Date().toISOString().split('T')[0],
-    })
-    projects.value.unshift({ id: docRef.id, name: newProject.value.title, clientName: newProject.value.clientName, status: 'Planning', date: new Date().toISOString().split('T')[0], description: newProject.value.shortDescription || '', imageUrl: imageUrl || undefined, imagePath: imagePath || undefined, additionalImageUrls, additionalImagePaths } as Project)
+    }).select('id').single()
+    if (insertErr) throw insertErr
+    projects.value.unshift({ id: inserted!.id, name: newProject.value.title, clientName: newProject.value.clientName, status: 'Planning', date: new Date().toISOString().split('T')[0], description: newProject.value.shortDescription || '', imageUrl: imageUrl || undefined, imagePath: imagePath || undefined, additionalImageUrls, additionalImagePaths } as Project)
     closeAddProjectModal()
   } catch (e) { formError.value = e instanceof Error ? e.message : 'Failed to add project.' }
   finally { isSubmitting.value = false }
@@ -1138,8 +1141,8 @@ async function deleteProject(project: Project) {
     const toRemove: string[] = []
     if (project.imagePath) toRemove.push(project.imagePath)
     if (project.additionalImagePaths?.length) toRemove.push(...project.additionalImagePaths)
-    if (toRemove.length) await Promise.all(toRemove.map(path => deleteObject(storageRef(storage, path)).catch(() => {})))
-    await deleteDoc(doc(db, 'sampleworks', project.id))
+    if (toRemove.length) await supabase.storage.from('sampleworks').remove(toRemove)
+    await supabase.from('sampleworks').delete().eq('id', project.id)
     projects.value = projects.value.filter(p => p.id !== project.id)
   } catch { alert('Failed to delete project.') }
 }
@@ -1152,8 +1155,7 @@ async function openEditProjectModal(project: Project) {
   editProjectData.value = { title:'', shortDescription:'', platform:'', service:'', clientName:'', challengeStatement:'', solution:'', duration:0, features:[{name:'',description:''}], techStack:[''], coverPhoto:null, additionalImages:[] }
   showEditProjectModal.value = true
   try {
-    const docSnap = await getDoc(doc(db, 'sampleworks', project.id))
-    const d = docSnap.exists() ? docSnap.data() : null
+    const { data: d } = await supabase.from('sampleworks').select('*').eq('id', project.id).single()
     if (d) {
       editProjectData.value = { title: d.title||'', shortDescription: d.description||d.short_desc||'', platform: d.platform||'', service: d.service_id||'', clientName: d.client_name||'', challengeStatement: d.challenge_statement||'', solution: d.solution||'', duration: d.duration_weeks||0, features: d.features?.length?d.features:[{name:'',description:''}], techStack: d.tech_stack?.length?d.tech_stack:[''], coverPhoto: null, additionalImages: [] }
       editExistingImageUrl.value = d.image_url||''; editExistingImagePath.value = d.image_path||''
@@ -1182,7 +1184,7 @@ async function updateProject() {
     const update: Record<string,unknown> = { title: editProjectData.value.title, client_name: editProjectData.value.clientName, short_desc: editProjectData.value.shortDescription||'', description: editProjectData.value.shortDescription||'', platform: editProjectData.value.platform||'', service_id: editProjectData.value.service||null, challenge_statement: editProjectData.value.challengeStatement||'', solution: editProjectData.value.solution||'', duration_weeks: editProjectData.value.duration||0, features: editProjectData.value.features||[], tech_stack: editProjectData.value.techStack||[], updated_at: new Date().toISOString() }
     if (imageUrl) { update.image_url = imageUrl; update.image_path = imagePath }
     if (additionalImageUrls.length) { update.additional_image_urls = [...editExistingAdditionalImageUrls.value, ...additionalImageUrls]; update.additional_image_paths = [...editExistingAdditionalImagePaths.value, ...additionalImagePaths] }
-    await updateDoc(doc(db, 'sampleworks', editingProjectId.value), update)
+    await supabase.from('sampleworks').update(update).eq('id', editingProjectId.value)
     const idx = projects.value.findIndex(p => p.id === editingProjectId.value)
     if (idx !== -1 && projects.value[idx]) {
       projects.value[idx] = { ...projects.value[idx]!, name:editProjectData.value.title, clientName:editProjectData.value.clientName, description:editProjectData.value.shortDescription, ...(imageUrl ? {imageUrl,imagePath} : {}), ...(additionalImageUrls.length ? {additionalImageUrls:[...editExistingAdditionalImageUrls.value,...additionalImageUrls],additionalImagePaths:[...editExistingAdditionalImagePaths.value,...additionalImagePaths]} : {}) }
