@@ -86,7 +86,7 @@
             </div>
           </div>
 
-          <!-- Bottom grid: recent inquiries + upcoming calls -->
+          <!-- Bottom grid: recent inquiries + upcoming calls + referrals -->
           <div class="grid gap-4 lg:grid-cols-2">
             <!-- Recent Inquiries -->
             <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -130,6 +130,30 @@
                   </span>
                 </li>
                 <li v-if="!calls.length" class="px-5 py-8 text-center text-sm text-gray-400">No calls scheduled</li>
+              </ul>
+            </div>
+
+            <!-- Referrals Summary -->
+            <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+                <p class="text-sm font-bold text-gray-900">Recent Referrals</p>
+                <button @click="activeSection = 'referrals'" class="text-xs text-blue-600 hover:text-blue-700">View all →</button>
+              </div>
+              <ul class="divide-y divide-gray-50">
+                <li v-for="ref in referrals.slice(0, 5)" :key="ref.id" class="flex items-center justify-between gap-3 px-5 py-3">
+                  <div class="min-w-0">
+                    <p class="truncate text-sm font-semibold text-gray-900">{{ ref.referralName }}</p>
+                    <p class="truncate text-xs text-gray-400">via {{ ref.yourName }}</p>
+                  </div>
+                  <span class="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase"
+                    :class="ref.status === 'converted' ? 'bg-green-100 text-green-700'
+                      : ref.status === 'contacted' ? 'bg-amber-100 text-amber-700'
+                      : ref.status === 'closed' ? 'bg-gray-100 text-gray-500'
+                      : 'bg-blue-100 text-blue-700'">
+                    {{ ref.status }}
+                  </span>
+                </li>
+                <li v-if="!referrals.length" class="px-5 py-8 text-center text-sm text-gray-400">No referrals yet</li>
               </ul>
             </div>
           </div>
@@ -321,6 +345,199 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- ── REFERRALS ──────────────────────────────────────── -->
+        <div v-else-if="activeSection === 'referrals'" class="space-y-4">
+          <p class="text-sm text-white/40">{{ referrals.length }} total · {{ newReferralsCount }} new</p>
+
+          <div class="rounded-xl border border-white/[0.08] bg-[#0d1117] overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-white/[0.06]">
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wider">Referrer</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wider">Referral</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wider">Company</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wider">Status</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wider">Date</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wider">Update</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="ref in referrals" :key="ref.id" class="border-b border-white/[0.04] hover:bg-white/[0.02]">
+                    <td class="px-4 py-3">
+                      <p class="text-white/80 font-medium">{{ ref.yourName }}</p>
+                      <p class="text-white/40 text-xs">{{ ref.yourEmail }}</p>
+                      <p v-if="ref.yourPhone" class="text-white/40 text-xs">{{ ref.yourPhone }}</p>
+                    </td>
+                    <td class="px-4 py-3">
+                      <p class="text-white/80">{{ ref.referralName }}</p>
+                      <p class="text-white/40 text-xs">{{ ref.referralContact }}</p>
+                    </td>
+                    <td class="px-4 py-3 text-white/60 text-xs">{{ ref.referralCompany || '—' }}</td>
+                    <td class="px-4 py-3">
+                      <span class="rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase"
+                        :class="ref.status === 'converted' ? 'bg-green-500/20 text-green-400'
+                          : ref.status === 'contacted' ? 'bg-amber-500/20 text-amber-400'
+                          : ref.status === 'closed' ? 'bg-white/10 text-white/40'
+                          : 'bg-blue-500/20 text-blue-400'">
+                        {{ ref.status }}
+                      </span>
+                    </td>
+                    <td class="px-4 py-3 text-white/40 text-xs">{{ formatDate(ref.createdAt) }}</td>
+                    <td class="px-4 py-3">
+                      <select
+                        :value="ref.status"
+                        @change="updateReferralStatus(ref.id, ($event.target as HTMLSelectElement).value)"
+                        class="rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/80 focus:border-blue-500 focus:outline-none"
+                      >
+                        <option value="new">New</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="converted">Converted</option>
+                        <option value="closed">Closed</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr v-if="!referrals.length">
+                    <td colspan="6" class="px-4 py-12 text-center text-sm text-white/30">No referrals yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── FAQS ───────────────────────────────────────────── -->
+        <div v-else-if="activeSection === 'faqs'" class="space-y-5">
+          <!-- Add FAQ form -->
+          <div class="rounded-xl border border-white/[0.08] bg-[#0d1117] p-5 space-y-3">
+            <h3 class="text-sm font-bold text-white">Add New FAQ</h3>
+            <div>
+              <label class="block text-xs font-semibold text-white/40 mb-1">Question</label>
+              <input v-model="faqForm.question" type="text" placeholder="Enter question…"
+                class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-white/40 mb-1">Answer</label>
+              <textarea v-model="faqForm.answer" rows="3" placeholder="Enter answer…"
+                class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"></textarea>
+            </div>
+            <button @click="addFaq" :disabled="faqSubmitting"
+              class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50">
+              {{ faqSubmitting ? 'Saving…' : 'Add FAQ' }}
+            </button>
+          </div>
+
+          <!-- FAQ list -->
+          <div class="space-y-3">
+            <div v-for="(faq, idx) in faqs" :key="faq.id" class="rounded-xl border border-white/[0.08] bg-[#0d1117] p-5">
+              <div v-if="editingFaqId !== faq.id">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex-1">
+                    <p class="text-sm font-semibold text-white">{{ faq.question }}</p>
+                    <p class="mt-1 text-sm text-white/60">{{ faq.answer }}</p>
+                  </div>
+                  <div class="flex shrink-0 items-center gap-2">
+                    <button @click="moveFaq(faq, 'up')" :disabled="idx === 0" class="text-white/30 hover:text-white/60 disabled:opacity-20 text-xs px-1">▲</button>
+                    <button @click="moveFaq(faq, 'down')" :disabled="idx === faqs.length - 1" class="text-white/30 hover:text-white/60 disabled:opacity-20 text-xs px-1">▼</button>
+                    <button @click="editingFaqId = faq.id; editFaqForm = { question: faq.question, answer: faq.answer }" class="text-xs font-semibold text-blue-400 hover:text-blue-300">Edit</button>
+                    <button @click="deleteFaq(faq)" class="text-red-400 hover:text-red-300 text-xs">Delete</button>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="space-y-3">
+                <input v-model="editFaqForm.question" type="text"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                <textarea v-model="editFaqForm.answer" rows="3"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"></textarea>
+                <div class="flex gap-2">
+                  <button @click="saveFaqEdit(faq)" class="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700">Save</button>
+                  <button @click="editingFaqId = null" class="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white/60 hover:text-white">Cancel</button>
+                </div>
+              </div>
+            </div>
+            <p v-if="!faqs.length" class="text-center text-sm text-white/30 py-12">No FAQs yet. Add your first one above.</p>
+          </div>
+        </div>
+
+        <!-- ── TEAM ───────────────────────────────────────────── -->
+        <div v-else-if="activeSection === 'team'" class="space-y-5">
+          <!-- Add team member form -->
+          <div class="rounded-xl border border-white/[0.08] bg-[#0d1117] p-5 space-y-3">
+            <h3 class="text-sm font-bold text-white">Add Team Member</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-white/40 mb-1">Name *</label>
+                <input v-model="teamForm.name" type="text" placeholder="Full name"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-white/40 mb-1">Role *</label>
+                <input v-model="teamForm.role" type="text" placeholder="e.g. Product Designer"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+              </div>
+              <div class="col-span-2">
+                <label class="block text-xs font-semibold text-white/40 mb-1">Bio</label>
+                <textarea v-model="teamForm.bio" rows="2" placeholder="Short bio…"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"></textarea>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-white/40 mb-1">Photo URL (or upload below)</label>
+                <input v-model="teamForm.photoUrl" type="text" placeholder="https://…"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-white/40 mb-1">Upload Photo</label>
+                <input type="file" accept="image/*" @change="(e) => { teamPhotoFile = (e.target as HTMLInputElement).files?.[0] || null }"
+                  class="w-full text-xs text-white/60 file:mr-2 file:rounded file:border-0 file:bg-blue-600 file:px-2 file:py-1 file:text-xs file:text-white file:cursor-pointer" />
+              </div>
+            </div>
+            <button @click="addTeamMember" :disabled="teamSubmitting"
+              class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50">
+              {{ teamSubmitting ? 'Saving…' : 'Add Member' }}
+            </button>
+          </div>
+
+          <!-- Team list -->
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div v-for="member in teamMembers" :key="member.id" class="rounded-xl border border-white/[0.08] bg-[#0d1117] p-5">
+              <div v-if="editingTeamId !== member.id">
+                <div class="flex items-start gap-3">
+                  <img v-if="member.photoUrl" :src="member.photoUrl" class="h-14 w-14 rounded-xl object-cover border border-white/10 shrink-0" />
+                  <div v-else class="h-14 w-14 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-user text-white/30 text-xl"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="font-semibold text-white text-sm">{{ member.name }}</p>
+                    <p class="text-xs text-blue-400">{{ member.role }}</p>
+                    <p v-if="member.bio" class="mt-1 text-xs text-white/50 line-clamp-2">{{ member.bio }}</p>
+                  </div>
+                </div>
+                <div class="mt-3 flex gap-2">
+                  <button @click="editingTeamId = member.id; editTeamForm = { name: member.name, role: member.role, bio: member.bio, photoUrl: member.photoUrl }" class="text-xs font-semibold text-blue-400 hover:text-blue-300">Edit</button>
+                  <button @click="deleteTeamMember(member)" class="text-red-400 hover:text-red-300 text-xs">Delete</button>
+                </div>
+              </div>
+              <div v-else class="space-y-2">
+                <input v-model="editTeamForm.name" type="text" placeholder="Name"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                <input v-model="editTeamForm.role" type="text" placeholder="Role"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                <textarea v-model="editTeamForm.bio" rows="2" placeholder="Bio"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"></textarea>
+                <input v-model="editTeamForm.photoUrl" type="text" placeholder="Photo URL"
+                  class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                <input type="file" accept="image/*" @change="(e) => { editTeamPhotoFile = (e.target as HTMLInputElement).files?.[0] || null }"
+                  class="w-full text-xs text-white/60 file:mr-2 file:rounded file:border-0 file:bg-blue-600 file:px-2 file:py-1 file:text-xs file:text-white file:cursor-pointer" />
+                <div class="flex gap-2 pt-1">
+                  <button @click="saveTeamEdit(member)" class="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700">Save</button>
+                  <button @click="editingTeamId = null; editTeamPhotoFile = null" class="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white/60 hover:text-white">Cancel</button>
+                </div>
+              </div>
+            </div>
+            <p v-if="!teamMembers.length" class="col-span-full text-center text-sm text-white/30 py-12">No team members yet.</p>
           </div>
         </div>
 
@@ -756,7 +973,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted } from 'vue'
+import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { auth, db, storage } from '@/firebase'
 import { signOut } from 'firebase/auth'
@@ -779,6 +996,9 @@ interface Call { id: string; name: string; email: string; company?: string; sele
 interface GalleryPhoto { id: string; url: string; caption?: string; storagePath: string; order: number }
 interface BlogPost { id: string; title: string; slug: string; category: string; categoryColor: string; excerpt: string; content: string; coverImage: string; author: string; authorRole: string; date: string; readTime: string }
 interface Settings { adminEmail: string; companyName: string }
+interface Referral { id: string; yourName: string; yourEmail: string; yourPhone: string; referralName: string; referralContact: string; referralCompany: string; notes: string; status: string; createdAt: Date }
+interface Faq { id: string; question: string; answer: string; order: number; createdAt: Date }
+interface TeamMember { id: string; name: string; role: string; bio: string; photoUrl: string; order: number }
 
 // ── State ───────────────────────────────────────────────────────
 const router = useRouter()
@@ -793,6 +1013,26 @@ const galleryPhotos = ref<GalleryPhoto[]>([])
 const blogPosts = ref<BlogPost[]>([])
 
 const settings = reactive<Settings>({ adminEmail: 'admin@inv8solutions.com', companyName: 'Inv8 Studio' })
+
+// ── Referrals ───────────────────────────────────────────────────
+const referrals = ref<Referral[]>([])
+const newReferralsCount = ref(0)
+
+// ── FAQs ────────────────────────────────────────────────────────
+const faqs = ref<Faq[]>([])
+const faqForm = ref({ question: '', answer: '' })
+const editingFaqId = ref<string | null>(null)
+const editFaqForm = ref({ question: '', answer: '' })
+const faqSubmitting = ref(false)
+
+// ── Team ────────────────────────────────────────────────────────
+const teamMembers = ref<TeamMember[]>([])
+const teamForm = ref({ name: '', role: '', bio: '', photoUrl: '' })
+const editingTeamId = ref<string | null>(null)
+const editTeamForm = ref({ name: '', role: '', bio: '', photoUrl: '' })
+const teamSubmitting = ref(false)
+const teamPhotoFile = ref<File | null>(null)
+const editTeamPhotoFile = ref<File | null>(null)
 
 // ── Blog ────────────────────────────────────────────────────────
 const showAddBlogModal = ref(false)
@@ -996,9 +1236,130 @@ async function fetchCalls() {
   }))
 }
 
+async function fetchReferrals() {
+  const { data } = await supabase.from('referrals').select('*').order('created_at', { ascending: false })
+  referrals.value = (data ?? []).map(d => ({
+    id: d.id, yourName: d.your_name || '', yourEmail: d.your_email || '', yourPhone: d.your_phone || '',
+    referralName: d.referral_name || '', referralContact: d.referral_contact || '',
+    referralCompany: d.referral_company || '', notes: d.notes || '',
+    status: d.status || 'new', createdAt: d.created_at ? new Date(d.created_at) : new Date(),
+  }))
+  newReferralsCount.value = referrals.value.filter(r => r.status === 'new').length
+}
+
+async function fetchFaqs() {
+  const { data } = await supabase.from('faqs').select('*').order('order', { ascending: true })
+  faqs.value = (data ?? []).map(d => ({
+    id: d.id, question: d.question || '', answer: d.answer || '',
+    order: d.order ?? 0, createdAt: d.created_at ? new Date(d.created_at) : new Date(),
+  }))
+}
+
+async function fetchTeam() {
+  const { data } = await supabase.from('team_members').select('*').order('order', { ascending: true })
+  teamMembers.value = (data ?? []).map(d => ({
+    id: d.id, name: d.name || '', role: d.role || '', bio: d.bio || '',
+    photoUrl: d.photo_url || '', order: d.order ?? 0,
+  }))
+}
+
+async function updateReferralStatus(id: string, status: string) {
+  await supabase.from('referrals').update({ status, updated_at: new Date().toISOString() }).eq('id', id)
+  const idx = referrals.value.findIndex(r => r.id === id)
+  if (idx !== -1 && referrals.value[idx]) referrals.value[idx]!.status = status
+  newReferralsCount.value = referrals.value.filter(r => r.status === 'new').length
+}
+
+async function addFaq() {
+  if (!faqForm.value.question || !faqForm.value.answer) return
+  faqSubmitting.value = true
+  try {
+    const maxOrder = faqs.value.length ? Math.max(...faqs.value.map(f => f.order)) + 1 : 0
+    const { data, error: e } = await supabase.from('faqs').insert({ question: faqForm.value.question, answer: faqForm.value.answer, order: maxOrder }).select('id, created_at').single()
+    if (e) throw e
+    faqs.value.push({ id: data!.id, question: faqForm.value.question, answer: faqForm.value.answer, order: maxOrder, createdAt: new Date(data!.created_at) })
+    faqForm.value = { question: '', answer: '' }
+  } catch { /* ignore */ } finally { faqSubmitting.value = false }
+}
+
+async function saveFaqEdit(faq: Faq) {
+  await supabase.from('faqs').update({ question: editFaqForm.value.question, answer: editFaqForm.value.answer }).eq('id', faq.id)
+  faq.question = editFaqForm.value.question
+  faq.answer = editFaqForm.value.answer
+  editingFaqId.value = null
+}
+
+async function deleteFaq(faq: Faq) {
+  if (!confirm(`Delete this FAQ?`)) return
+  await supabase.from('faqs').delete().eq('id', faq.id)
+  faqs.value = faqs.value.filter(f => f.id !== faq.id)
+}
+
+async function moveFaq(faq: Faq, dir: 'up' | 'down') {
+  const idx = faqs.value.findIndex(f => f.id === faq.id)
+  const swapIdx = dir === 'up' ? idx - 1 : idx + 1
+  if (swapIdx < 0 || swapIdx >= faqs.value.length) return
+  const swapFaq = faqs.value[swapIdx]!
+  const tempOrder = faq.order
+  faq.order = swapFaq.order
+  swapFaq.order = tempOrder
+  await Promise.all([
+    supabase.from('faqs').update({ order: faq.order }).eq('id', faq.id),
+    supabase.from('faqs').update({ order: swapFaq.order }).eq('id', swapFaq.id),
+  ])
+  faqs.value.sort((a, b) => a.order - b.order)
+}
+
+async function addTeamMember() {
+  if (!teamForm.value.name || !teamForm.value.role) return
+  teamSubmitting.value = true
+  try {
+    let photoUrl = teamForm.value.photoUrl
+    if (teamPhotoFile.value) {
+      const path = `team-photos/${Date.now()}_${teamPhotoFile.value.name}`
+      const { data: uploaded, error: upErr } = await supabase.storage.from('team-photos').upload(path, teamPhotoFile.value, { contentType: teamPhotoFile.value.type || 'image/jpeg' })
+      if (!upErr && uploaded) {
+        const { data: { publicUrl } } = supabase.storage.from('team-photos').getPublicUrl(uploaded.path)
+        photoUrl = publicUrl
+      }
+    }
+    const maxOrder = teamMembers.value.length ? Math.max(...teamMembers.value.map(t => t.order)) + 1 : 0
+    const { data, error: e } = await supabase.from('team_members').insert({ name: teamForm.value.name, role: teamForm.value.role, bio: teamForm.value.bio, photo_url: photoUrl, order: maxOrder }).select('id').single()
+    if (e) throw e
+    teamMembers.value.push({ id: data!.id, name: teamForm.value.name, role: teamForm.value.role, bio: teamForm.value.bio, photoUrl, order: maxOrder })
+    teamForm.value = { name: '', role: '', bio: '', photoUrl: '' }
+    teamPhotoFile.value = null
+  } catch { /* ignore */ } finally { teamSubmitting.value = false }
+}
+
+async function saveTeamEdit(member: TeamMember) {
+  let photoUrl = editTeamForm.value.photoUrl
+  if (editTeamPhotoFile.value) {
+    const path = `team-photos/${Date.now()}_${editTeamPhotoFile.value.name}`
+    const { data: uploaded, error: upErr } = await supabase.storage.from('team-photos').upload(path, editTeamPhotoFile.value, { contentType: editTeamPhotoFile.value.type || 'image/jpeg' })
+    if (!upErr && uploaded) {
+      const { data: { publicUrl } } = supabase.storage.from('team-photos').getPublicUrl(uploaded.path)
+      photoUrl = publicUrl
+    }
+  }
+  await supabase.from('team_members').update({ name: editTeamForm.value.name, role: editTeamForm.value.role, bio: editTeamForm.value.bio, photo_url: photoUrl }).eq('id', member.id)
+  member.name = editTeamForm.value.name
+  member.role = editTeamForm.value.role
+  member.bio = editTeamForm.value.bio
+  member.photoUrl = photoUrl
+  editingTeamId.value = null
+  editTeamPhotoFile.value = null
+}
+
+async function deleteTeamMember(member: TeamMember) {
+  if (!confirm(`Delete ${member.name}?`)) return
+  await supabase.from('team_members').delete().eq('id', member.id)
+  teamMembers.value = teamMembers.value.filter(t => t.id !== member.id)
+}
+
 async function loadData() {
   isLoading.value = true; error.value = null
-  try { await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls(), loadGalleryPhotos(), fetchBlogPosts()]) }
+  try { await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls(), loadGalleryPhotos(), fetchBlogPosts(), fetchReferrals(), fetchFaqs(), fetchTeam()]) }
   catch (e) { console.error(e) } finally { isLoading.value = false }
 }
 
@@ -1014,6 +1375,7 @@ const dashboardStats = computed(() => [
   { label:'Blog Posts',    value:blogPosts.value.length,   sub:'Published',           icon:'fa-solid fa-pen-to-square',   iconBg:'bg-purple-50', iconColor:'text-purple-600', valueColor:'text-purple-600' },
   { label:'New Inquiries', value:newInquiriesCount.value,  sub:'Awaiting response',   icon:'fa-solid fa-envelope',        iconBg:'bg-amber-50',  iconColor:'text-amber-600',  valueColor:'text-amber-600', badge:true },
   { label:'Calls Booked',  value:calls.value.length,       sub:'Total consultations', icon:'fa-solid fa-phone',           iconBg:'bg-green-50',  iconColor:'text-green-600',  valueColor:'text-green-600' },
+  { label:'Referrals',     value:referrals.value.length,   sub:'Total submitted',     icon:'fa-solid fa-handshake',       iconBg:'bg-pink-50',   iconColor:'text-pink-600',   valueColor:'text-pink-600' },
 ])
 
 const navItems = computed(() => [
@@ -1022,6 +1384,9 @@ const navItems = computed(() => [
   { id:'blog',      label:'Blog Posts',icon:'fa-solid fa-pen-to-square' },
   { id:'inquiries', label:'Inquiries', icon:'fa-solid fa-envelope', badge: newInquiriesCount.value },
   { id:'calls',     label:'Calls',     icon:'fa-solid fa-phone' },
+  { id:'referrals', label:'Referrals', icon:'fa-solid fa-handshake', badge: newReferralsCount.value > 0 ? newReferralsCount.value : undefined },
+  { id:'faqs',      label:'FAQs',      icon:'fa-solid fa-circle-question' },
+  { id:'team',      label:'Team',      icon:'fa-solid fa-users' },
   { id:'gallery',   label:'Gallery',   icon:'fa-solid fa-image' },
   { id:'settings',  label:'Settings',  icon:'fa-solid fa-gear' },
 ])
@@ -1180,9 +1545,92 @@ const formatDate = (d: Date) => d.toLocaleDateString('en-US', { month:'short', d
 async function handleLogout() { await signOut(auth); localStorage.removeItem('isAuthenticated'); localStorage.removeItem('adminEmail'); router.push('/admin/login') }
 function saveSettings() { console.log('Settings saved:', settings) }
 
+let realtimeChannels: ReturnType<typeof supabase.channel>[] = []
+
 onMounted(async () => {
   if (localStorage.getItem('isAuthenticated') !== 'true') { router.push('/admin/login'); return }
   await loadData()
+
+  // ── Realtime subscriptions ──────────────────────────────────
+  const inquiryChannel = supabase
+    .channel('realtime-inquiries')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'inquiries' }, (payload) => {
+      const d = payload.new as Record<string, unknown>
+      inquiries.value.unshift({
+        id: d.id as string, name: (d.name as string) || '', email: (d.email as string) || '',
+        company: d.company as string | undefined, service: (d.service as string) || '',
+        budget: d.budget as string | undefined, timeline: d.timeline as string | undefined,
+        projectDetails: (d.project_details as string) || '', status: (d.status as Inquiry['status']) || 'new',
+        createdAt: d.created_at ? new Date(d.created_at as string) : new Date(),
+      })
+    })
+    .subscribe()
+
+  const callChannel = supabase
+    .channel('realtime-calls')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'calls' }, (payload) => {
+      const d = payload.new as Record<string, unknown>
+      calls.value.unshift({
+        id: d.id as string, name: (d.name as string) || '', email: (d.email as string) || '',
+        company: d.company as string | undefined, selectedDate: (d.selected_date as string) || '',
+        selectedTime: (d.selected_time as string) || '', projectDetails: d.project_details as string | undefined,
+        type: (d.type as string) || 'consultation_call', status: (d.status as string) || 'pending',
+        createdAt: d.created_at ? new Date(d.created_at as string) : new Date(),
+      })
+    })
+    .subscribe()
+
+  const referralChannel = supabase
+    .channel('realtime-referrals')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'referrals' }, (payload) => {
+      const d = payload.new as Record<string, unknown>
+      referrals.value.unshift({
+        id: d.id as string, yourName: (d.your_name as string) || '', yourEmail: (d.your_email as string) || '',
+        yourPhone: (d.your_phone as string) || '', referralName: (d.referral_name as string) || '',
+        referralContact: (d.referral_contact as string) || '', referralCompany: (d.referral_company as string) || '',
+        notes: (d.notes as string) || '', status: (d.status as string) || 'new',
+        createdAt: d.created_at ? new Date(d.created_at as string) : new Date(),
+      })
+      newReferralsCount.value++
+    })
+    .subscribe()
+
+  const blogChannel = supabase
+    .channel('realtime-blogposts')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'blogposts' }, (payload) => {
+      const d = payload.new as Record<string, unknown>
+      blogPosts.value.unshift({
+        id: d.id as string, title: (d.title as string) || '', slug: (d.slug as string) || '',
+        category: (d.category as string) || '', categoryColor: (d.category_color as string) || '',
+        excerpt: (d.excerpt as string) || '', content: (d.content as string) || '',
+        coverImage: (d.cover_image as string) || '', author: (d.author as string) || '',
+        authorRole: (d.author_role as string) || '', date: (d.date as string) || '',
+        readTime: (d.read_time as string) || '',
+      })
+    })
+    .subscribe()
+
+  const projectChannel = supabase
+    .channel('realtime-projects')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sampleworks' }, (payload) => {
+      const d = payload.new as Record<string, unknown>
+      projects.value.unshift({
+        id: d.id as string, name: (d.title as string) || '', clientName: (d.client_name as string) || 'Unknown',
+        status: (d.status as string) || 'Planning', date: (d.date as string) || '',
+        description: (d.description as string) || '', imageUrl: d.image_url as string | undefined,
+        imagePath: d.image_path as string | undefined,
+        additionalImageUrls: Array.isArray(d.additional_image_urls) ? d.additional_image_urls : [],
+        additionalImagePaths: Array.isArray(d.additional_image_paths) ? d.additional_image_paths : [],
+        serviceId: d.service_id as string | undefined,
+      })
+    })
+    .subscribe()
+
+  realtimeChannels = [inquiryChannel, callChannel, referralChannel, blogChannel, projectChannel]
+})
+
+onUnmounted(() => {
+  realtimeChannels.forEach(ch => supabase.removeChannel(ch))
 })
 </script>
 

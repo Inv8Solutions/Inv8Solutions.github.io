@@ -1,20 +1,20 @@
 <template>
   <div
-    class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4 sm:px-6 lg:px-8"
+    class="min-h-screen flex items-center justify-center bg-[#07090f] px-4 sm:px-6 lg:px-8"
   >
     <div class="max-w-md w-full space-y-8">
       <!-- Header -->
       <div class="text-center">
-        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">inv8 Studio</h1>
-        <p class="mt-2 text-lg text-gray-600">Admin Panel</p>
+        <h1 class="text-3xl font-bold text-white sm:text-4xl">inv8 Studio</h1>
+        <p class="mt-2 text-lg text-white/60">Admin Panel</p>
       </div>
 
       <!-- Login Form -->
-      <div class="bg-white rounded-2xl shadow-xl p-8">
+      <div class="bg-[#0d1117] border border-white/[0.08] rounded-2xl p-8">
         <form @submit.prevent="handleLogin" class="space-y-6">
           <!-- Email Field -->
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">
+            <label for="email" class="block text-sm font-medium text-white/70">
               Email Address
             </label>
             <div class="mt-1 relative">
@@ -23,13 +23,13 @@
                 v-model="formData.email"
                 type="email"
                 required
-                class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                class="appearance-none block w-full px-3 py-3 border border-white/10 rounded-lg bg-white/5 text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 :class="{ 'border-red-500 focus:ring-red-500': errors.email }"
                 placeholder="admin@example.com"
               />
               <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
                 <svg
-                  class="h-5 w-5 text-gray-400"
+                  class="h-5 w-5 text-white/40"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -43,19 +43,19 @@
                 </svg>
               </div>
             </div>
-            <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
+            <p v-if="errors.email" class="mt-1 text-sm text-red-400">{{ errors.email }}</p>
           </div>
 
           <!-- Password Field -->
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
+            <label for="password" class="block text-sm font-medium text-white/70"> Password </label>
             <div class="mt-1 relative">
               <input
                 id="password"
                 v-model="formData.password"
                 :type="showPassword ? 'text' : 'password'"
                 required
-                class="appearance-none block w-full px-3 py-3 pr-10 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                class="appearance-none block w-full px-3 py-3 pr-10 border border-white/10 rounded-lg bg-white/5 text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 :class="{ 'border-red-500 focus:ring-red-500': errors.password }"
                 placeholder="••••••••"
               />
@@ -66,7 +66,7 @@
               >
                 <svg
                   v-if="showPassword"
-                  class="h-5 w-5 text-gray-400 hover:text-gray-600"
+                  class="h-5 w-5 text-white/40 hover:text-white/60"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -86,7 +86,7 @@
                 </svg>
                 <svg
                   v-else
-                  class="h-5 w-5 text-gray-400 hover:text-gray-600"
+                  class="h-5 w-5 text-white/40 hover:text-white/60"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -100,7 +100,7 @@
                 </svg>
               </button>
             </div>
-            <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
+            <p v-if="errors.password" class="mt-1 text-sm text-red-400">{{ errors.password }}</p>
           </div>
 
           <!-- Remember Me & Forgot Password -->
@@ -110,17 +110,17 @@
                 id="remember"
                 v-model="formData.remember"
                 type="checkbox"
-                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-white/10 rounded bg-white/5"
               />
-              <label for="remember" class="ml-2 block text-sm text-gray-700"> Remember me </label>
+              <label for="remember" class="ml-2 block text-sm text-white"> Remember me </label>
             </div>
-            <button type="button" class="text-sm text-blue-600 hover:text-blue-500">
+            <button type="button" class="text-sm text-blue-500 hover:text-blue-400">
               Forgot password?
             </button>
           </div>
 
           <!-- Error Message -->
-          <div v-if="loginError" class="rounded-lg bg-red-50 p-4">
+          <div v-if="loginError" class="rounded-lg bg-red-500/10 p-4">
             <div class="flex">
               <svg
                 class="h-5 w-5 text-red-400"
@@ -136,7 +136,7 @@
                 />
               </svg>
               <div class="ml-3">
-                <p class="text-sm text-red-800">{{ loginError }}</p>
+                <p class="text-sm text-red-400">{{ loginError }}</p>
               </div>
             </div>
           </div>
@@ -169,7 +169,7 @@
 
         <!-- Footer -->
         <div class="mt-6 text-center">
-          <p class="text-sm text-gray-500">© 2026 inv8 Studio. All rights reserved.</p>
+          <p class="text-sm text-white/40">© 2026 inv8 Studio. All rights reserved.</p>
         </div>
       </div>
     </div>
