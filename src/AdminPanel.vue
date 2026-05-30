@@ -860,7 +860,7 @@ watch(() => blogForm.value.category, (cat) => {
 
 async function fetchBlogPosts() {
   try {
-    const { data } = await supabase.from('blog_posts').select('*').order('created_at', { ascending: false })
+    const { data } = await supabase.from('blogposts').select('*').order('created_at', { ascending: false })
     blogPosts.value = (data ?? []).map((d: any) => ({
       id: d.id, title: d.title, slug: d.slug, category: d.category,
       categoryColor: d.category_color || '', excerpt: d.excerpt || '', content: d.content || '',
@@ -874,7 +874,7 @@ async function addBlogPost() {
   if (!blogForm.value.title || !blogForm.value.slug) { blogFormError.value = 'Title and slug are required'; return }
   isBlogSubmitting.value = true; blogFormError.value = null
   try {
-    const { data, error } = await supabase.from('blog_posts').insert({
+    const { data, error } = await supabase.from('blogposts').insert({
       title: blogForm.value.title, slug: blogForm.value.slug, category: blogForm.value.category,
       category_color: blogForm.value.categoryColor, excerpt: blogForm.value.excerpt,
       content: blogForm.value.content, cover_image: blogForm.value.coverImage,
@@ -891,7 +891,7 @@ async function updateBlogPost() {
   if (!blogForm.value.title || !selectedBlogId.value) { blogFormError.value = 'Title is required'; return }
   isBlogSubmitting.value = true; blogFormError.value = null
   try {
-    const { error } = await supabase.from('blog_posts').update({
+    const { error } = await supabase.from('blogposts').update({
       title: blogForm.value.title, slug: blogForm.value.slug, category: blogForm.value.category,
       category_color: blogForm.value.categoryColor, excerpt: blogForm.value.excerpt,
       content: blogForm.value.content, cover_image: blogForm.value.coverImage,
@@ -907,7 +907,7 @@ async function updateBlogPost() {
 
 async function deleteBlogPost(post: BlogPost) {
   if (!confirm(`Delete "${post.title}"? This cannot be undone.`)) return
-  await supabase.from('blog_posts').delete().eq('id', post.id)
+  await supabase.from('blogposts').delete().eq('id', post.id)
   blogPosts.value = blogPosts.value.filter(p => p.id !== post.id)
 }
 

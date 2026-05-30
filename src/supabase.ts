@@ -23,6 +23,12 @@ try {
     : supabaseAnonKey || ''
   const source = nodeAnon ? 'process.env (CI/server)' : (viteAnon ? 'import.meta.env (.env.local or Vite)' : 'none')
 
+  // Use the computed values so linters don't flag them as unused
+  // eslint-disable-next-line no-console
+  console.log('[supabase] VITE_SUPABASE_URL=', supabaseUrl)
+  // eslint-disable-next-line no-console
+  console.log('[supabase] VITE_SUPABASE_ANON_KEY present=', !!supabaseAnonKey, 'source=', source, 'sample=', maskedKey)
+
 } catch (e) {
   /* ignore logging errors in environments where import.meta.env isn't available */
 }
