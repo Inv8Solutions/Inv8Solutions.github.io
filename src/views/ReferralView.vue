@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { supabase } from '@/supabase'
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '@/firebase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({ name: 'ReferralView' })
@@ -89,7 +90,7 @@ const handleSubmit = async () => {
   errorMessage.value = ''
 
   try {
-    await supabase.from('referrals').insert({
+    await addDoc(collection(db, 'referrals'), {
       your_name: form.value.yourName,
       your_email: form.value.yourEmail,
       your_phone: form.value.yourPhone || null,
@@ -98,6 +99,7 @@ const handleSubmit = async () => {
       needs_description: form.value.needsDescription || null,
       how_heard: form.value.howHeard || null,
       status: 'new',
+      created_at: new Date(),
     })
     resetForm()
     submitStatus.value = 'success'

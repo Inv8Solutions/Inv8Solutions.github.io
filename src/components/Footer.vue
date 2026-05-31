@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { supabase } from '@/supabase'
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '@/firebase'
 
 defineOptions({
   name: 'FooterSection',
@@ -101,15 +102,6 @@ const navigate = (path: string) => {
   }
 }
 
-const openBookingModal = () => {
-  isBookingModalOpen.value = true
-  resetForm()
-}
-
-const openStartProjectModal = () => {
-  router.push('/contactus')
-}
-
 const closeBookingModal = () => {
   isBookingModalOpen.value = false
 }
@@ -152,7 +144,7 @@ const handleSubmitBooking = async () => {
   errorMessage.value = ''
 
   try {
-    await supabase.from('calls').insert({
+    await addDoc(collection(db, 'calls'), {
       email: bookingForm.value.email,
       name: bookingForm.value.name || null,
       company: bookingForm.value.company || null,
@@ -161,6 +153,7 @@ const handleSubmitBooking = async () => {
       project_details: bookingForm.value.projectDetails || null,
       type: 'consultation_call',
       status: 'pending',
+      created_at: new Date(),
     })
 
     // Reset form and show success

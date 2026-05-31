@@ -1,24 +1,148 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { blogPosts } from '@/data/blogs'
+import { collection, doc, getDoc, getDocs, limit, query, where } from 'firebase/firestore'
+import { db } from '@/firebase'
 
 defineOptions({ name: 'BlogPostView' })
 
 const route = useRoute()
 const router = useRouter()
 
-const post = computed(() => blogPosts.find((p) => p.slug === route.params.slug))
+type BlogPost = {
+  id: string
+  title: string
+  slug: string
+  category: string
+  categoryColor: string
+  excerpt: string
+  content: string
+  coverImage: string
+  author: string
+  authorRole: string
+  date: string
+  readTime: string
+}
 
-const relatedPosts = computed(() =>
-  blogPosts
-    .filter((p) => p.id !== post.value?.id && p.category === post.value?.category)
-    .slice(0, 2),
-)
+import { useTheme } from '@/composables/useTheme'
+
+const post = ref<BlogPost | null>(null)
+const relatedPosts = ref<BlogPost[]>([])
+const isLoading = ref(true)
+const error = ref<string | null>(null)
+
+const { isDark } = useTheme()
+
+const blogVars = computed(() => ({
+  '--blog-text-rgb': isDark.value ? '255 255 255' : '15 23 42',
+  '--blog-heading-rgb': isDark.value ? '255 255 255' : '15 23 42',
+}))
+
+function formatReadTime(raw: unknown) {
+  if (typeof raw === 'number') return `${raw} min read`
+  if (typeof raw === 'string') return raw
+  return ''
+}
+
+function mapPost(id: string, data: Record<string, unknown>): BlogPost {
+  const textarea = document.createElement('textarea')
+  const rawContent = (data.content as string) || ''
+  textarea.innerHTML = rawContent
+  const normalizedContent = textarea.value || rawContent
+  return {
+    id,
+    title: (data.title as string) || '',
+    slug: (data.slug as string) || id,
+    category: (data.category as string) || '',
+    categoryColor: (data.category_color as string) || 'bg-gray-100 text-gray-600',
+    excerpt: (data.excerpt as string) || '',
+    content: normalizedContent,
+    coverImage: (data.cover_image as string) || '',
+    author: (data.author as string) || '',
+    authorRole: (data.author_role as string) || '',
+    date: (data.date as string) || '',
+    readTime: formatReadTime(data.read_time),
+  }
+}
+
+async function loadPost() {
+  const slugParam = Array.isArray(route.params.slug) ? route.params.slug[0] : route.params.slug
+  if (!slugParam) {
+    router.replace('/blog')
+    return
+  }
+
+  isLoading.value = true
+  error.value = null
+  post.value = null
+  relatedPosts.value = []
+
+  try {
+    const docRef = doc(db, 'blogposts', slugParam)
+    const snap = await getDoc(docRef)
+
+    let foundId = ''
+    let foundData: Record<string, unknown> | null = null
+
+    if (snap.exists()) {
+      foundId = snap.id
+      foundData = snap.data() as Record<string, unknown>
+    } else {
+      const q = query(collection(db, 'blogposts'), where('slug', '==', slugParam), limit(1))
+      const qsnap = await getDocs(q)
+      if (!qsnap.empty) {
+        const d = qsnap.docs[0]
+        if (d) {
+          foundId = d.id
+          foundData = d.data() as Record<string, unknown>
+        }
+      }
+    }
+
+    if (!foundData) {
+      router.replace('/blog')
+      return
+    }
+
+    const mapped = mapPost(foundId, foundData)
+    post.value = mapped
+
+    if (mapped.category) {
+      const relatedQuery = query(
+        collection(db, 'blogposts'),
+        where('category', '==', mapped.category),
+        limit(3),
+      )
+      const relSnap = await getDocs(relatedQuery)
+      relatedPosts.value = relSnap.docs
+        .map((d) => mapPost(d.id, d.data() as Record<string, unknown>))
+        .filter((p) => p.id !== mapped.id)
+        .slice(0, 2)
+    }
+  } catch (err) {
+    console.error('Failed to load blog post', err)
+    error.value = 'Failed to load this article.'
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const handleRelatedView = (related: BlogPost) => {
+  if (related.id) {
+    router.push(`/blog/${related.id}`)
+  }
+}
 
 onMounted(() => {
-  if (!post.value) router.replace('/blog')
+  loadPost()
 })
+
+watch(
+  () => route.params.slug,
+  () => {
+    loadPost()
+  },
+)
 </script>
 
 <template>
@@ -55,7 +179,7 @@ onMounted(() => {
         </div>
         <div>
           <p class="text-sm font-bold text-white">{{ post.author }}</p>
-          <p class="text-xs text-white/35">{{ post.authorRole }}</p>
+          <p class="text-xs text-white/35">{{ post.authorRole }} , inv8 Studio</p>
         </div>
         <div class="ml-auto flex items-center gap-3 text-xs text-white/30">
           <span>{{ post.date }}</span>
@@ -74,6 +198,7 @@ onMounted(() => {
     <article
       class="blog-content mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8"
       v-html="post.content"
+      :style="blogVars"
     ></article>
 
     <!-- Related posts -->
@@ -85,7 +210,7 @@ onMounted(() => {
             v-for="related in relatedPosts"
             :key="related.id"
             class="group flex cursor-pointer flex-col gap-3 rounded-[20px] border border-white/10 bg-[#0d0f1f] p-6 transition duration-300 hover:border-white/20 hover:bg-[#111327]"
-            @click="router.push(`/blog/${related.slug}`)"
+            @click="handleRelatedView(related)"
           >
             <span class="w-fit rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider" :class="related.categoryColor">
               {{ related.category }}
@@ -129,43 +254,79 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.blog-content {
+  --blog-text-rgb: 15 23 42;
+  --blog-heading-rgb: 15 23 42;
+  color: rgba(var(--blog-text-rgb) / 0.75);
+}
 .blog-content :deep(p) {
-  color: rgba(var(--blog-text-rgb, 255 255 255) / 0.6);
+  color: rgba(var(--blog-text-rgb) / 0.75);
   font-size: 1rem;
   line-height: 1.8;
   margin-bottom: 1.25rem;
 }
+.blog-content :deep(h1) {
+  color: rgb(var(--blog-heading-rgb));
+  font-size: 2rem;
+  font-weight: 900;
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+}
+.blog-content :deep(h3) {
+  color: rgb(var(--blog-heading-rgb));
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+}
 .blog-content :deep(h2) {
-  color: rgb(var(--blog-heading-rgb, 255 255 255));
+  color: rgb(var(--blog-heading-rgb));
   font-size: 1.25rem;
   font-weight: 900;
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
 }
 .blog-content :deep(ul) {
-  color: rgba(var(--blog-text-rgb, 255 255 255) / 0.6);
+  color: rgba(var(--blog-text-rgb) / 0.75);
   font-size: 1rem;
   line-height: 1.8;
   margin-bottom: 1.25rem;
   padding-left: 1.5rem;
   list-style: disc;
 }
+.blog-content :deep(ol) {
+  color: rgba(var(--blog-text-rgb) / 0.75);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+  list-style: decimal;
+  list-style-position: outside;
+}
+
+:global(.dark) .blog-content,
+:global(html.dark) .blog-content {
+  --blog-text-rgb: 255 255 255;
+  --blog-heading-rgb: 255 255 255;
+}
 .blog-content :deep(li) {
   margin-bottom: 0.4rem;
 }
 .blog-content :deep(strong) {
-  color: rgba(var(--blog-text-rgb, 255 255 255) / 0.85);
+  color: rgba(var(--blog-text-rgb) / 0.95);
   font-weight: 700;
 }
 
-:global(html.light) .blog-content :deep(p),
-:global(html.light) .blog-content :deep(ul) {
-  color: rgba(15, 23, 42, 0.65);
+:global(.dark) .blog-content :deep(p),
+:global(.dark) .blog-content :deep(ul),
+:global(.dark) .blog-content :deep(ol),
+:global(html.dark) .blog-content :deep(p),
+:global(html.dark) .blog-content :deep(ul),
+:global(html.dark) .blog-content :deep(ol) {
+  color: rgba(var(--blog-text-rgb) / 0.75);
 }
-:global(html.light) .blog-content :deep(h2) {
-  color: #0f172a;
-}
-:global(html.light) .blog-content :deep(strong) {
-  color: rgba(15, 23, 42, 0.9);
+:global(.dark) .blog-content :deep(strong),
+:global(html.dark) .blog-content :deep(strong) {
+  color: rgba(var(--blog-text-rgb) / 0.95);
 }
 </style>

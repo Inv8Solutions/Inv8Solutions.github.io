@@ -47,7 +47,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { supabase } from '@/supabase'
+import { doc, getDoc } from 'firebase/firestore'
+import { db, storage } from '@/firebase'
+import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const { observeElements } = useScrollAnimation()
@@ -59,7 +61,19 @@ interface ProjectIntroContent {
   description: string
   platform?: string
   shortDesc?: string
+  coverPhoto?: string | null
   mediaPreviewUrl: string | null
+}
+
+interface SampleWorkDoc {
+  id?: string
+  title?: string
+  platform?: string
+  description?: string
+  short_desc?: string
+  coverPhoto?: string
+  image_url?: string
+  image_path?: string
 }
 
 const router = useRouter()
@@ -78,22 +92,67 @@ const defaultProjectIntro: ProjectIntroContent = {
 
 async function fetchProjectIntroFromFirebase(id: string): Promise<ProjectIntroContent | null> {
   try {
-    const { data } = await supabase.from('sampleworks').select('id, title, short_desc, description, platform, image_url').eq('id', id).single()
-    if (data) {
-      const mediaPreviewUrl = typeof data.image_url === 'string' && data.image_url.trim().length > 0 ? data.image_url : null
-      const result = {
-        id: data.id,
-        title: data.title || '',
-        categoryLabel: data.platform || 'Project',
-        description: data.description ?? data.short_desc ?? '',
-        mediaPreviewUrl,
-        platform: data.platform,
-      }
-      return result
-    } else {
+    const docRef = doc(db, 'sampleworks', id)
+    const snap = await getDoc(docRef)
+    if (!snap.exists()) {
       console.error('No such document! ID:', id)
       return null
     }
+    const data = snap.data() as SampleWorkDoc
+    let mediaPreviewUrl: string | null = null
+
+    // 1) Prefer explicit `coverPhoto` field (likely an absolute URL)
+    if (typeof data.coverPhoto === 'string' && data.coverPhoto.trim().length > 0) {
+      mediaPreviewUrl = data.coverPhoto
+    }
+
+    // 2) Fallback to `image_url` if provided
+    if (!mediaPreviewUrl && typeof data.image_url === 'string' && data.image_url.trim().length > 0) {
+      mediaPreviewUrl = data.image_url
+    }
+
+    // 3) Resolve `image_path` from storage
+    if (!mediaPreviewUrl && typeof data.image_path === 'string' && data.image_path.trim().length > 0) {
+      try {
+        mediaPreviewUrl = await getDownloadURL(storageRef(storage, data.image_path))
+      } catch (err) {
+        console.warn('Failed to resolve media preview image_path', err)
+        mediaPreviewUrl = null
+      }
+    }
+
+    // 4) Try deterministic candidate filenames under `sampleworks/{id}/`
+    if (!mediaPreviewUrl) {
+      const candidates = [
+        'cover.webp',
+        'cover.jpg',
+        'cover.png',
+        `${id}.webp`,
+        `${id}.jpg`,
+        `${id}.png`,
+        `${id}.jpeg`,
+      ]
+      for (const name of candidates) {
+        try {
+          const path = `sampleworks/${id}/${name}`
+          mediaPreviewUrl = await getDownloadURL(storageRef(storage, path))
+          if (mediaPreviewUrl) break
+        } catch {
+          // ignore and continue to next candidate
+        }
+      }
+    }
+
+    const result = {
+      id: data.id || id,
+      title: data.title || '',
+      categoryLabel: data.platform || 'Project',
+      description: data.description ?? data.short_desc ?? '',
+      coverPhoto: data.coverPhoto || null,
+      mediaPreviewUrl,
+      platform: data.platform,
+    }
+    return result
   } catch (error) {
     console.error('Error fetching document:', error)
     if (error instanceof Error) {

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { supabase } from '@/supabase'
+import { db, storage } from '@/firebase'
+import { collection, getDocs, query, orderBy, limit as limitQ } from 'firebase/firestore'
+import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
@@ -23,20 +25,25 @@ const isLoading = ref(false)
 const error = ref<string | null>(null)
 const sampleWorks = ref<SampleWork[]>([])
 
-// Fetch data from Firebase sampleworks collection
+// Fetch data from Firestore sampleworks collection
 async function fetchSampleWorks(): Promise<SampleWork[]> {
-  const { data, error: err } = await supabase
-    .from('sampleworks')
-    .select('id, title, short_desc, image_url, service_id')
-    .limit(10)
-  if (err) throw err
-  return (data ?? []).map(d => ({
-    id: d.id,
-    title: d.title,
-    shortDesc: d.short_desc || '',
-    coverPhoto: d.image_url || '',
-    service: d.service_id || '',
+  const q = query(collection(db, 'sampleworks'), orderBy('title', 'asc'), limitQ(10))
+  const snap = await getDocs(q)
+  const results = await Promise.all(snap.docs.map(async (d) => {
+    const data = d.data() as any
+    let coverPhoto = data.coverPhoto || data.image_url || ''
+    if (!coverPhoto && data.image_path) {
+      try { coverPhoto = await getDownloadURL(storageRef(storage, data.image_path)) } catch (e) { console.warn('failed to resolve image path for', d.id, e); coverPhoto = '' }
+    }
+    return {
+      id: d.id,
+      title: data.title || '',
+      shortDesc: data.short_desc || '',
+      coverPhoto,
+      service: data.service_id || '',
+    }
   }))
+  return results
 }
 
 // Load sample works data
@@ -190,6 +197,7 @@ defineExpose({
             <!-- Service tag -->
             <span
               v-if="project.service"
+              data-project-service
               class="absolute left-3.5 top-3.5 rounded-full bg-black/30 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white backdrop-blur-md"
             >
               {{ project.service }}

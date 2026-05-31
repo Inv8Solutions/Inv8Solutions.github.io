@@ -76,7 +76,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import { supabase } from '@/supabase'
+import { doc, getDoc } from 'firebase/firestore'
+import { db, storage } from '@/firebase'
+import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const { observeElements } = useScrollAnimation()
@@ -88,6 +90,14 @@ interface ProjectImage {
   error?: boolean
 }
 
+interface SampleWorkDoc {
+  coverPhoto?: string
+  image_url?: string
+  image_path?: string
+  additionalImageUrls?: string[]
+  additional_image_urls?: string[]
+}
+
 const route = useRoute()
 const isLoading = ref(false)
 const imagesData = ref<ProjectImage[] | null>(null)
@@ -96,33 +106,58 @@ const defaultProjectImages: ProjectImage[] = []
 
 async function fetchProjectImagesFromFirebase(id: string): Promise<ProjectImage[]> {
   try {
-    const { data } = await supabase.from('sampleworks').select('image_url, additional_image_urls').eq('id', id).single()
-    if (!data) {
+    const docRef = doc(db, 'sampleworks', id)
+    const snap = await getDoc(docRef)
+    if (!snap.exists()) {
       console.warn(`No project found for ID: ${id}`)
       return defaultProjectImages
     }
-    const coverImageUrl = typeof data.image_url === 'string' && data.image_url.trim().length > 0 ? data.image_url : null
-    const additionalImageUrls = Array.isArray(data.additional_image_urls)
-      ? data.additional_image_urls.filter((item: unknown) => typeof item === 'string' && (item as string).trim().length > 0)
-      : []
-
+    const data = snap.data() as SampleWorkDoc
     const projectImages: ProjectImage[] = []
 
-    if (coverImageUrl) {
-      projectImages.push({
-        id: 'img-cover',
-        url: coverImageUrl,
-        alt: 'Project cover image',
-      })
+    // Resolve cover image: prefer `coverPhoto`, then `image_url`, then `image_path`
+    if (typeof data.coverPhoto === 'string' && data.coverPhoto.trim().length > 0) {
+      projectImages.push({ id: 'img-cover', url: data.coverPhoto, alt: 'Project cover image' })
+    } else if (typeof data.image_url === 'string' && data.image_url.trim().length > 0) {
+      projectImages.push({ id: 'img-cover', url: data.image_url, alt: 'Project cover image' })
+    } else if (typeof data.image_path === 'string' && data.image_path.trim().length > 0) {
+      try {
+        const url = await getDownloadURL(storageRef(storage, data.image_path))
+        projectImages.push({ id: 'img-cover', url, alt: 'Project cover image' })
+      } catch (err) {
+        console.warn('Failed to resolve cover image_path', err)
+      }
     }
 
-    additionalImageUrls.forEach((url: string, index: number) => {
-      projectImages.push({
-        id: `img-${index + 1}`,
-        url,
-        alt: `Project image ${index + 1}`,
-      })
-    })
+    // Resolve additional images array
+    // Prefer camelCase `additionalImageUrls`, fallback to `additional_image_urls`
+    const additional = Array.isArray(data.additionalImageUrls)
+      ? data.additionalImageUrls
+      : Array.isArray(data.additional_image_urls)
+      ? data.additional_image_urls
+      : []
+
+    // Include all indexes — if a URL can't be resolved, push an entry with `error: true`
+    for (let i = 0; i < additional.length; i++) {
+      const item = additional[i]
+      if (typeof item !== 'string' || item.trim().length === 0) {
+        projectImages.push({ id: `img-${i + 1}`, url: '', alt: `Project image ${i + 1}`, error: true })
+        continue
+      }
+
+      if (/^https?:\/\//i.test(item)) {
+        projectImages.push({ id: `img-${i + 1}`, url: item, alt: `Project image ${i + 1}` })
+        continue
+      }
+
+      try {
+        const url = await getDownloadURL(storageRef(storage, item))
+        projectImages.push({ id: `img-${i + 1}`, url, alt: `Project image ${i + 1}` })
+      } catch (err) {
+        console.warn('Failed to resolve additional image path', item, err)
+        projectImages.push({ id: `img-${i + 1}`, url: '', alt: `Project image ${i + 1}`, error: true })
+      }
+    }
 
     return projectImages
   } catch (error) {

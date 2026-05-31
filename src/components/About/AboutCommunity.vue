@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { supabase } from '@/supabase'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { collection, getDocs, query, orderBy } from 'firebase/firestore'
+import { db, storage } from '@/firebase'
+import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 interface GalleryPhoto {
@@ -11,6 +13,7 @@ interface GalleryPhoto {
 
 const photos = ref<GalleryPhoto[]>([])
 const loadingPhotos = ref(true)
+const selectedPhoto = ref<GalleryPhoto | null>(null)
 const { observeElements } = useScrollAnimation()
 
 const communityFeatures = [
@@ -26,13 +29,50 @@ onMounted(async () => {
   observeElements('.discord-cta')
 
   try {
-    const { data } = await supabase.from('community_gallery').select('id, url, caption').order('order', { ascending: true })
-    photos.value = (data ?? []) as GalleryPhoto[]
+    const q = query(collection(db, 'community_gallery'), orderBy('order', 'asc'))
+    const snaps = await getDocs(q)
+    const items: GalleryPhoto[] = []
+    for (const d of snaps.docs) {
+      const val = d.data() as Record<string, any>
+      let url = val.url
+      if (typeof url === 'string' && url.trim() && !/^https?:\/\//i.test(url)) {
+        try {
+          url = await getDownloadURL(storageRef(storage, url))
+        } catch (err) {
+          console.warn('Failed to resolve community gallery image path', url, err)
+          continue
+        }
+      }
+      items.push({ id: d.id, url, caption: val.caption })
+    }
+    photos.value = items
   } catch {
     // gallery stays empty
   } finally {
     loadingPhotos.value = false
   }
+})
+
+const openPhotoModal = (photo: GalleryPhoto) => {
+  selectedPhoto.value = photo
+}
+
+const closePhotoModal = () => {
+  selectedPhoto.value = null
+}
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') {
+    closePhotoModal()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeydown)
 })
 </script>
 
@@ -69,8 +109,9 @@ onMounted(async () => {
             <img
               :src="photo.url"
               :alt="photo.caption || 'Community event photo'"
-              class="w-full object-cover transition duration-500 hover:scale-105"
+              class="w-full cursor-pointer object-cover transition duration-500 hover:scale-105"
               loading="lazy"
+              @click="openPhotoModal(photo)"
             />
           </figure>
         </div>
@@ -123,6 +164,40 @@ onMounted(async () => {
             </div>
           </div>
 
+        </div>
+      </div>
+
+      <!-- Image Modal -->
+      <div
+        v-if="selectedPhoto"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Community photo"
+        @click="closePhotoModal"
+      >
+        <div
+          class="relative max-h-[90vh] w-[92vw] max-w-5xl overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-xl"
+          @click.stop
+        >
+          <button
+            type="button"
+            class="absolute right-4 top-4 rounded-full border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-white/80 transition hover:bg-white/20"
+            @click="closePhotoModal"
+            aria-label="Close image"
+          >
+            Close
+          </button>
+          <div class="max-h-[90vh] w-full bg-black/30">
+            <img
+              :src="selectedPhoto.url"
+              :alt="selectedPhoto.caption || 'Community event photo'"
+              class="max-h-[90vh] w-full object-contain"
+            />
+          </div>
+          <div v-if="selectedPhoto.caption" class="px-6 py-4 text-sm text-white/80">
+            {{ selectedPhoto.caption }}
+          </div>
         </div>
       </div>
 

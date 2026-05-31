@@ -1,19 +1,19 @@
 <template>
-  <vue3-marquee direction="reverse" :pauseOnHover="false" :clone="false" :duration="30">
+  <vue3-marquee direction="reverse" :pauseOnHover="false" :clone="false" :duration="30" class="bg-[#03040f]">
     <div class="flex items-center gap-10 last:mr-10 my-10">
-      <div class="rounded-lg shadow-lg">
+      <div class="rounded-lg shadow-lg bg-[#0d0f1f]">
         <img :src="img6" class="h-96 w-auto rounded-lg object-cover" />
       </div>
-      <div class="rounded-lg shadow-lg">
+      <div class="rounded-lg shadow-lg bg-[#0d0f1f]">
         <img :src="img7" class="h-96 w-auto rounded-lg object-cover" />
       </div>
-      <div class="rounded-lg shadow-lg w-48">
+      <div class="rounded-lg shadow-lg w-48 bg-[#0d0f1f]">
         <img :src="img8" class="h-96 w-full rounded-lg object-cover" />
       </div>
-      <div class="rounded-lg shadow-lg">
+      <div class="rounded-lg shadow-lg bg-[#0d0f1f]">
         <img :src="img9" class="h-96 w-full rounded-lg object-cover" />
       </div>
-      <div class="rounded-lg shadow-lg">
+      <div class="rounded-lg shadow-lg bg-[#0d0f1f]">
         <img :src="img10" class="h-96 w-auto rounded-lg object-cover" />
       </div>
     </div>

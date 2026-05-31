@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { supabase } from '@/supabase'
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '@/firebase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({ name: 'ContactBodySection' })
@@ -59,12 +60,13 @@ const handleSubmit = async () => {
   errorMessage.value = ''
 
   try {
-    await supabase.from('inquiries').insert({
+    await addDoc(collection(db, 'inquiries'), {
       name: `${form.value.firstName} ${form.value.lastName}`.trim(),
       email: form.value.email,
       service: form.value.service || null,
       project_details: form.value.message,
       status: 'new',
+      created_at: new Date(),
     })
 
     form.value = { firstName: '', lastName: '', email: '', service: '', message: '' }

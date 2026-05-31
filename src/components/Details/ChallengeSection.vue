@@ -17,7 +17,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { supabase } from '@/supabase'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '@/firebase'
 import{ useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const { observeElements } = useScrollAnimation()
@@ -25,6 +26,11 @@ const { observeElements } = useScrollAnimation()
 interface ChallengeContent {
   subtitle: string
   description: string
+}
+
+interface SampleWorkDoc {
+  challengeStatement?: string
+  challenge_statement?: string
 }
 
 const route = useRoute()
@@ -39,15 +45,25 @@ const defaultChallengeContent: ChallengeContent = {
 
 async function fetchChallengeFromFirebase(id: string): Promise<ChallengeContent | null> {
   try {
-    const { data } = await supabase.from('sampleworks').select('challenge_statement').eq('id', id).single()
-    if (!data) {
+    const docRef = doc(db, 'sampleworks', id)
+    const snap = await getDoc(docRef)
+    if (!snap.exists()) {
       console.warn(`No challenge found for ID: ${id}`)
       return null
     }
+    const data = snap.data() as SampleWorkDoc
+    // Prefer camelCase `challengeStatement`, fallback to `challenge_statement` for older docs
+    const challengeText =
+      (typeof data.challengeStatement === 'string' && data.challengeStatement.trim().length > 0
+        ? data.challengeStatement
+        : undefined) ||
+      (typeof data.challenge_statement === 'string' && data.challenge_statement.trim().length > 0
+        ? data.challenge_statement
+        : undefined)
 
     return {
       subtitle: 'Challenge',
-      description: data.challenge_statement ?? defaultChallengeContent.description,
+      description: challengeText ?? defaultChallengeContent.description,
     }
   } catch (error) {
     console.error('Failed to fetch challenge data from Firestore', error)

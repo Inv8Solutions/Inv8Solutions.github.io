@@ -90,6 +90,13 @@ const routes = [
     alias: ['/baguiodental/clinics'],
     meta: { title: 'Baguio Dental Clinics' },
   },
+  {
+    path: '/:slug',
+    name: 'BlogPostRoot',
+    component: BlogPostView,
+    props: true,
+    // title set dynamically in BlogPostView
+  },
   // catch-all — must be last
   {
     path: '/:pathMatch(.*)*',

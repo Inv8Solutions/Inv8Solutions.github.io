@@ -1,57 +1,84 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { collection, getDocs, orderBy, query, limit } from 'firebase/firestore'
+import { db } from '@/firebase'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const router = useRouter()
 const { observeElements } = useScrollAnimation()
 
-type Category = 'All Insights' | 'Product Insights' | 'inv8 Updates' | 'Ecosystem Insights' | 'Case Studies'
+type BlogPostCard = {
+  id: string
+  category: string
+  date: string
+  title: string
+  excerpt: string
+  readTime: string
+  image: string
+  slug: string
+}
 
-const activeCategory = ref<Category>('All Insights')
+const activeCategory = ref('All Insights')
+const posts = ref<BlogPostCard[]>([])
+const isLoading = ref(true)
+const error = ref<string | null>(null)
 
-const categories: Category[] = ['All Insights', 'Product Insights', 'inv8 Updates', 'Ecosystem Insights', 'Case Studies']
-
-const posts = [
-  {
-    category: 'Product Insights' as Category,
-    categoryIcon: 'fa-solid fa-lightbulb',
-    date: 'May 14, 2026',
-    title: 'Why Most MVPs Fail Before Launch',
-    excerpt: 'Common mistakes startups make—and how to build products users actually need.',
-    readTime: '5 min read',
-    image: '/images/blog/mvp-fail.jpg',
-    slug: 'why-most-mvps-fail-before-launch',
-  },
-  {
-    category: 'inv8 Updates' as Category,
-    categoryIcon: 'fa-solid fa-bullhorn',
-    date: 'May 8, 2026',
-    title: 'inv8 Begins Supporting MSMEs Through Innovation Programs',
-    excerpt: "We're partnering with innovation initiatives to help MSMEs digitize and grow sustainably.",
-    readTime: '3 min read',
-    image: '/images/blog/msme-support.jpg',
-    slug: 'inv8-begins-supporting-msmes',
-  },
-  {
-    category: 'Ecosystem Insights' as Category,
-    categoryIcon: 'fa-solid fa-globe',
-    date: 'Apr 30, 2026',
-    title: 'What We Learned From Startup Builders Across Northern Luzon',
-    excerpt: 'Key takeaways from recent engagements with founders and innovation ecosystem partners.',
-    readTime: '6 min read',
-    image: '/images/blog/northern-luzon.jpg',
-    slug: 'startup-builders-northern-luzon',
-  },
-]
+const categories = computed(() => {
+  const unique = Array.from(new Set(posts.value.map((p) => p.category).filter(Boolean)))
+  return ['All Insights', ...unique]
+})
 
 const filtered = computed(() =>
   activeCategory.value === 'All Insights'
-    ? posts
-    : posts.filter((p) => p.category === activeCategory.value)
+    ? posts.value
+    : posts.value.filter((p) => p.category === activeCategory.value)
 )
 
+const handlePostView = (post: BlogPostCard) => {
+  if (post.id) {
+    router.push(`/blog/${post.id}`)
+  } else {
+    router.push('/blog')
+  }
+}
+
+async function fetchLatestPosts() {
+  isLoading.value = true
+  error.value = null
+  try {
+    const q = query(collection(db, 'blogposts'), orderBy('created_at', 'desc'), limit(3))
+    const snap = await getDocs(q)
+    posts.value = snap.docs.map((d) => {
+      const data = d.data() as Record<string, unknown>
+      const readTimeRaw = data.read_time
+      const readTime = typeof readTimeRaw === 'number'
+        ? `${readTimeRaw} min read`
+        : typeof readTimeRaw === 'string'
+        ? readTimeRaw
+        : ''
+
+      return {
+        id: d.id,
+        category: (data.category as string) || '',
+        date: (data.date as string) || '',
+        title: (data.title as string) || '',
+        excerpt: (data.excerpt as string) || '',
+        readTime,
+        image: (data.cover_image as string) || (data.coverImage as string) || '',
+        slug: (data.slug as string) || '',
+      }
+    })
+  } catch (err) {
+    console.error('Failed to load blogposts', err)
+    error.value = 'Failed to load posts.'
+  } finally {
+    isLoading.value = false
+  }
+}
+
 onMounted(() => {
+  fetchLatestPosts()
   observeElements('.insights-header')
   observeElements('.insight-card')
 })
@@ -94,7 +121,7 @@ onMounted(() => {
           :key="post.slug"
           class="insight-card group flex cursor-pointer flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#0d0f1f] transition duration-300 hover:border-white/20 hover:bg-[#111327]"
           :style="`animation-delay: ${i * 0.1}s`"
-          @click="router.push(`/insights/${post.slug}`)"
+          @click="handlePostView(post)"
         >
           <!-- Image -->
           <div class="relative h-48 overflow-hidden bg-[#080a18]">
@@ -122,12 +149,16 @@ onMounted(() => {
             <div class="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
               <span class="inline-flex items-center gap-1.5 text-xs text-white/35">
                 <i class="fa-regular fa-clock" aria-hidden="true"></i>
-                {{ post.readTime }}
+                {{ post.readTime || '—' }}
               </span>
-              <span class="inline-flex items-center gap-1 text-sm font-semibold text-white/50 transition-all group-hover:gap-2 group-hover:text-blue-400">
+              <button
+                type="button"
+                class="inline-flex items-center gap-1 text-sm font-semibold text-white/50 transition-all group-hover:gap-2 group-hover:text-blue-400"
+                @click.stop="handlePostView(post)"
+              >
                 Read more
                 <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
-              </span>
+              </button>
             </div>
           </div>
         </article>

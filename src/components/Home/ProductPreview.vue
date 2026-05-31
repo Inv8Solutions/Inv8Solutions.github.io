@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { supabase } from '@/supabase'
+import { db, storage } from '@/firebase'
+import { collection, getDocs, query, orderBy, limit as limitQ } from 'firebase/firestore'
+import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 defineOptions({
@@ -18,25 +20,61 @@ interface SampleWork {
   service?: string
 }
 
+interface SampleWorkDoc {
+  title?: string
+  short_desc?: string
+  coverPhoto?: string
+  image_url?: string
+  image_path?: string
+  service_id?: string
+}
+
 const router = useRouter()
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 const sampleWorks = ref<SampleWork[]>([])
 
-// Fetch data from Firebase sampleworks collection
+// Fetch data from Firestore sampleworks collection
 async function fetchSampleWorks(): Promise<SampleWork[]> {
-  const { data, error: err } = await supabase
-    .from('sampleworks')
-    .select('id, title, short_desc, image_url, service_id')
-    .limit(8)
-  if (err) throw err
-  return (data ?? []).map(d => ({
-    id: d.id,
-    title: d.title || 'Untitled Project',
-    shortDesc: d.short_desc || '',
-    imageUrl: d.image_url || '',
-    service: d.service_id || '',
+  const q = query(collection(db, 'sampleworks'), orderBy('title', 'asc'), limitQ(8))
+  const snap = await getDocs(q)
+  const results = await Promise.all(snap.docs.map(async (d) => {
+    const data = d.data() as SampleWorkDoc
+    let imageUrl = data.coverPhoto || data.image_url || ''
+    // 1) prefer explicit image_url
+    // 2) try stored image_path field
+    // 3) fallback to common filenames under sampleworks/{docId}/
+    if (!imageUrl) {
+      if (data.image_path) {
+        try {
+          imageUrl = await getDownloadURL(storageRef(storage, data.image_path))
+        } catch (e) {
+          console.warn('failed to resolve image_path for', d.id, e)
+          imageUrl = ''
+        }
+      }
+    }
+    if (!imageUrl) {
+      const candidates = ['cover.jpg','cover.png','cover.jpeg','cover.webp', `${d.id}.jpg`, `${d.id}.png`, `${d.id}.jpeg`, `${d.id}.webp`]
+      for (const name of candidates) {
+        try {
+          const path = `sampleworks/${d.id}/${name}`
+          imageUrl = await getDownloadURL(storageRef(storage, path))
+          if (imageUrl) break
+        } catch {
+          // ignore and try next
+        }
+      }
+    }
+    return {
+      id: d.id,
+      title: data.title || 'Untitled Project',
+      shortDesc: data.short_desc || '',
+      imageUrl: imageUrl || '',
+      service: data.service_id || '',
+    }
   }))
+  return results
 }
 
 // Load sample works data

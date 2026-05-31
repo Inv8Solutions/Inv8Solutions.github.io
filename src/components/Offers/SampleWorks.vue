@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick } from 'vue'
-import { supabase } from '@/supabase'
+import { collection, getDocs, query, where, limit as limitFn } from 'firebase/firestore'
+import type { QueryConstraint } from 'firebase/firestore'
+import { db, storage } from '@/firebase'
+import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 export interface SampleWork {
@@ -12,6 +15,17 @@ export interface SampleWork {
   platform?: string
   clientName?: string
   createdAt?: Date | null
+}
+
+interface SampleWorkDoc {
+  title?: string
+  short_desc?: string
+  coverPhoto?: string
+  image_url?: string
+  image_path?: string
+  service_id?: string
+  platform?: string
+  client_name?: string
 }
 
 const props = defineProps<{
@@ -42,21 +56,46 @@ const fetchSampleWorks = async (serviceId?: string) => {
   try {
     const serviceName = serviceId ? serviceIdMapping[serviceId] : null
 
-    let query = supabase.from('sampleworks').select('id, title, short_desc, image_url, service_id, platform, client_name').limit(2)
-    if (serviceName) query = query.eq('service_id', serviceId ?? '')
-
-    const { data, error: err } = await query
-    if (err) throw err
-
-    projects.value = (data ?? []).map(d => ({
-      id: d.id,
-      title: d.title,
-      shortDesc: d.short_desc || '',
-      coverPhoto: d.image_url || '',
-      service: d.service_id || '',
-      platform: d.platform || '',
-      clientName: d.client_name || '',
-    }))
+    const clauses: QueryConstraint[] = []
+    if (serviceName) clauses.push(where('service_id', '==', serviceId))
+    clauses.push(limitFn(2))
+    const q = query(collection(db, 'sampleworks'), ...clauses)
+    const snaps = await getDocs(q)
+    const results: SampleWork[] = []
+    for (const d of snaps.docs) {
+      const data = d.data() as SampleWorkDoc
+      let cover = data.coverPhoto || data.image_url || ''
+      if ((!cover || typeof cover !== 'string' || cover.trim() === '') && typeof data.image_path === 'string' && data.image_path.trim()) {
+        try {
+          cover = await getDownloadURL(storageRef(storage, data.image_path))
+        } catch (err) {
+          console.warn('Failed to resolve sample work cover image', err)
+          cover = ''
+        }
+      }
+      if (!cover) {
+        const candidates = ['cover.jpg','cover.png','cover.jpeg','cover.webp', `${d.id}.jpg`, `${d.id}.png`, `${d.id}.jpeg`, `${d.id}.webp`]
+        for (const name of candidates) {
+          try {
+            const path = `sampleworks/${d.id}/${name}`
+            cover = await getDownloadURL(storageRef(storage, path))
+            if (cover) break
+          } catch {
+            // try next
+          }
+        }
+      }
+      results.push({
+        id: d.id,
+        title: data.title || '',
+        shortDesc: data.short_desc || '',
+        coverPhoto: cover || undefined,
+        service: data.service_id || '',
+        platform: data.platform || '',
+        clientName: data.client_name || '',
+      })
+    }
+    projects.value = results
   } catch (err) {
     console.error('Error fetching sample works:', err)
     error.value = 'Failed to load sample projects'

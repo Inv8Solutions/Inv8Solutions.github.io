@@ -76,7 +76,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { supabase } from '@/supabase'
+import { doc, getDoc } from 'firebase/firestore'
+import { db, storage } from '@/firebase'
+import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
 const { observeElements } = useScrollAnimation()
@@ -93,6 +95,14 @@ interface SolutionContent {
   coverPhoto?: string
 }
 
+interface SampleWorkDoc {
+  solution?: string
+  features?: Array<{ name?: string; description?: string } | string>
+  coverPhoto?: string
+  image_url?: string
+  image_path?: string
+}
+
 const route = useRoute()
 const isLoading = ref(false)
 const solutionData = ref<SolutionContent | null>(null)
@@ -106,11 +116,13 @@ const defaultSolutionContent: SolutionContent = {
 
 async function fetchSolutionFromFirebase(id: string): Promise<SolutionContent | null> {
   try {
-    const { data } = await supabase.from('sampleworks').select('solution, features, image_url').eq('id', id).single()
-    if (!data) {
+    const docRef = doc(db, 'sampleworks', id)
+    const snap = await getDoc(docRef)
+    if (!snap.exists()) {
       console.warn(`No solution found for ID: ${id}`)
       return null
     }
+    const data = snap.data() as SampleWorkDoc
     const features = Array.isArray(data.features) ? data.features : []
 
     const bullets = features.map((feature: { name?: string; description?: string } | string) => {
@@ -124,11 +136,26 @@ async function fetchSolutionFromFirebase(id: string): Promise<SolutionContent | 
       }
     })
 
+    let coverPhoto: string | null = null
+    // Prefer explicit `coverPhoto` field first
+    if (typeof data.coverPhoto === 'string' && data.coverPhoto.trim().length > 0) {
+      coverPhoto = data.coverPhoto
+    } else if (typeof data.image_url === 'string' && data.image_url.trim().length > 0) {
+      coverPhoto = data.image_url
+    } else if (typeof data.image_path === 'string' && data.image_path.trim().length > 0) {
+      try {
+        coverPhoto = await getDownloadURL(storageRef(storage, data.image_path))
+      } catch (err) {
+        console.warn('Failed to resolve image_path to download URL', err)
+        coverPhoto = null
+      }
+    }
+
     return {
       subtitle: 'Solution',
       description: data.solution ?? defaultSolutionContent.description,
       bullets,
-      coverPhoto: data.image_url ?? null,
+      coverPhoto: coverPhoto ?? undefined,
     }
   } catch (error) {
     console.error('Failed to fetch solution data from Firestore', error)
