@@ -1,7 +1,8 @@
 <template>
   <div class="space-y-5">
-    <!-- Sub-nav tabs -->
-    <div class="flex gap-1 rounded-xl bg-gray-100 p-1 w-fit">
+    <!-- Toolbar: tabs + import/export -->
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <div class="flex gap-1 rounded-xl bg-gray-100 p-1 w-fit">
       <button
         v-for="tab in tabs" :key="tab.id"
         @click="activeTab = tab.id"
@@ -12,6 +13,20 @@
         {{ tab.label }}
         <span v-if="tab.badge && tab.badge > 0" class="flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white">{{ tab.badge }}</span>
       </button>
+      </div>
+
+      <!-- Import / Export -->
+      <div class="flex items-center gap-2">
+        <label class="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition">
+          <i class="fa-solid fa-file-import text-[11px]" />
+          Import CSV
+          <input type="file" accept=".csv" class="hidden" @change="handleImport" />
+        </label>
+        <button @click="handleExport" class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition">
+          <i class="fa-solid fa-file-export text-[11px]" />
+          Export CSV
+        </button>
+      </div>
     </div>
 
     <!-- Loading -->
@@ -72,8 +87,8 @@
       <div v-else-if="activeTab === 'contacts'" class="space-y-4">
         <div class="flex items-center justify-between gap-3">
           <div class="flex items-center gap-2">
-            <input v-model="contactSearch" placeholder="Search contacts…" class="rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-56" />
-            <select v-model="contactTypeFilter" class="rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input v-model="contactSearch" placeholder="Search contacts…" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 w-56" />
+            <select v-model="contactTypeFilter" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option value="">All types</option>
               <option v-for="t in CONTACT_TYPES" :key="t" :value="t">{{ t }}</option>
             </select>
@@ -123,7 +138,7 @@
       <!-- ── COMPANIES ────────────────────────────────────────── -->
       <div v-else-if="activeTab === 'companies'" class="space-y-4">
         <div class="flex items-center justify-between">
-          <input v-model="companySearch" placeholder="Search companies…" class="rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-56" />
+          <input v-model="companySearch" placeholder="Search companies…" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 w-56" />
           <button @click="openCompanyModal()" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700">
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             Add Company
@@ -194,7 +209,7 @@
       <div v-else-if="activeTab === 'tasks'" class="space-y-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <select v-model="taskStatusFilter" class="rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select v-model="taskStatusFilter" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option value="">All statuses</option>
               <option value="Open">Open</option>
               <option value="In Progress">In Progress</option>
@@ -264,44 +279,44 @@
           <div class="grid grid-cols-2 gap-4">
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Deal Name *</label>
-              <input v-model="dealForm.name" required class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="dealForm.name" required class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Company</label>
-              <input v-model="dealForm.company" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="dealForm.company" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Contact</label>
-              <input v-model="dealForm.contact" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="dealForm.contact" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Value (₱)</label>
-              <input v-model.number="dealForm.value" type="number" min="0" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model.number="dealForm.value" type="number" min="0" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Probability (%)</label>
-              <input v-model.number="dealForm.probability" type="number" min="0" max="100" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model.number="dealForm.probability" type="number" min="0" max="100" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Stage</label>
-              <select v-model="dealForm.stage" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="dealForm.stage" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="s in PIPELINE_STAGES" :key="s.id" :value="s.id">{{ s.label }}</option>
                 <option value="Closed Lost">Closed Lost</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Priority</label>
-              <select v-model="dealForm.priority" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="dealForm.priority" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="p in PRIORITIES" :key="p" :value="p">{{ p }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Service Type</label>
-              <input v-model="dealForm.service_type" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="dealForm.service_type" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Expected Close</label>
-              <input v-model="dealForm.expected_close" type="date" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="dealForm.expected_close" type="date" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Notes</label>
@@ -330,58 +345,58 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">First Name *</label>
-              <input v-model="contactForm.first_name" required class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="contactForm.first_name" required class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Last Name</label>
-              <input v-model="contactForm.last_name" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="contactForm.last_name" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Email</label>
-              <input v-model="contactForm.email" type="email" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="contactForm.email" type="email" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Phone</label>
-              <input v-model="contactForm.phone" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="contactForm.phone" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Company</label>
-              <input v-model="contactForm.company" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="contactForm.company" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Title / Role</label>
-              <input v-model="contactForm.title" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="contactForm.title" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Contact Type</label>
-              <select v-model="contactForm.contact_type" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="contactForm.contact_type" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="t in CONTACT_TYPES" :key="t" :value="t">{{ t }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Pipeline Stage</label>
-              <select v-model="contactForm.pipeline_stage" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="contactForm.pipeline_stage" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="s in PIPELINE_STAGES" :key="s.id" :value="s.id">{{ s.label }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Lead Source</label>
-              <select v-model="contactForm.lead_source" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="contactForm.lead_source" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">—</option>
                 <option v-for="s in LEAD_SOURCES" :key="s" :value="s">{{ s }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">City</label>
-              <input v-model="contactForm.city" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="contactForm.city" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Next Follow-Up</label>
-              <input v-model="contactForm.next_follow_up" type="date" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="contactForm.next_follow_up" type="date" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Lifetime Value (₱)</label>
-              <input v-model.number="contactForm.lifetime_value" type="number" min="0" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model.number="contactForm.lifetime_value" type="number" min="0" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Notes</label>
@@ -410,43 +425,43 @@
           <div class="grid grid-cols-2 gap-4">
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Company Name *</label>
-              <input v-model="companyForm.name" required class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="companyForm.name" required class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Industry</label>
-              <select v-model="companyForm.industry" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="companyForm.industry" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">—</option>
                 <option v-for="i in INDUSTRIES" :key="i" :value="i">{{ i }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Status</label>
-              <select v-model="companyForm.status" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="companyForm.status" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="s in ['Lead','Prospect','Client','Inactive']" :key="s" :value="s">{{ s }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Email</label>
-              <input v-model="companyForm.email" type="email" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="companyForm.email" type="email" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Phone</label>
-              <input v-model="companyForm.phone" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="companyForm.phone" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">City</label>
-              <input v-model="companyForm.city" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="companyForm.city" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Company Size</label>
-              <select v-model="companyForm.company_size" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="companyForm.company_size" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">—</option>
                 <option v-for="s in ['1-10','11-50','51-200','201-500','500+']" :key="s" :value="s">{{ s }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Website</label>
-              <input v-model="companyForm.website" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="companyForm.website" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Notes</label>
@@ -475,42 +490,42 @@
           <div class="grid grid-cols-2 gap-4">
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Subject *</label>
-              <input v-model="activityForm.subject" required class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="activityForm.subject" required class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Type</label>
-              <select v-model="activityForm.type" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="activityForm.type" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="t in ACTIVITY_TYPES" :key="t" :value="t">{{ t }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Direction</label>
-              <select v-model="activityForm.direction" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="activityForm.direction" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="Outbound">Outbound</option>
                 <option value="Inbound">Inbound</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Contact</label>
-              <input v-model="activityForm.contact" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="activityForm.contact" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Date</label>
-              <input v-model="activityForm.date" type="date" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="activityForm.date" type="date" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Outcome</label>
-              <select v-model="activityForm.outcome" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="activityForm.outcome" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="o in OUTCOMES" :key="o" :value="o">{{ o }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Duration (min)</label>
-              <input v-model.number="activityForm.duration_min" type="number" min="0" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model.number="activityForm.duration_min" type="number" min="0" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Next Action</label>
-              <input v-model="activityForm.next_action" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="activityForm.next_action" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Notes</label>
@@ -539,37 +554,37 @@
           <div class="grid grid-cols-2 gap-4">
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Task Title *</label>
-              <input v-model="taskForm.title" required class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="taskForm.title" required class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Type</label>
-              <select v-model="taskForm.type" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="taskForm.type" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="t in TASK_TYPES" :key="t" :value="t">{{ t }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Priority</label>
-              <select v-model="taskForm.priority" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="taskForm.priority" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="p in PRIORITIES" :key="p" :value="p">{{ p }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Due Date</label>
-              <input v-model="taskForm.due_date" type="date" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="taskForm.due_date" type="date" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Status</label>
-              <select v-model="taskForm.status" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select v-model="taskForm.status" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option v-for="s in ['Open','In Progress','Completed','Cancelled']" :key="s" :value="s">{{ s }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Contact</label>
-              <input v-model="taskForm.contact" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="taskForm.contact" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-500 mb-1">Assigned To</label>
-              <input v-model="taskForm.assigned_to" class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input v-model="taskForm.assigned_to" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div class="col-span-2">
               <label class="block text-xs font-semibold text-gray-500 mb-1">Notes</label>
@@ -1058,6 +1073,83 @@ async function toggleTaskComplete(task: CRMTask) {
   })
   const idx = tasks.value.findIndex(t => t.id === task.id)
   if (idx !== -1 && tasks.value[idx]) tasks.value[idx]!.status = newStatus
+}
+
+// ── CSV Export ───────────────────────────────────────────────────
+function toCSV(rows: Record<string, unknown>[]): string {
+  if (!rows.length) return ''
+  const keys = Object.keys(rows[0]!)
+  const escape = (v: unknown) => {
+    const s = v == null ? '' : String(v)
+    return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s
+  }
+  return [keys.join(','), ...rows.map(r => keys.map(k => escape(r[k])).join(','))].join('\n')
+}
+
+function downloadCSV(filename: string, csv: string) {
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url; a.download = filename; a.click()
+  URL.revokeObjectURL(url)
+}
+
+function handleExport() {
+  const map: Record<string, { data: unknown[]; name: string }> = {
+    pipeline:   { data: deals.value,     name: 'crm_deals' },
+    contacts:   { data: contacts.value,  name: 'crm_contacts' },
+    companies:  { data: companies.value, name: 'crm_companies' },
+    activities: { data: activities.value,name: 'crm_activities' },
+    tasks:      { data: tasks.value,     name: 'crm_tasks' },
+  }
+  const target = map[activeTab.value]
+  if (!target || !target.data.length) { alert('No data to export on this tab.'); return }
+  downloadCSV(`inv8_${target.name}_${new Date().toISOString().split('T')[0]}.csv`, toCSV(target.data as Record<string, unknown>[]))
+}
+
+// ── CSV Import ───────────────────────────────────────────────────
+function parseCSV(text: string): Record<string, string>[] {
+  const lines = text.trim().split('\n')
+  if (lines.length < 2) return []
+  const headers = lines[0]!.split(',').map(h => h.trim().replace(/^"|"$/g, ''))
+  return lines.slice(1).map(line => {
+    const vals: string[] = []
+    let cur = '', inQ = false
+    for (const ch of line) {
+      if (ch === '"') { inQ = !inQ }
+      else if (ch === ',' && !inQ) { vals.push(cur); cur = '' }
+      else cur += ch
+    }
+    vals.push(cur)
+    return Object.fromEntries(headers.map((h, i) => [h, (vals[i] ?? '').trim()]))
+  })
+}
+
+async function handleImport(e: Event) {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  const text = await file.text()
+  const rows = parseCSV(text)
+  if (!rows.length) { alert('No data found in CSV.'); return }
+
+  const collectionMap: Record<string, string> = {
+    pipeline: 'crm_deals', contacts: 'crm_contacts', companies: 'crm_companies',
+    activities: 'crm_activities', tasks: 'crm_tasks',
+  }
+  const col = collectionMap[activeTab.value]
+  if (!col) return
+
+  const now = new Date().toISOString()
+  let count = 0
+  for (const row of rows) {
+    const { id: _id, ...data } = row as Record<string, string>
+    if (!Object.values(data).some(v => v)) continue
+    await addDoc(collection(db, col), { ...data, created_at: data.created_at || now })
+    count++
+  }
+  alert(`Imported ${count} records into ${col}.`)
+  await loadAll()
+  ;(e.target as HTMLInputElement).value = ''
 }
 
 onMounted(loadAll)
