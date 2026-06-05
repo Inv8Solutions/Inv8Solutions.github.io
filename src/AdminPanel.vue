@@ -86,6 +86,45 @@
             </div>
           </div>
 
+          <!-- CRM snapshot -->
+          <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
+            <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+              <div class="flex items-center gap-2">
+                <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600">
+                  <i class="fa-solid fa-diagram-project text-[11px] text-white"></i>
+                </div>
+                <p class="text-sm font-bold text-gray-900">CRM Pipeline</p>
+              </div>
+              <button @click="activeSection = 'crm'" class="text-xs text-blue-600 hover:text-blue-700">Open CRM →</button>
+            </div>
+            <div class="grid grid-cols-2 divide-x divide-y divide-gray-100 sm:grid-cols-3 lg:grid-cols-6">
+              <div class="px-5 py-4">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Active Deals</p>
+                <p class="mt-1 text-2xl font-black text-blue-600">{{ crmStats.activeDeals }}</p>
+              </div>
+              <div class="px-5 py-4">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Pipeline</p>
+                <p class="mt-1 text-2xl font-black text-gray-900">₱{{ crmStats.pipeline >= 1000 ? (crmStats.pipeline / 1000).toFixed(0) + 'k' : crmStats.pipeline }}</p>
+              </div>
+              <div class="px-5 py-4">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Closed Won</p>
+                <p class="mt-1 text-2xl font-black text-green-600">₱{{ crmStats.closedWon >= 1000 ? (crmStats.closedWon / 1000).toFixed(0) + 'k' : crmStats.closedWon }}</p>
+              </div>
+              <div class="px-5 py-4">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Win Rate</p>
+                <p class="mt-1 text-2xl font-black text-purple-600">{{ crmStats.winRate }}%</p>
+              </div>
+              <div class="px-5 py-4">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Open Tasks</p>
+                <p class="mt-1 text-2xl font-black text-amber-600">{{ crmStats.openTasks }}</p>
+              </div>
+              <div class="px-5 py-4">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Overdue</p>
+                <p class="mt-1 text-2xl font-black" :class="crmStats.overdueTasks > 0 ? 'text-red-600' : 'text-gray-400'">{{ crmStats.overdueTasks }}</p>
+              </div>
+            </div>
+          </div>
+
           <!-- Bottom grid: recent inquiries + upcoming calls -->
           <div class="grid gap-4 lg:grid-cols-2">
             <!-- Recent Inquiries -->
@@ -367,6 +406,14 @@
             <p class="mt-1 text-xs">Upload photos to display in the About page gallery</p>
           </div>
         </div>
+
+        <!-- ── CRM ──────────────────────────────────────────────── -->
+        <CRMPanel
+          v-else-if="activeSection === 'crm'"
+          ref="crmPanel"
+          :pending-inquiries="newInquiries"
+          :pending-calls="newCalls"
+        />
 
         <!-- ── SETTINGS ───────────────────────────────────────── -->
         <div v-else-if="activeSection === 'settings'" class="max-w-lg space-y-5">
@@ -834,6 +881,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
+import CRMPanel from '@/components/CRM/CRMPanel.vue'
 import { db, storage, auth } from '@/firebase'
 import { signOut } from 'firebase/auth'
 import { collection, getDocs, query, orderBy, addDoc, doc, setDoc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore'
@@ -925,6 +973,9 @@ const inquiries = ref<Inquiry[]>([])
 const calls = ref<Call[]>([])
 const galleryPhotos = ref<GalleryPhoto[]>([])
 const blogPosts = ref<BlogPost[]>([])
+
+// CRM dashboard stats
+const crmStats = reactive({ pipeline: 0, closedWon: 0, activeDeals: 0, openTasks: 0, overdueTasks: 0, winRate: 0 })
 
 const settings = reactive<Settings>({ adminEmail: 'admin@inv8solutions.com', companyName: 'Inv8 Studio' })
 
@@ -1424,14 +1475,41 @@ async function fetchCalls() {
   } catch (e) { console.error('[fetchCalls]', e) }
 }
 
+async function loadCRMStats() {
+  try {
+    const [dealsSnap, tasksSnap] = await Promise.all([
+      getDocs(collection(db, 'crm_deals')),
+      getDocs(collection(db, 'crm_tasks')),
+    ])
+    const deals = dealsSnap.docs.map(d => d.data())
+    const tasks = tasksSnap.docs.map(d => d.data())
+    const today = new Date().toDateString()
+    const open = deals.filter((d: any) => d.stage !== 'Closed Won' && d.stage !== 'Closed Lost')
+    const won  = deals.filter((d: any) => d.stage === 'Closed Won')
+    crmStats.activeDeals  = open.length
+    crmStats.pipeline     = open.reduce((s: number, d: any) => s + ((d.value ?? 0) * (d.probability ?? 10) / 100), 0)
+    crmStats.closedWon    = won.reduce((s: number, d: any) => s + (d.value ?? 0), 0)
+    crmStats.winRate      = deals.length ? Math.round(won.length / deals.length * 100) : 0
+    crmStats.openTasks    = tasks.filter((t: any) => t.status === 'Open' || t.status === 'In Progress').length
+    crmStats.overdueTasks = tasks.filter((t: any) => t.status !== 'Completed' && t.status !== 'Cancelled' && t.due_date && new Date(t.due_date) < new Date(today)).length
+    overdueCrmTasks.value = crmStats.overdueTasks
+  } catch { /* CRM collections may not exist yet */ }
+}
+
 async function loadData() {
   isLoading.value = true; error.value = null
-  try { await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls(), loadGalleryPhotos(), fetchBlogPosts()]) }
+  try { await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls(), loadGalleryPhotos(), fetchBlogPosts(), loadCRMStats()]) }
   catch (e) { console.error(e) } finally { isLoading.value = false }
 }
 
+// ── CRM panel ref ───────────────────────────────────────────────
+const crmPanel = ref<InstanceType<typeof CRMPanel> | null>(null)
+
 // ── Computed ────────────────────────────────────────────────────
 const newInquiriesCount = computed(() => inquiries.value.filter(i => i.status === 'new').length)
+const newInquiries = computed(() => inquiries.value.filter(i => i.status === 'new'))
+const newCalls     = computed(() => calls.value.filter(c => c.status === 'pending'))
+const overdueCrmTasks = ref(0)
 
 const today = computed(() => new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' }))
 
@@ -1451,6 +1529,7 @@ const navItems = computed(() => [
   { id:'inquiries', label:'Inquiries', icon:'fa-solid fa-envelope', badge: newInquiriesCount.value },
   { id:'calls',     label:'Calls',     icon:'fa-solid fa-phone' },
   { id:'gallery',   label:'Gallery',   icon:'fa-solid fa-image' },
+  { id:'crm',       label:'CRM',       icon:'fa-solid fa-diagram-project', badge: overdueCrmTasks.value },
   { id:'settings',  label:'Settings',  icon:'fa-solid fa-gear' },
 ])
 
@@ -1468,6 +1547,9 @@ async function updateInquiryStatus(status: 'done'|'contacted'|'forwarded') {
   try { await updateDoc(doc(db, 'inquiries', selectedInquiry.value.id), { status: newStatus, updated_at: new Date().toISOString() }) } catch (e) { console.error('[updateInquiryStatus]', e) }
   const idx = inquiries.value.findIndex(i => i.id === selectedInquiry.value?.id)
   if (idx !== -1 && inquiries.value[idx]) inquiries.value[idx]!.status = newStatus
+  if (status === 'done' && selectedInquiry.value?.id) {
+    crmPanel.value?.markDealWon(selectedInquiry.value.id)
+  }
   closeInquiryModal()
 }
 
