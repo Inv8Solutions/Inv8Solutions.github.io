@@ -1,49 +1,61 @@
 <template>
-  <div class="flex h-screen bg-gray-50 overflow-hidden font-sans">
+  <div class="flex h-screen overflow-hidden font-sans" style="background:#f0f2f8">
 
     <!-- ── Sidebar ─────────────────────────────────────────────── -->
-    <aside class="flex w-60 shrink-0 flex-col bg-[#07090f] border-r border-white/[0.06]">
+    <aside class="flex w-64 shrink-0 flex-col bg-white border-r border-gray-100 shadow-sm">
       <!-- Logo -->
-      <div class="flex items-center gap-2.5 px-5 py-5 border-b border-white/[0.06]">
-        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
+      <div class="flex items-center gap-3 px-6 py-6">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 shadow-md shadow-blue-200">
           <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 text-white" stroke="currentColor" stroke-width="2.5">
             <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <span class="text-sm font-black text-white tracking-tight">inv8 Studio</span>
-        <span class="ml-auto text-[10px] font-semibold text-white/30 uppercase tracking-widest">Admin</span>
+        <div>
+          <p class="text-sm font-black text-gray-900 tracking-tight leading-none">inv8 Studio</p>
+          <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mt-0.5">Admin Panel</p>
+        </div>
       </div>
 
       <!-- Nav -->
-      <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-0.5">
-        <button
-          v-for="item in navItems"
-          :key="item.id"
-          @click="activeSection = item.id"
-          class="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-150"
-          :class="activeSection === item.id
-            ? 'bg-blue-600 text-white'
-            : 'text-white/50 hover:bg-white/5 hover:text-white'"
-        >
-          <i :class="item.icon" class="w-4 text-center text-sm" aria-hidden="true"></i>
-          {{ item.label }}
-          <span
-            v-if="item.badge && item.badge > 0"
-            class="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white"
-          >{{ item.badge }}</span>
-        </button>
+      <nav class="flex-1 overflow-y-auto px-4 pb-4 space-y-0.5">
+        <p class="px-3 pb-2 pt-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">Main</p>
+        <template v-for="item in navItems" :key="item.id">
+          <p v-if="item.id === 'crm'" class="px-3 pb-2 pt-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">CRM</p>
+          <p v-if="item.id === 'settings'" class="px-3 pb-2 pt-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">System</p>
+          <button
+            @click="activeSection = item.id"
+            class="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-150"
+            :class="activeSection === item.id
+              ? 'bg-blue-600 text-white shadow-md shadow-blue-200'
+              : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'"
+          >
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors"
+              :class="activeSection === item.id ? 'bg-white/20' : 'bg-gray-100'">
+              <i :class="item.icon" class="text-xs" aria-hidden="true"
+                :style="activeSection === item.id ? 'color:white' : ''"></i>
+            </span>
+            {{ item.label }}
+            <span
+              v-if="item.badge && item.badge > 0"
+              class="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-bold"
+              :class="activeSection === item.id ? 'bg-white text-blue-600' : 'bg-red-500 text-white'"
+            >{{ item.badge }}</span>
+          </button>
+        </template>
       </nav>
 
       <!-- Logout -->
-      <div class="border-t border-white/[0.06] p-3">
+      <div class="border-t border-gray-100 p-4">
         <button
           @click="handleLogout"
-          class="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/40 transition hover:bg-red-500/10 hover:text-red-400"
+          class="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-gray-400 transition hover:bg-red-50 hover:text-red-500"
         >
-          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-          </svg>
-          Logout
+          <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gray-100">
+            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+          </span>
+          Log Out
         </button>
       </div>
     </aside>
@@ -51,16 +63,30 @@
     <!-- ── Main ───────────────────────────────────────────────── -->
     <div class="flex flex-1 flex-col overflow-hidden">
       <!-- Top bar -->
-      <header class="flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-6">
-        <h1 class="text-base font-bold text-gray-900">{{ currentSectionLabel }}</h1>
+      <header class="flex h-16 shrink-0 items-center justify-between bg-white border-b border-gray-100 px-8 shadow-sm">
+        <div>
+          <h1 class="text-base font-black text-gray-900">{{ currentSectionLabel }}</h1>
+          <p class="text-xs text-gray-400 mt-0.5">{{ today }}</p>
+        </div>
         <div class="flex items-center gap-3">
-          <span class="text-xs text-gray-400">{{ today }}</span>
-          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-black text-white">A</div>
+          <!-- Notification bell -->
+          <button class="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gray-50 text-gray-400 hover:bg-gray-100 transition">
+            <i class="fa-solid fa-bell text-sm"></i>
+            <span v-if="newInquiriesCount > 0" class="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">{{ newInquiriesCount }}</span>
+          </button>
+          <!-- Avatar -->
+          <div class="flex items-center gap-2.5 rounded-xl bg-gray-50 px-3 py-1.5">
+            <div class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-[11px] font-black text-white shadow-sm">A</div>
+            <div class="text-right">
+              <p class="text-xs font-bold text-gray-800 leading-none">Admin</p>
+              <p class="text-[10px] text-gray-400 leading-none mt-0.5">inv8 Studio</p>
+            </div>
+          </div>
         </div>
       </header>
 
       <!-- Content -->
-      <main class="flex-1 overflow-y-auto p-6">
+      <main class="flex-1 overflow-y-auto p-8">
 
         <!-- Loading -->
         <div v-if="isLoading" class="flex items-center justify-center h-64">
@@ -73,102 +99,116 @@
         <!-- ── DASHBOARD ──────────────────────────────────────── -->
         <div v-else-if="activeSection === 'dashboard'" class="space-y-6">
           <!-- Stat cards -->
-          <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <div v-for="stat in dashboardStats" :key="stat.label" class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-              <div class="flex items-center justify-between">
-                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">{{ stat.label }}</p>
-                <div class="flex h-8 w-8 items-center justify-center rounded-lg" :class="stat.iconBg">
-                  <i :class="[stat.icon, stat.iconColor, 'text-sm']" aria-hidden="true"></i>
+          <div class="grid grid-cols-2 gap-5 lg:grid-cols-4">
+            <div v-for="stat in dashboardStats" :key="stat.label"
+              class="relative overflow-hidden rounded-2xl bg-white p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-widest text-gray-400">{{ stat.label }}</p>
+                  <p class="mt-3 text-4xl font-black text-gray-900">{{ stat.value }}</p>
+                  <p class="mt-1.5 text-xs font-medium text-gray-400">{{ stat.sub }}</p>
+                </div>
+                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl shadow-sm" :class="stat.iconBg">
+                  <i :class="[stat.icon, stat.iconColor, 'text-base']" aria-hidden="true"></i>
                 </div>
               </div>
-              <p class="mt-3 text-3xl font-black" :class="stat.valueColor">{{ stat.value }}</p>
-              <p class="mt-1 text-xs text-gray-400">{{ stat.sub }}</p>
+              <div class="absolute bottom-0 left-0 h-1 w-full rounded-b-2xl" :class="stat.accentBar"></div>
             </div>
           </div>
 
           <!-- CRM snapshot -->
-          <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
-            <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
-              <div class="flex items-center gap-2">
-                <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600">
+          <div class="rounded-2xl bg-white shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <div class="flex items-center gap-2.5">
+                <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 shadow-sm shadow-blue-200">
                   <i class="fa-solid fa-diagram-project text-[11px] text-white"></i>
+                </span>
+                <div>
+                  <p class="text-sm font-black text-gray-900 leading-none">CRM Pipeline</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Live sales overview</p>
                 </div>
-                <p class="text-sm font-bold text-gray-900">CRM Pipeline</p>
               </div>
-              <button @click="activeSection = 'crm'" class="text-xs text-blue-600 hover:text-blue-700">Open CRM →</button>
+              <button @click="activeSection = 'crm'" class="rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-600 hover:bg-blue-100 transition">Open CRM →</button>
             </div>
-            <div class="grid grid-cols-2 divide-x divide-y divide-gray-100 sm:grid-cols-3 lg:grid-cols-6">
-              <div class="px-5 py-4">
-                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Active Deals</p>
-                <p class="mt-1 text-2xl font-black text-blue-600">{{ crmStats.activeDeals }}</p>
-              </div>
-              <div class="px-5 py-4">
-                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Pipeline</p>
-                <p class="mt-1 text-2xl font-black text-gray-900">₱{{ crmStats.pipeline >= 1000 ? (crmStats.pipeline / 1000).toFixed(0) + 'k' : crmStats.pipeline }}</p>
-              </div>
-              <div class="px-5 py-4">
-                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Closed Won</p>
-                <p class="mt-1 text-2xl font-black text-green-600">₱{{ crmStats.closedWon >= 1000 ? (crmStats.closedWon / 1000).toFixed(0) + 'k' : crmStats.closedWon }}</p>
-              </div>
-              <div class="px-5 py-4">
-                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Win Rate</p>
-                <p class="mt-1 text-2xl font-black text-purple-600">{{ crmStats.winRate }}%</p>
-              </div>
-              <div class="px-5 py-4">
-                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Open Tasks</p>
-                <p class="mt-1 text-2xl font-black text-amber-600">{{ crmStats.openTasks }}</p>
-              </div>
-              <div class="px-5 py-4">
-                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Overdue</p>
-                <p class="mt-1 text-2xl font-black" :class="crmStats.overdueTasks > 0 ? 'text-red-600' : 'text-gray-400'">{{ crmStats.overdueTasks }}</p>
+            <div class="grid grid-cols-3 divide-x divide-gray-100 lg:grid-cols-6">
+              <div v-for="(m, i) in [
+                { label:'Active Deals', val: crmStats.activeDeals,  color:'text-blue-600' },
+                { label:'Pipeline',     val: '₱' + (crmStats.pipeline >= 1000 ? (crmStats.pipeline/1000).toFixed(0)+'k' : crmStats.pipeline), color:'text-gray-900' },
+                { label:'Closed Won',   val: '₱' + (crmStats.closedWon >= 1000 ? (crmStats.closedWon/1000).toFixed(0)+'k' : crmStats.closedWon), color:'text-emerald-600' },
+                { label:'Win Rate',     val: crmStats.winRate + '%', color:'text-violet-600' },
+                { label:'Open Tasks',   val: crmStats.openTasks,    color:'text-amber-600' },
+                { label:'Overdue',      val: crmStats.overdueTasks, color: crmStats.overdueTasks > 0 ? 'text-red-500' : 'text-gray-300' },
+              ]" :key="i" class="px-5 py-4">
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">{{ m.label }}</p>
+                <p class="mt-2 text-2xl font-black" :class="m.color">{{ m.val }}</p>
               </div>
             </div>
           </div>
 
           <!-- Bottom grid: recent inquiries + upcoming calls -->
-          <div class="grid gap-4 lg:grid-cols-2">
+          <div class="grid gap-5 lg:grid-cols-2">
             <!-- Recent Inquiries -->
-            <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
-              <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
-                <p class="text-sm font-bold text-gray-900">Recent Inquiries</p>
-                <button @click="activeSection = 'inquiries'" class="text-xs text-blue-600 hover:text-blue-700">View all →</button>
+            <div class="rounded-2xl bg-white shadow-sm border border-gray-100">
+              <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <div class="flex items-center gap-2">
+                  <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50">
+                    <i class="fa-solid fa-envelope text-xs text-amber-500"></i>
+                  </span>
+                  <p class="text-sm font-black text-gray-900">Recent Inquiries</p>
+                </div>
+                <button @click="activeSection = 'inquiries'" class="rounded-lg bg-gray-50 px-3 py-1.5 text-xs font-bold text-gray-500 hover:bg-gray-100 transition">View all →</button>
               </div>
               <ul class="divide-y divide-gray-50">
-                <li v-for="inq in inquiries.slice(0, 5)" :key="inq.id" class="flex items-center justify-between gap-3 px-5 py-3">
-                  <div class="min-w-0">
-                    <p class="truncate text-sm font-semibold text-gray-900">{{ inq.name }}</p>
-                    <p class="truncate text-xs text-gray-400">{{ inq.service }}</p>
+                <li v-for="inq in inquiries.slice(0, 5)" :key="inq.id" class="flex items-center justify-between gap-3 px-6 py-3.5 hover:bg-gray-50/60 transition">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-[11px] font-black text-white">
+                      {{ inq.name.charAt(0).toUpperCase() }}
+                    </div>
+                    <div class="min-w-0">
+                      <p class="truncate text-sm font-semibold text-gray-900">{{ inq.name }}</p>
+                      <p class="truncate text-xs text-gray-400">{{ inq.service }}</p>
+                    </div>
                   </div>
-                  <span class="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase"
-                    :class="inq.status === 'client_secured' ? 'bg-green-100 text-green-700'
-                      : inq.status === 'client_cancelled' ? 'bg-gray-100 text-gray-500'
-                      : inq.status === 'contacted' ? 'bg-amber-100 text-amber-700'
-                      : 'bg-blue-100 text-blue-700'">
+                  <span class="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide"
+                    :class="inq.status === 'client_secured' ? 'bg-emerald-50 text-emerald-600'
+                      : inq.status === 'client_cancelled' ? 'bg-gray-100 text-gray-400'
+                      : inq.status === 'contacted' ? 'bg-amber-50 text-amber-600'
+                      : 'bg-blue-50 text-blue-600'">
                     {{ inq.status === 'client_secured' ? 'Secured' : inq.status === 'client_cancelled' ? 'Cancelled' : inq.status === 'contacted' ? 'Contacted' : 'New' }}
                   </span>
                 </li>
-                <li v-if="!inquiries.length" class="px-5 py-8 text-center text-sm text-gray-400">No inquiries yet</li>
+                <li v-if="!inquiries.length" class="px-6 py-10 text-center text-sm text-gray-400">No inquiries yet</li>
               </ul>
             </div>
 
             <!-- Upcoming Calls -->
-            <div class="rounded-xl border border-gray-200 bg-white shadow-sm">
-              <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
-                <p class="text-sm font-bold text-gray-900">Scheduled Calls</p>
-                <button @click="activeSection = 'calls'" class="text-xs text-blue-600 hover:text-blue-700">View all →</button>
+            <div class="rounded-2xl bg-white shadow-sm border border-gray-100">
+              <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <div class="flex items-center gap-2">
+                  <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50">
+                    <i class="fa-solid fa-phone text-xs text-emerald-500"></i>
+                  </span>
+                  <p class="text-sm font-black text-gray-900">Scheduled Calls</p>
+                </div>
+                <button @click="activeSection = 'calls'" class="rounded-lg bg-gray-50 px-3 py-1.5 text-xs font-bold text-gray-500 hover:bg-gray-100 transition">View all →</button>
               </div>
               <ul class="divide-y divide-gray-50">
-                <li v-for="call in calls.slice(0, 5)" :key="call.id" class="flex items-center justify-between gap-3 px-5 py-3">
-                  <div class="min-w-0">
-                    <p class="truncate text-sm font-semibold text-gray-900">{{ call.name }}</p>
-                    <p class="text-xs text-gray-400">{{ call.selectedDate }} · {{ call.selectedTime }}</p>
+                <li v-for="call in calls.slice(0, 5)" :key="call.id" class="flex items-center justify-between gap-3 px-6 py-3.5 hover:bg-gray-50/60 transition">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-[11px] font-black text-white">
+                      {{ (call.name || '?').charAt(0).toUpperCase() }}
+                    </div>
+                    <div class="min-w-0">
+                      <p class="truncate text-sm font-semibold text-gray-900">{{ call.name }}</p>
+                      <p class="text-xs text-gray-400">{{ call.selectedDate }} · {{ call.selectedTime }}</p>
+                    </div>
                   </div>
-                  <span class="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase"
-                    :class="call.status === 'contacted' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'">
+                  <span class="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide"
+                    :class="call.status === 'contacted' ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-500'">
                     {{ call.status === 'contacted' ? 'Contacted' : 'Pending' }}
                   </span>
                 </li>
-                <li v-if="!calls.length" class="px-5 py-8 text-center text-sm text-gray-400">No calls scheduled</li>
+                <li v-if="!calls.length" class="px-6 py-10 text-center text-sm text-gray-400">No calls scheduled</li>
               </ul>
             </div>
           </div>
@@ -184,7 +224,7 @@
             </button>
           </div>
 
-          <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+          <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
             <table class="min-w-full divide-y divide-gray-100">
               <thead class="bg-gray-50">
                 <tr>
@@ -233,7 +273,7 @@
             </button>
           </div>
 
-          <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+          <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
             <table class="min-w-full divide-y divide-gray-100">
               <thead class="bg-gray-50">
                 <tr>
@@ -272,7 +312,7 @@
         <div v-else-if="activeSection === 'inquiries'" class="space-y-4">
           <p class="text-sm text-gray-500">{{ inquiries.length }} total · {{ newInquiriesCount }} new</p>
 
-          <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+          <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
             <div class="overflow-x-auto">
               <table class="min-w-full divide-y divide-gray-100">
                 <thead class="bg-gray-50">
@@ -321,7 +361,7 @@
         <div v-else-if="activeSection === 'calls'" class="space-y-4">
           <p class="text-sm text-gray-500">{{ calls.length }} scheduled</p>
 
-          <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+          <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
             <table class="min-w-full divide-y divide-gray-100">
               <thead class="bg-gray-50">
                 <tr>
@@ -1516,10 +1556,10 @@ const today = computed(() => new Date().toLocaleDateString('en-US', { weekday:'l
 const currentSectionLabel = computed(() => navItems.value.find((n: {id:string}) => n.id === activeSection.value)?.label ?? 'Admin')
 
 const dashboardStats = computed(() => [
-  { label:'Total Works',   value:projects.value.length,    sub:'In portfolio',        icon:'fa-solid fa-folder',          iconBg:'bg-blue-50',   iconColor:'text-blue-600',   valueColor:'text-blue-600' },
-  { label:'Blog Posts',    value:blogPosts.value.length,   sub:'Published',           icon:'fa-solid fa-pen-to-square',   iconBg:'bg-purple-50', iconColor:'text-purple-600', valueColor:'text-purple-600' },
-  { label:'New Inquiries', value:newInquiriesCount.value,  sub:'Awaiting response',   icon:'fa-solid fa-envelope',        iconBg:'bg-amber-50',  iconColor:'text-amber-600',  valueColor:'text-amber-600', badge:true },
-  { label:'Calls Booked',  value:calls.value.length,       sub:'Total consultations', icon:'fa-solid fa-phone',           iconBg:'bg-green-50',  iconColor:'text-green-600',  valueColor:'text-green-600' },
+  { label:'Total Works',   value:projects.value.length,    sub:'In portfolio',        icon:'fa-solid fa-folder',          iconBg:'bg-blue-50',   iconColor:'text-blue-500',   accentBar:'bg-blue-500' },
+  { label:'Blog Posts',    value:blogPosts.value.length,   sub:'Published',           icon:'fa-solid fa-pen-to-square',   iconBg:'bg-violet-50', iconColor:'text-violet-500', accentBar:'bg-violet-500' },
+  { label:'New Inquiries', value:newInquiriesCount.value,  sub:'Awaiting response',   icon:'fa-solid fa-envelope',        iconBg:'bg-amber-50',  iconColor:'text-amber-500',  accentBar:'bg-amber-500' },
+  { label:'Calls Booked',  value:calls.value.length,       sub:'Total consultations', icon:'fa-solid fa-phone',           iconBg:'bg-emerald-50',iconColor:'text-emerald-500',accentBar:'bg-emerald-500' },
 ])
 
 const navItems = computed(() => [
