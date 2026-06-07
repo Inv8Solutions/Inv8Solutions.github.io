@@ -4,6 +4,7 @@ import innovImage from '@/assets/Innov_SME.png'
 import strategyImage from '@/assets/Pitchdeck.png'
 import acornImg from '@/assets/Acorn.png'
 import retasifyImg from '@/assets/Retasify.png'
+import webMobileAppImg from '@/assets/Web_MobileApp.png'
 import artistHubImg from '@/assets/ArtistHub.png'
 import bentoBasketImg from '@/assets/BentoBasket.png'
 import forensicLensImg from '@/assets/ForensicLens.png'
@@ -55,7 +56,7 @@ export const audiences: Audience[] = [
         description:
           'Whether you need a customer-facing web platform or a mobile app your users will actually enjoy using, we design it from the ground up. We focus on clarity, ease of use, and experiences that keep people coming back.',
         bestFor: 'Founders and early-stage teams ready to build their core product',
-        image: retasifyImg,
+        image: webMobileAppImg,
       },
       {
         title: 'Pitch Deck Design',
