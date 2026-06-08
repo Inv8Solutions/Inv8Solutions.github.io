@@ -3,6 +3,9 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { addDoc, collection } from 'firebase/firestore'
 import { db } from '@/firebase'
+import { useLanguage } from '@/composables/useLanguage'
+
+const { lang, toggle, t } = useLanguage()
 
 defineOptions({
   name: 'FooterSection',
@@ -57,25 +60,25 @@ const availableDates = computed(() => {
 const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM']
 
 const quickLinks = [
-  { name: 'About Us', path: '/about' },
-  { name: 'Services', path: '/services' },
-  { name: 'Works', path: '/works' },
-  { name: 'Blog', path: '/blog' },
-  { name: 'Contact Us', path: '/contactus' },
-  { name: 'Referral Program', path: '/referrals' },
+  { name: 'About Us',        nameFil: 'Tungkol sa Amin',    path: '/about' },
+  { name: 'Services',        nameFil: 'Mga Serbisyo',       path: '/services' },
+  { name: 'Works',           nameFil: 'Mga Gawa',           path: '/works' },
+  { name: 'Blog',            nameFil: 'Blog',               path: '/blog' },
+  { name: 'Contact Us',      nameFil: 'Makipag-ugnayan',    path: '/contactus' },
+  { name: 'Referral Program',nameFil: 'Programang Referral',path: '/referrals' },
 ]
 
 const services = [
-  'Web & App Development',
-  'UI/UX Design',
-  'Business Innovation Solutions',
-  'Innovation & Product Strategy',
+  { en: 'Web & App Development',         fil: 'Pagbuo ng Web at App' },
+  { en: 'UI/UX Design',                  fil: 'Disenyo ng UI/UX' },
+  { en: 'Business Innovation Solutions', fil: 'Solusyon sa Inobasyon ng Negosyo' },
+  { en: 'Innovation & Product Strategy', fil: 'Estratehiya sa Inobasyon at Produkto' },
 ]
 
 const policies = [
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'Terms of Service', href: '#' },
-  { label: 'Referral Program', href: '/referrals' },
+  { label: 'Privacy Policy',   labelFil: 'Patakaran sa Privacy', href: '#' },
+  { label: 'Terms of Service', labelFil: 'Mga Tuntunin',          href: '#' },
+  { label: 'Referral Program', labelFil: 'Programang Referral',   href: '/referrals' },
 ]
 
 const currentYear = new Date().getFullYear()
@@ -183,12 +186,12 @@ const handleSubmitBooking = async () => {
       >
         <div class="space-y-4 text-left">
           <h2 class="text-2xl font-semibold text-white">inv8 Studio</h2>
-          <p class="text-sm text-white/45">Product design and development studio.</p>
+          <p class="text-sm text-white/45">{{ t('Product design and development studio.', 'Studio ng disenyo at pagbuo ng produkto.') }}</p>
         </div>
 
         <div>
           <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-white/30">
-            Quick Navigation
+            {{ t('Quick Navigation', 'Mabilis na Nabigasyon') }}
           </h3>
           <ul class="mt-4 space-y-2 text-sm text-white/55">
             <li v-for="link in quickLinks" :key="link.name">
@@ -200,7 +203,7 @@ const handleSubmitBooking = async () => {
                   'text-blue-400 font-medium': isActive(link.path),
                 }"
               >
-                {{ link.name }}
+                {{ t(link.name, link.nameFil) }}
               </a>
             </li>
           </ul>
@@ -208,16 +211,16 @@ const handleSubmitBooking = async () => {
 
         <div>
           <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-white/30">
-            Services List
+            {{ t('Services List', 'Listahan ng Serbisyo') }}
           </h3>
           <ul class="mt-4 space-y-2 text-sm text-white/55">
-            <li v-for="service in services" :key="service">{{ service }}</li>
+            <li v-for="service in services" :key="service.en">{{ t(service.en, service.fil) }}</li>
           </ul>
         </div>
 
         <div>
           <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-white/30">
-            Get in Touch
+            {{ t('Get in Touch', 'Makipag-ugnayan') }}
           </h3>
           <a class="mt-4 flex items-center gap-3 text-sm text-white/60" href="mailto:inv8design@gmail.com">
             <span
@@ -252,16 +255,27 @@ const handleSubmitBooking = async () => {
       <div
         class="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-sm text-white/45 sm:flex-row sm:items-center sm:justify-between"
       >
-        <p>© {{ currentYear }} Inv8 Studio. All rights reserved.</p>
-        <div class="flex flex-wrap gap-6">
+        <p>© {{ currentYear }} Inv8 Studio. {{ t('All rights reserved.', 'Lahat ng karapatan ay nakalaan.') }}</p>
+
+        <div class="flex flex-wrap items-center gap-6">
           <a
             v-for="policy in policies"
             :key="policy.label"
             :href="policy.href"
-            class="transition hover:"
+            class="transition hover:text-white/70"
           >
-            {{ policy.label }}
+            {{ t(policy.label, policy.labelFil) }}
           </a>
+
+          <!-- Language toggle -->
+          <button
+            @click="toggle"
+            class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/60 transition hover:border-white/30 hover:text-white"
+            :title="lang === 'en' ? 'Switch to Filipino' : 'Switch to English'"
+          >
+            <span class="text-base leading-none">🇵🇭</span>
+            <span>{{ lang === 'en' ? 'Filipino' : 'English' }}</span>
+          </button>
         </div>
       </div>
     </div>
