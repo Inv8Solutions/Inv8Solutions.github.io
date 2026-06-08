@@ -5,6 +5,8 @@ import strategyImage from '@/assets/Pitchdeck.png'
 import acornImg from '@/assets/Acorn.png'
 import retasifyImg from '@/assets/Retasify.png'
 import webMobileAppImg from '@/assets/Web_MobileApp.png'
+import pitchdeckImg from '@/assets/pitchdeck.png'
+import landingPageImg from '@/assets/landing_page.png'
 import artistHubImg from '@/assets/ArtistHub.png'
 import bentoBasketImg from '@/assets/BentoBasket.png'
 import forensicLensImg from '@/assets/ForensicLens.png'
@@ -63,14 +65,14 @@ export const audiences: Audience[] = [
         description:
           'A good pitch tells a clear story. We help you figure out what that story is, then design a deck that communicates it simply and confidently. Structure, visuals, and flow that keeps people engaged from the first slide to the last.',
         bestFor: 'Founders applying to accelerators, government grants, or angel investors',
-        image: strategyImage,
+        image: pitchdeckImg,
       },
       {
         title: 'Landing Page',
         description:
           'Test your idea before you build the full product. We design and build a simple, focused page that explains what you do, who it is for, and what people should do next. A good landing page can save you months of building the wrong thing.',
         bestFor: 'Founders still validating their idea, early marketing, pre-launch signups',
-        image: acornImg,
+        image: landingPageImg,
       },
     ],
   },
