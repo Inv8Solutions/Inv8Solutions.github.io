@@ -91,7 +91,7 @@ export const audiences: Audience[] = [
       'Running an innovation program takes more than good intentions. It takes the right structure, the right facilitation, and a clear plan. We have designed and operated programs from scratch and we bring that experience to your team.',
     services: [
       {
-        title: 'Incubation Program Design',
+        title: 'Innovation Program Design',
         description:
           'A well-designed program changes the direction of every participant who goes through it. We help you build the right structure, set meaningful milestones, connect founders with the right mentors, and define what success actually looks like for your community.',
         bestFor: 'State universities, LGUs, technology business incubators setting up or improving programs',
