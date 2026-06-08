@@ -508,29 +508,97 @@ onUnmounted(() => {
          WHY INV8
     ═══════════════════════════════════════ -->
     <section class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-5xl">
-        <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+      <div class="mx-auto max-w-6xl">
+        <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.15fr] lg:items-start">
+
+          <!-- ── Left: headline + 3 pillars ── -->
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Why inv8?</p>
-            <h2 class="mt-4 text-3xl font-black text-white sm:text-4xl">We are from here. We know how business works in Baguio.</h2>
-            <div class="mt-6 space-y-4 text-base leading-relaxed text-white/60">
-              <p>We are a product design and development studio based here in Baguio City. We work with local businesses, cooperatives, and institutions across Cordillera, and we understand the specific challenges of running a business in this region.</p>
-              <p>We are not a Manila agency. We do not show up with a generic pitch and a one-size-fits-all solution. We show up, we listen, and we figure out what actually makes sense for your business.</p>
-              <p>The BID Program is how we introduce ourselves. We would rather earn your trust by doing good work than by making promises.</p>
+            <h2 class="mt-4 text-4xl font-black leading-tight text-white sm:text-5xl">
+              Local knowledge.<br />
+              Practical recommendations.<br />
+              <span class="text-blue-500">No unnecessary complexity.</span>
+            </h2>
+
+            <div class="mt-10 space-y-0 divide-y divide-white/[0.06]">
+              <div
+                v-for="pillar in [
+                  {
+                    icon: 'fa-solid fa-mountain-sun',
+                    title: 'We understand local businesses.',
+                    body: 'We work with businesses, cooperatives, schools, and organizations across Baguio and Benguet. By spending time on the ground, we understand how local businesses operate and what challenges they face.',
+                  },
+                  {
+                    icon: 'fa-solid fa-bullseye',
+                    title: 'We recommend what makes sense.',
+                    body: 'We are not interested in recommending expensive systems or complicated technology for the sake of it. We focus on solutions that save time, reduce manual work, improve customer experience, and support business growth.',
+                  },
+                  {
+                    icon: 'fa-solid fa-handshake',
+                    title: 'We earn trust by doing good work.',
+                    body: 'The BID Program is our way of getting to know local businesses and sharing useful recommendations before asking for anything in return.',
+                  },
+                ]"
+                :key="pillar.title"
+                class="flex items-start gap-5 py-7"
+              >
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/[0.07] bg-[#0d0f1f] text-blue-400">
+                  <i :class="[pillar.icon, 'text-base']"></i>
+                </div>
+                <div>
+                  <p class="font-bold text-white text-base leading-snug">{{ pillar.title }}</p>
+                  <p class="mt-2 text-sm leading-relaxed text-white/55">{{ pillar.body }}</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="rounded-2xl border border-blue-500/20 bg-[#0a0c1c] p-8">
-            <i class="fa-solid fa-award text-3xl text-blue-400"></i>
-            <p class="mt-4 text-base font-semibold text-white leading-snug">
-              inv8 is the only full-stack design and development studio in Baguio, offering product design, web development, and IoT solutions under one team.
-            </p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              <span v-for="tag in ['Product Design','Web Development','IoT Solutions','Baguio City']" :key="tag"
-                class="rounded-full bg-blue-500/10 border border-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-300"
-              >{{ tag }}</span>
+          <!-- ── Right: What We Bring card ── -->
+          <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-7">
+
+            <!-- Card header -->
+            <div class="flex items-center gap-3 mb-6">
+              <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/15 text-blue-400">
+                <i class="fa-solid fa-people-group text-base"></i>
+              </div>
+              <p class="text-lg font-bold text-blue-400">What We Bring</p>
+            </div>
+
+            <!-- Service list -->
+            <div class="divide-y divide-white/[0.06]">
+              <div
+                v-for="svc in [
+                  { icon: 'fa-solid fa-pen-ruler',        title: 'Product & Service Design',        desc: 'We help design better experiences for your customers and team.' },
+                  { icon: 'fa-solid fa-display',          title: 'Websites & Digital Platforms',    desc: 'Modern, secure, and easy-to-manage websites and systems.' },
+                  { icon: 'fa-solid fa-gears',            title: 'Business Process Automation',     desc: 'We help reduce manual work and improve day-to-day operations.' },
+                  { icon: 'fa-solid fa-chart-bar',        title: 'Internal Tools & Dashboards',     desc: 'Tools that help you track, manage, and make better decisions.' },
+                  { icon: 'fa-solid fa-wifi',             title: 'IoT & Smart Systems',             desc: 'Solutions that connect devices and automate physical processes.' },
+                  { icon: 'fa-solid fa-location-dot',     title: 'Local, On-Site Collaboration',    desc: 'We visit your business and work closely with your team.' },
+                ]"
+                :key="svc.title"
+                class="flex items-start gap-4 py-4"
+              >
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.04] text-white/50">
+                  <i :class="[svc.icon, 'text-sm']"></i>
+                </div>
+                <div>
+                  <p class="font-bold text-white text-sm leading-snug">{{ svc.title }}</p>
+                  <p class="mt-0.5 text-xs leading-relaxed text-white/45">{{ svc.desc }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer callout -->
+            <div class="mt-4 pt-5 border-t border-white/[0.06] flex items-start gap-3">
+              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-blue-500/40 bg-blue-500/10 text-blue-400">
+                <i class="fa-solid fa-check text-xs"></i>
+              </div>
+              <p class="text-sm leading-relaxed text-white/65">
+                <span class="font-bold text-blue-400">One team</span> that can help identify opportunities and support implementation when needed.
+              </p>
             </div>
           </div>
+
         </div>
       </div>
     </section>
