@@ -43,6 +43,10 @@ const teamSizes = [
   'More than 50',
 ]
 
+function scrollToApply() {
+  document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' })
+}
+
 async function submitForm() {
   formError.value = ''
   if (!form.value.name || !form.value.businessName || !form.value.businessType || !form.value.teamSize || !form.value.painPoint || !form.value.isDecisionMaker || !form.value.contact) {
@@ -205,7 +209,7 @@ onUnmounted(() => {
 
           <!-- CTA -->
           <button
-            @click="document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' })"
+            @click="scrollToApply()"
             class="mt-8 inline-flex items-center gap-3 rounded-xl bg-blue-600 px-7 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700 hover:scale-105 w-fit"
           >
             <i class="fa-solid fa-calendar-days text-base"></i>
@@ -575,7 +579,7 @@ onUnmounted(() => {
             </div>
             <div class="flex flex-col items-start gap-3 sm:items-end sm:shrink-0">
               <button
-                @click="document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' })"
+                @click="scrollToApply()"
                 class="inline-flex items-center gap-2 rounded-full bg-amber-500 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-amber-400 hover:scale-105 shadow-lg shadow-amber-500/20"
               >
                 Apply Now — June 2026 Batch
@@ -905,7 +909,7 @@ onUnmounted(() => {
 
         <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <button
-            @click="document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' })"
+            @click="scrollToApply()"
             class="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500 hover:scale-105"
           >
             Apply for Your Free Slot
