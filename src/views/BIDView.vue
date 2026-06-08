@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useTheme } from '@/composables/useTheme'
 import heroImage from '@/assets/hero-image.png'
 
 const router = useRouter()
+const { isDark } = useTheme()
 
 const openFaq = ref<number | null>(null)
 const toggleFaq = (i: number) => { openFaq.value = openFaq.value === i ? null : i }
@@ -103,26 +105,40 @@ onUnmounted(() => {
     <!-- ═══════════════════════════════════════
          HERO
     ═══════════════════════════════════════ -->
-    <section class="relative overflow-hidden bg-white px-4 pt-28 pb-0 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-6xl">
-        <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+    <section
+      class="relative overflow-hidden pt-28 pb-0 transition-colors duration-300"
+      :class="isDark ? 'bg-[#03040f]' : 'bg-white'"
+    >
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 items-end gap-0 lg:grid-cols-2">
 
           <!-- ── Left: copy ── -->
-          <div class="pb-16 lg:pb-24">
+          <div class="pb-16 lg:pb-24 pr-0 lg:pr-10">
             <!-- Badge -->
-            <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/40 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600">
+            <span
+              class="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors duration-300"
+              :class="isDark
+                ? 'border-blue-500/30 text-blue-400'
+                : 'border-blue-500/40 text-blue-600'"
+            >
               <span class="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></span>
               June 2026 Batch · Now Open
             </span>
 
             <!-- Headline -->
-            <h1 class="mt-5 text-4xl font-black leading-tight tracking-tight text-gray-900 sm:text-5xl lg:text-5xl">
+            <h1
+              class="mt-5 text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-5xl transition-colors duration-300"
+              :class="isDark ? 'text-white' : 'text-gray-900'"
+            >
               We visit your business.<br />
-              <span class="text-blue-600">You get a free<br />improvement plan.</span>
+              <span class="text-blue-500">You get a free<br />improvement plan.</span>
             </h1>
 
             <!-- First description -->
-            <p class="mt-5 text-base leading-relaxed text-gray-600 max-w-md">
+            <p
+              class="mt-5 text-base leading-relaxed max-w-md transition-colors duration-300"
+              :class="isDark ? 'text-white/60' : 'text-gray-600'"
+            >
               We'll take a close look at how your business operates and identify practical ways to save time, improve workflows, and better serve your customers.
             </p>
 
@@ -130,7 +146,10 @@ onUnmounted(() => {
             <div class="my-5 w-10 border-t-2 border-blue-500"></div>
 
             <!-- Second description -->
-            <p class="text-base leading-relaxed text-gray-600 max-w-md">
+            <p
+              class="text-base leading-relaxed max-w-md transition-colors duration-300"
+              :class="isDark ? 'text-white/60' : 'text-gray-600'"
+            >
               Receive a personalized report with clear recommendations, estimated costs, and next steps. Yours to keep, whether you work with us or not.
             </p>
 
@@ -139,7 +158,7 @@ onUnmounted(() => {
               @click="router.push('/contactus')"
               class="mt-8 inline-flex items-center gap-3 rounded-xl bg-blue-600 px-7 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700 hover:scale-105"
             >
-              <i class="fa-regular fa-calendar-check text-base"></i>
+              <i class="fa-solid fa-calendar-days text-base"></i>
               Apply for a Free Slot
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4">
                 <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -148,12 +167,18 @@ onUnmounted(() => {
 
             <!-- Trust items -->
             <div class="mt-6 space-y-3">
-              <div class="flex items-center gap-3 text-sm text-gray-500">
-                <i class="fa-regular fa-shield-check text-blue-500 text-base w-5 text-center"></i>
+              <div
+                class="flex items-center gap-3 text-sm transition-colors duration-300"
+                :class="isDark ? 'text-white/50' : 'text-gray-500'"
+              >
+                <i class="fa-solid fa-shield-halved text-blue-500 w-5 text-center"></i>
                 No obligation. No sales pressure.
               </div>
-              <div class="flex items-center gap-3 text-sm text-gray-500">
-                <i class="fa-regular fa-users text-blue-500 text-base w-5 text-center"></i>
+              <div
+                class="flex items-center gap-3 text-sm transition-colors duration-300"
+                :class="isDark ? 'text-white/50' : 'text-gray-500'"
+              >
+                <i class="fa-solid fa-users text-blue-500 w-5 text-center"></i>
                 Only 3 businesses are selected per batch.
               </div>
             </div>
@@ -161,27 +186,49 @@ onUnmounted(() => {
 
           <!-- ── Right: image + floating card ── -->
           <div class="relative hidden lg:block self-end">
+            <!-- Image -->
             <img
               :src="heroImage"
               alt="inv8 team visiting a local Baguio business"
               class="w-full rounded-tl-[32px] rounded-tr-[32px] object-cover object-top"
-              style="max-height: 560px;"
+              style="max-height: 580px; object-position: center top;"
             />
 
+            <!-- Left gradient fade blending image into background -->
+            <div
+              class="absolute inset-y-0 left-0 w-32 rounded-tl-[32px] transition-colors duration-300"
+              :class="isDark
+                ? 'bg-gradient-to-r from-[#03040f] to-transparent'
+                : 'bg-gradient-to-r from-white to-transparent'"
+            ></div>
+
             <!-- Floating "What you'll get" card -->
-            <div class="absolute bottom-8 right-0 translate-x-0 w-72 rounded-2xl bg-white shadow-xl shadow-black/10 border border-gray-100 p-5">
+            <div
+              class="absolute bottom-8 right-4 w-72 rounded-2xl shadow-xl border p-5 transition-colors duration-300"
+              :class="isDark
+                ? 'bg-[#0d0f1f] border-white/10 shadow-black/40'
+                : 'bg-white border-gray-100 shadow-black/10'"
+            >
               <div class="flex items-start gap-3">
                 <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white">
-                  <i class="fa-regular fa-clipboard-list text-base"></i>
+                  <i class="fa-solid fa-list-check text-sm"></i>
                 </div>
                 <div>
-                  <p class="font-bold text-gray-900 text-sm">What you'll get:</p>
+                  <p
+                    class="font-bold text-sm transition-colors duration-300"
+                    :class="isDark ? 'text-white' : 'text-gray-900'"
+                  >What you'll get:</p>
                   <div class="mt-2 space-y-1.5">
-                    <div v-for="item in [
-                      'On-site visit and discovery',
-                      'Your Improvement Plan (delivered in 5 days)',
-                      'Walkthrough and Q&A session',
-                    ]" :key="item" class="flex items-start gap-2 text-xs text-gray-600">
+                    <div
+                      v-for="item in [
+                        'On-site visit and discovery',
+                        'Your Improvement Plan (delivered in 5 days)',
+                        'Walkthrough and Q&A session',
+                      ]"
+                      :key="item"
+                      class="flex items-start gap-2 text-xs transition-colors duration-300"
+                      :class="isDark ? 'text-white/60' : 'text-gray-600'"
+                    >
                       <i class="fa-solid fa-check text-blue-500 mt-0.5 shrink-0"></i>
                       {{ item }}
                     </div>
