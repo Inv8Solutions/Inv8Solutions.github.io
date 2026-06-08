@@ -7,6 +7,11 @@ import retasifyImg from '@/assets/Retasify.png'
 import webMobileAppImg from '@/assets/Web_MobileApp.png'
 import pitchdeckImg from '@/assets/Pitchdeck.png'
 import landingPageImg from '@/assets/landing_page.png'
+import incubationProgramImg from '@/assets/Incubation_Program.png'
+import facilitationImg from '@/assets/facilitation.png'
+import pitchImg from '@/assets/Pitch.png'
+import capacityImg from '@/assets/capacity.png'
+import programDocImg from '@/assets/program_documentation.png'
 import businessInnovationImg from '@/assets/Business_Innovation.png'
 import websiteRedesignImg from '@/assets/Website_redesign.png'
 import digitalPresenceImg from '@/assets/DigitalPresence.png'
@@ -95,35 +100,35 @@ export const audiences: Audience[] = [
         description:
           'A well-designed program changes the direction of every participant who goes through it. We help you build the right structure, set meaningful milestones, connect founders with the right mentors, and define what success actually looks like for your community.',
         bestFor: 'State universities, LGUs, technology business incubators setting up or improving programs',
-        image: innovImage,
+        image: incubationProgramImg,
       },
       {
         title: 'Innovation Workshops and Facilitation',
         description:
           'The best ideas come from people who feel heard. We design and facilitate workshops that help your team or community understand a problem, explore solutions, and walk away with something they can act on. No lectures. Real conversations.',
         bestFor: 'Organizations starting a new initiative, community problem-solving sessions, pre-program discovery',
-        image: strategyImage,
+        image: facilitationImg,
       },
       {
         title: 'Startup Competition Design',
         description:
           'A competition is only as good as what it produces. We design the full experience from concept to mechanics to judging, so your event creates real momentum for participants and real value for your organization.',
         bestFor: 'LGUs, universities, corporate programs, government agencies',
-        image: acornImg,
+        image: pitchImg,
       },
       {
         title: 'Capacity Building',
         description:
           'When we leave, the knowledge should stay. We train your internal team on the tools and methods they need to run innovation programs confidently on their own. Practical, hands-on, built around how your team actually works.',
         bestFor: 'TBI staff, LGU innovation officers, university faculty running startup programs',
-        image: innovImage,
+        image: capacityImg,
       },
       {
         title: 'Program Documentation and Reporting',
         description:
           'Good programs deserve good documentation. We produce reports, playbooks, monitoring and evaluation frameworks, and impact stories that satisfy funder requirements and communicate your program\'s value clearly to partners and stakeholders.',
         bestFor: 'Organizations reporting to DOST, DICT, or international development partners',
-        image: strategyImage,
+        image: programDocImg,
       },
     ],
   },
