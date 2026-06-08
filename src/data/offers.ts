@@ -87,52 +87,6 @@ export const audiences: Audience[] = [
     ],
   },
   {
-    id: 'organizations',
-    label: 'Organizations & LGUs',
-    icon: 'fa-solid fa-building-columns',
-    sectionHeader: 'For Organizations & LGUs',
-    sectionTagline: 'You want to support innovation in your community. We help you do it well.',
-    sectionIntro:
-      'Running an innovation program takes more than good intentions. It takes the right structure, the right facilitation, and a clear plan. We have designed and operated programs from scratch and we bring that experience to your team.',
-    services: [
-      {
-        title: 'Innovation Program Design',
-        description:
-          'A well-designed program changes the direction of every participant who goes through it. We help you build the right structure, set meaningful milestones, connect founders with the right mentors, and define what success actually looks like for your community.',
-        bestFor: 'State universities, LGUs, technology business incubators setting up or improving programs',
-        image: incubationProgramImg,
-      },
-      {
-        title: 'Innovation Workshops and Facilitation',
-        description:
-          'The best ideas come from people who feel heard. We design and facilitate workshops that help your team or community understand a problem, explore solutions, and walk away with something they can act on. No lectures. Real conversations.',
-        bestFor: 'Organizations starting a new initiative, community problem-solving sessions, pre-program discovery',
-        image: facilitationImg,
-      },
-      {
-        title: 'Startup Competition Design',
-        description:
-          'A competition is only as good as what it produces. We design the full experience from concept to mechanics to judging, so your event creates real momentum for participants and real value for your organization.',
-        bestFor: 'LGUs, universities, corporate programs, government agencies',
-        image: pitchImg,
-      },
-      {
-        title: 'Capacity Building',
-        description:
-          'When we leave, the knowledge should stay. We train your internal team on the tools and methods they need to run innovation programs confidently on their own. Practical, hands-on, built around how your team actually works.',
-        bestFor: 'TBI staff, LGU innovation officers, university faculty running startup programs',
-        image: capacityImg,
-      },
-      {
-        title: 'Program Documentation and Reporting',
-        description:
-          'Good programs deserve good documentation. We produce reports, playbooks, monitoring and evaluation frameworks, and impact stories that satisfy funder requirements and communicate your program\'s value clearly to partners and stakeholders.',
-        bestFor: 'Organizations reporting to DOST, DICT, or international development partners',
-        image: programDocImg,
-      },
-    ],
-  },
-  {
     id: 'msmes',
     label: 'MSMEs & Social Enterprises',
     icon: 'fa-solid fa-store',
@@ -175,6 +129,52 @@ export const audiences: Audience[] = [
           'Whether you are applying for a grant, building a partnership, or presenting your work to funders, how you tell your story matters. We help you shape that story and design materials that are clear, compelling, and easy to act on.',
         bestFor: 'Social enterprises applying to foundations, MSMEs seeking government or LGU partnerships',
         image: pitchProposalImg,
+      },
+    ],
+  },
+  {
+    id: 'organizations',
+    label: 'Organizations & LGUs',
+    icon: 'fa-solid fa-building-columns',
+    sectionHeader: 'For Organizations & LGUs',
+    sectionTagline: 'You want to support innovation in your community. We help you do it well.',
+    sectionIntro:
+      'Running an innovation program takes more than good intentions. It takes the right structure, the right facilitation, and a clear plan. We have designed and operated programs from scratch and we bring that experience to your team.',
+    services: [
+      {
+        title: 'Innovation Program Design',
+        description:
+          'A well-designed program changes the direction of every participant who goes through it. We help you build the right structure, set meaningful milestones, connect founders with the right mentors, and define what success actually looks like for your community.',
+        bestFor: 'State universities, LGUs, technology business incubators setting up or improving programs',
+        image: incubationProgramImg,
+      },
+      {
+        title: 'Innovation Workshops and Facilitation',
+        description:
+          'The best ideas come from people who feel heard. We design and facilitate workshops that help your team or community understand a problem, explore solutions, and walk away with something they can act on. No lectures. Real conversations.',
+        bestFor: 'Organizations starting a new initiative, community problem-solving sessions, pre-program discovery',
+        image: facilitationImg,
+      },
+      {
+        title: 'Startup Competition Design',
+        description:
+          'A competition is only as good as what it produces. We design the full experience from concept to mechanics to judging, so your event creates real momentum for participants and real value for your organization.',
+        bestFor: 'LGUs, universities, corporate programs, government agencies',
+        image: pitchImg,
+      },
+      {
+        title: 'Capacity Building',
+        description:
+          'When we leave, the knowledge should stay. We train your internal team on the tools and methods they need to run innovation programs confidently on their own. Practical, hands-on, built around how your team actually works.',
+        bestFor: 'TBI staff, LGU innovation officers, university faculty running startup programs',
+        image: capacityImg,
+      },
+      {
+        title: 'Program Documentation and Reporting',
+        description:
+          'Good programs deserve good documentation. We produce reports, playbooks, monitoring and evaluation frameworks, and impact stories that satisfy funder requirements and communicate your program\'s value clearly to partners and stakeholders.',
+        bestFor: 'Organizations reporting to DOST, DICT, or international development partners',
+        image: programDocImg,
       },
     ],
   },
