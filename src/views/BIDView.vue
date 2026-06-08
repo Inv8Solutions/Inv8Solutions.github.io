@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import Navbar from '@/components/Navbar.vue'
 
 const router = useRouter()
 
@@ -99,7 +98,6 @@ onUnmounted(() => {
 
 <template>
   <div class="min-h-screen bg-[#03040f]">
-    <Navbar />
 
     <!-- ═══════════════════════════════════════
          HERO
