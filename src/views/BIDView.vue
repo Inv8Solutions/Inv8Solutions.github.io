@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import heroImage from '@/assets/hero-image.png'
 
 const router = useRouter()
 
@@ -102,49 +103,94 @@ onUnmounted(() => {
     <!-- ═══════════════════════════════════════
          HERO
     ═══════════════════════════════════════ -->
-    <section class="relative overflow-hidden px-4 pt-32 pb-24 sm:px-6 lg:px-8">
-      <!-- Background glow -->
-      <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div class="h-[500px] w-[700px] rounded-full bg-blue-600/10 blur-[120px]"></div>
-      </div>
+    <section class="relative overflow-hidden bg-white px-4 pt-28 pb-0 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl">
+        <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
 
-      <div class="relative mx-auto max-w-4xl text-center">
-        <!-- Badge -->
-        <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
-          <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
-          June 2026 Batch · Now Open
-        </span>
+          <!-- ── Left: copy ── -->
+          <div class="pb-16 lg:pb-24">
+            <!-- Badge -->
+            <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/40 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600">
+              <span class="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+              June 2026 Batch · Now Open
+            </span>
 
-        <h1 class="mt-6 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-          We visit your business.<br class="hidden sm:block" />
-          <span class="text-blue-400">You keep the insights.</span><br class="hidden sm:block" />
-          No cost.
-        </h1>
+            <!-- Headline -->
+            <h1 class="mt-5 text-4xl font-black leading-tight tracking-tight text-gray-900 sm:text-5xl lg:text-5xl">
+              We visit your business.<br />
+              <span class="text-blue-600">You get a free<br />improvement plan.</span>
+            </h1>
 
-        <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/60 sm:text-xl">
-          The inv8 Business Innovation Discovery (BID) Program gives Baguio-Benguet businesses a free, on-site look at how they operate and where they can improve.
-        </p>
+            <!-- First description -->
+            <p class="mt-5 text-base leading-relaxed text-gray-600 max-w-md">
+              We'll take a close look at how your business operates and identify practical ways to save time, improve workflows, and better serve your customers.
+            </p>
 
-        <p class="mt-3 text-base text-white/40">
-          No pitch. No commitment. Just honest, expert eyes on your business.
-        </p>
+            <!-- Blue rule -->
+            <div class="my-5 w-10 border-t-2 border-blue-500"></div>
 
-        <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          <button
-            @click="router.push('/contactus')"
-            class="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500 hover:scale-105"
-          >
-            Apply for a Free Slot
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
+            <!-- Second description -->
+            <p class="text-base leading-relaxed text-gray-600 max-w-md">
+              Receive a personalized report with clear recommendations, estimated costs, and next steps. Yours to keep, whether you work with us or not.
+            </p>
 
-        <!-- Scarcity tag -->
-        <div class="mt-5 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm text-amber-300">
-          <i class="fa-solid fa-triangle-exclamation text-xs"></i>
-          Only 3 slots open per batch. Applications are reviewed before confirmation.
+            <!-- CTA -->
+            <button
+              @click="router.push('/contactus')"
+              class="mt-8 inline-flex items-center gap-3 rounded-xl bg-blue-600 px-7 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700 hover:scale-105"
+            >
+              <i class="fa-regular fa-calendar-check text-base"></i>
+              Apply for a Free Slot
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <!-- Trust items -->
+            <div class="mt-6 space-y-3">
+              <div class="flex items-center gap-3 text-sm text-gray-500">
+                <i class="fa-regular fa-shield-check text-blue-500 text-base w-5 text-center"></i>
+                No obligation. No sales pressure.
+              </div>
+              <div class="flex items-center gap-3 text-sm text-gray-500">
+                <i class="fa-regular fa-users text-blue-500 text-base w-5 text-center"></i>
+                Only 3 businesses are selected per batch.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Right: image + floating card ── -->
+          <div class="relative hidden lg:block self-end">
+            <img
+              :src="heroImage"
+              alt="inv8 team visiting a local Baguio business"
+              class="w-full rounded-tl-[32px] rounded-tr-[32px] object-cover object-top"
+              style="max-height: 560px;"
+            />
+
+            <!-- Floating "What you'll get" card -->
+            <div class="absolute bottom-8 right-0 translate-x-0 w-72 rounded-2xl bg-white shadow-xl shadow-black/10 border border-gray-100 p-5">
+              <div class="flex items-start gap-3">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white">
+                  <i class="fa-regular fa-clipboard-list text-base"></i>
+                </div>
+                <div>
+                  <p class="font-bold text-gray-900 text-sm">What you'll get:</p>
+                  <div class="mt-2 space-y-1.5">
+                    <div v-for="item in [
+                      'On-site visit and discovery',
+                      'Your Improvement Plan (delivered in 5 days)',
+                      'Walkthrough and Q&A session',
+                    ]" :key="item" class="flex items-start gap-2 text-xs text-gray-600">
+                      <i class="fa-solid fa-check text-blue-500 mt-0.5 shrink-0"></i>
+                      {{ item }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
