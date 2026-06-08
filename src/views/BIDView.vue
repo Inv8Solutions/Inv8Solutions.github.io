@@ -317,51 +317,122 @@ onUnmounted(() => {
       <div class="mx-auto max-w-5xl">
         <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start">
           <div>
+            <!-- Label -->
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Who This Is For</p>
-            <h2 class="mt-4 text-3xl font-black text-white sm:text-4xl">Built for businesses that are already running and want to run better.</h2>
+
+            <!-- Headline -->
+            <h2 class="mt-4 text-3xl font-black leading-snug text-white sm:text-4xl">
+              Made for business owners who know things can
+              <span class="text-blue-500"> run better.</span>
+            </h2>
+
+            <!-- Description -->
             <p class="mt-5 text-base leading-relaxed text-white/60">
-              The BID Program is for Baguio-Benguet businesses that are already operating. You do not need to be tech-savvy. You do not need a website or any existing digital tools.
+              The BID Program is designed for Baguio-Benguet businesses that are already operating and looking for practical ways to improve their day-to-day operations.
+            </p>
+            <p class="mt-3 text-base leading-relaxed text-white/60">
+              You don't need a website, digital tools, or technical knowledge to participate.
             </p>
 
-            <div class="mt-8">
-              <p class="mb-4 text-sm font-semibold text-white/80">You are a good fit if:</p>
-              <div class="space-y-3">
-                <div v-for="item in goodFit" :key="item" class="flex items-start gap-3 text-sm text-white/65">
-                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-blue-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {{ item }}
+            <!-- Blue rule -->
+            <div class="my-6 w-10 border-t-2 border-blue-500"></div>
+
+            <!-- Good fit checklist -->
+            <p class="mb-4 text-base font-bold text-white">Are you a good fit?</p>
+            <div class="space-y-3">
+              <div
+                v-for="item in [
+                  'Your business has been operating for at least 1 year',
+                  'You have 3 to 50 people on your team',
+                  'You want to improve how your business runs',
+                  'You are the owner or decision-maker',
+                  'You are based in Baguio City or anywhere in Benguet',
+                ]"
+                :key="item"
+                class="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-[#0d0f1f] px-4 py-3"
+              >
+                <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600">
+                  <i class="fa-solid fa-check text-white text-[10px]"></i>
                 </div>
+                <span class="text-sm text-white/80">{{ item }}</span>
               </div>
+            </div>
+
+            <!-- Footer note -->
+            <div class="mt-6 flex items-start gap-3">
+              <i class="fa-solid fa-users text-blue-500/60 text-lg mt-0.5 shrink-0"></i>
+              <p class="text-sm text-white/45 leading-relaxed">
+                We keep it simple. No complicated forms.<br />Just answer a few questions to apply.
+              </p>
             </div>
           </div>
 
+          <!-- ── Right column ── -->
           <div class="space-y-5">
-            <!-- Industries -->
+
+            <!-- Businesses we work with -->
             <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
-              <p class="text-xs font-bold uppercase tracking-widest text-blue-400 mb-4">We work with</p>
-              <div class="flex flex-wrap gap-2">
-                <span v-for="type in ['Retail Shops','Food & Beverage','Cooperatives','Tourism & Hospitality','Clinics & Wellness','Schools & Training Centers','Chambers of Commerce','Services Businesses']"
-                  :key="type"
-                  class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-white/60"
+              <p class="text-xs font-bold uppercase tracking-[0.25em] text-blue-400 mb-5">Businesses We Commonly Work With</p>
+              <div class="grid grid-cols-2 gap-4">
+                <div
+                  v-for="biz in [
+                    { icon: 'fa-solid fa-store',          label: 'Retail Stores',              desc: 'Sari-sari stores, boutiques, convenience stores, and more' },
+                    { icon: 'fa-solid fa-mug-hot',        label: 'Cafés & Restaurants',        desc: 'Cafés, dine-in restaurants, fast food, and bakeries' },
+                    { icon: 'fa-solid fa-suitcase-rolling',label: 'Hotels & Tourism',           desc: 'Guesthouses, homestays, travel and tour operators' },
+                    { icon: 'fa-solid fa-kit-medical',    label: 'Clinics & Wellness',         desc: 'Clinics, dental practices, spas, and wellness centers' },
+                    { icon: 'fa-solid fa-graduation-cap', label: 'Schools & Training Centers', desc: 'Private schools, tutorial centers, and training providers' },
+                    { icon: 'fa-solid fa-people-group',   label: 'Cooperatives & Associations',desc: 'Co-ops, transport groups, and member-based orgs' },
+                  ]"
+                  :key="biz.label"
+                  class="flex items-start gap-3"
                 >
-                  {{ type }}
-                </span>
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/15 text-blue-400">
+                    <i :class="[biz.icon, 'text-sm']"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-white leading-snug">{{ biz.label }}</p>
+                    <p class="mt-0.5 text-xs leading-relaxed text-white/45">{{ biz.desc }}</p>
+                  </div>
+                </div>
+
+                <!-- Service-based spans full width -->
+                <div class="col-span-2 flex items-start gap-3 border-t border-white/[0.06] pt-4">
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/15 text-blue-400">
+                    <i class="fa-solid fa-screwdriver-wrench text-sm"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-white leading-snug">Service-Based Businesses</p>
+                    <p class="mt-0.5 text-xs leading-relaxed text-white/45">Construction, repair services, salons, laundry, printing, logistics, and other service providers</p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Not a fit -->
-            <div class="rounded-2xl border border-red-500/20 bg-red-500/5 p-6">
-              <div class="flex items-start gap-3">
-                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/15 text-red-400">
-                  <i class="fa-solid fa-xmark text-sm"></i>
+            <!-- This program is NOT for -->
+            <div class="rounded-2xl border border-red-500/20 bg-[#0a0c1c] p-6">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-red-500/40 bg-red-500/10 text-red-400">
+                  <i class="fa-solid fa-circle-info text-sm"></i>
                 </div>
-                <div>
-                  <p class="font-semibold text-white/80 text-sm">Not a fit</p>
-                  <p class="mt-1 text-sm text-white/50">This program is not for businesses that are still in the planning stage or have not yet started operating.</p>
+                <p class="font-bold text-white text-base">This Program Is Not For</p>
+              </div>
+              <div class="space-y-3">
+                <div v-for="item in [
+                  'Businesses that haven\'t started operating yet',
+                  'Business ideas that are still in the planning stage',
+                  'Individuals looking for employment or training',
+                ]" :key="item" class="flex items-start gap-3">
+                  <i class="fa-solid fa-xmark text-red-400 mt-0.5 shrink-0 w-4 text-center"></i>
+                  <span class="text-sm text-white/65">{{ item }}</span>
                 </div>
               </div>
+              <div class="mt-5 border-t border-white/[0.06] pt-4">
+                <p class="text-sm leading-relaxed text-white/45">
+                  The BID Program focuses on real operating businesses so we can observe actual workflows, identify challenges, and provide practical recommendations.
+                </p>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
