@@ -229,7 +229,7 @@ watch(() => route.hash, (hash) => {
     <Transition name="tab-fade" mode="out-in">
       <div v-if="selectedId === 'msmes'" key="msmes-starter-packs" class="mx-auto max-w-6xl mt-16">
         <div class="mb-10">
-          <p class="text-xs font-bold uppercase tracking-[0.3em] text-green-400">Starter Packs</p>
+          <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Starter Packs</p>
           <h2 class="mt-3 text-3xl font-black leading-snug tracking-tight text-white sm:text-4xl">
             Simple packages built for small businesses
           </h2>
@@ -240,10 +240,10 @@ watch(() => route.hash, (hash) => {
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 
-          <!-- Get Found Pack -->
-          <div class="relative flex flex-col rounded-[24px] border border-white/[0.07] bg-[#0a0c1c] p-7 transition hover:border-green-500/30 hover:bg-[#0c0e20]">
+          <!-- Get Found Pack — blue -->
+          <div class="relative flex flex-col rounded-[24px] border border-white/[0.07] bg-[#0a0c1c] p-7 transition hover:border-blue-500/30 hover:bg-[#0c0e20]">
             <div class="mb-5">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-green-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-green-300">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-blue-500/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-blue-300">
                 Get Discovered
               </span>
               <h3 class="mt-4 text-2xl font-black text-white">Get Found Pack</h3>
@@ -261,28 +261,28 @@ watch(() => route.hash, (hash) => {
                 'Printable QR materials',
                 'Basic digital presence training',
               ]" :key="item" class="flex items-start gap-2.5 text-sm text-white/65">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-green-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-blue-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                   <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 {{ item }}
               </div>
             </div>
             <div class="border-t border-white/[0.06] pt-5">
-              <button @click="router.push('/contactus')" class="w-full rounded-full border border-green-500/40 py-2.5 text-sm font-bold text-green-400 transition hover:bg-green-500/10">
+              <button @click="router.push('/contactus')" class="w-full rounded-full border border-blue-500/40 py-2.5 text-sm font-bold text-blue-400 transition hover:bg-blue-500/10">
                 Get Started
               </button>
             </div>
           </div>
 
-          <!-- Sell Online Pack — featured -->
-          <div class="relative flex flex-col rounded-[24px] border border-green-500/40 bg-[#0a0c1c] p-7 ring-1 ring-green-500/20 transition hover:border-green-500/60">
+          <!-- Sell Online Pack — indigo featured -->
+          <div class="relative flex flex-col rounded-[24px] border border-indigo-500/40 bg-[#0a0c1c] p-7 ring-1 ring-indigo-500/20 transition hover:border-indigo-500/60">
             <div class="absolute -top-3.5 left-1/2 -translate-x-1/2">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-green-600 px-4 py-1 text-[10px] font-bold uppercase tracking-widest text-white shadow-lg">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-indigo-600 px-4 py-1 text-[10px] font-bold uppercase tracking-widest text-white shadow-lg">
                 Most Popular
               </span>
             </div>
             <div class="mb-5">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-green-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-green-300">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-indigo-300">
                 Go Digital
               </span>
               <h3 class="mt-4 text-2xl font-black text-white">Sell Online Pack</h3>
@@ -300,23 +300,23 @@ watch(() => route.hash, (hash) => {
                 'Social media profile optimization',
                 'Onboarding & training session',
               ]" :key="item" class="flex items-start gap-2.5 text-sm text-white/65">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-green-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                   <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 {{ item }}
               </div>
             </div>
             <div class="border-t border-white/[0.06] pt-5">
-              <button @click="router.push('/contactus')" class="w-full rounded-full bg-green-600 py-2.5 text-sm font-bold text-white transition hover:bg-green-500">
+              <button @click="router.push('/contactus')" class="w-full rounded-full bg-indigo-600 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-500">
                 Get Started
               </button>
             </div>
           </div>
 
-          <!-- Business Numbers Pack -->
-          <div class="relative flex flex-col rounded-[24px] border border-white/[0.07] bg-[#0a0c1c] p-7 transition hover:border-green-500/30 hover:bg-[#0c0e20]">
+          <!-- Business Numbers Pack — cyan -->
+          <div class="relative flex flex-col rounded-[24px] border border-white/[0.07] bg-[#0a0c1c] p-7 transition hover:border-cyan-500/30 hover:bg-[#0c0e20]">
             <div class="mb-5">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-green-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-green-300">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-cyan-500/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-cyan-300">
                 Get Clarity
               </span>
               <h3 class="mt-4 text-2xl font-black text-white">Business Numbers Pack</h3>
@@ -333,14 +333,14 @@ watch(() => route.hash, (hash) => {
                 'Organized Google Drive workspace',
                 'Training & handover session',
               ]" :key="item" class="flex items-start gap-2.5 text-sm text-white/65">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-green-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                   <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 {{ item }}
               </div>
             </div>
             <div class="border-t border-white/[0.06] pt-5">
-              <button @click="router.push('/contactus')" class="w-full rounded-full border border-green-500/40 py-2.5 text-sm font-bold text-green-400 transition hover:bg-green-500/10">
+              <button @click="router.push('/contactus')" class="w-full rounded-full border border-cyan-500/40 py-2.5 text-sm font-bold text-cyan-400 transition hover:bg-cyan-500/10">
                 Get Started
               </button>
             </div>
