@@ -148,12 +148,18 @@ watch(() => route.hash, (hash) => {
 
                 <!-- Description — visible when active -->
                 <Transition name="desc-fade">
-                  <p
-                    v-if="hoveredIdx === idx"
-                    class="mt-2.5 pl-9 text-sm leading-relaxed text-white/55"
-                  >
-                    {{ service.description }}
-                  </p>
+                  <div v-if="hoveredIdx === idx" class="mt-2.5 pl-9">
+                    <p class="text-sm leading-relaxed text-white/55">{{ service.description }}</p>
+                    <!-- BID deep-link button -->
+                    <button
+                      v-if="service.title === 'Business Innovation Discovery'"
+                      @click.stop="router.push('/bid')"
+                      class="mt-3 inline-flex items-center gap-1.5 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1.5 text-xs font-bold text-green-400 transition hover:bg-green-500/20"
+                    >
+                      <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                      Learn about the free BID Program
+                    </button>
+                  </div>
                 </Transition>
               </div>
             </div>

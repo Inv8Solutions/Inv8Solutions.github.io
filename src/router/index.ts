@@ -11,6 +11,7 @@ import AdminPanel from '@/AdminPanel.vue'
 import ProjectDetails from '@/components/ProjectDetails.vue'
 import { BaguioDentalClinics } from '@/components/BaguioDentalClinics'
 import ReferralView from '@/views/ReferralView.vue'
+import BIDView from '@/views/BIDView.vue'
 
 const SITE_NAME = 'inv8 Studio'
 
@@ -82,6 +83,12 @@ const routes = [
     component: ProjectDetails,
     props: true,
     // title set dynamically in ProjectDetails
+  },
+  {
+    path: '/bid',
+    name: 'BID',
+    component: BIDView,
+    meta: { title: `BID Program — Free Business Innovation Discovery | ${SITE_NAME}` },
   },
   {
     path: '/BaguioDental/Clinics',

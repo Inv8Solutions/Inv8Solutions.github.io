@@ -1,0 +1,460 @@
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+import Navbar from '@/components/Navbar.vue'
+
+const router = useRouter()
+
+const openFaq = ref<number | null>(null)
+const toggleFaq = (i: number) => { openFaq.value = openFaq.value === i ? null : i }
+
+const faqs = [
+  {
+    q: 'Is this really free?',
+    a: 'Yes. The BID visit and the Innovation Opportunity Report cost you nothing. There is no hidden fee and no obligation to hire inv8 afterward.',
+  },
+  {
+    q: 'Will you try to sell me something during the visit?',
+    a: 'No. The visit is purely for observation and discovery. We are there to understand your business, not to pitch you. If, after the debrief, you want to explore working with us, we will discuss that separately.',
+  },
+  {
+    q: 'What if I am not tech-savvy?',
+    a: 'That is exactly who this program is for. You do not need to know anything about technology or digital tools. We will explain everything in plain language and make sure the report is easy to understand.',
+  },
+  {
+    q: 'What kind of opportunities will you find?',
+    a: 'It depends on your business. Common areas we identify include: reducing time spent on manual tasks, improving how customers find or contact the business, organizing records and inventory, and streamlining how orders or transactions are processed. Every report is specific to what we actually observe.',
+  },
+  {
+    q: 'What happens after the debrief?',
+    a: 'You decide. If one of the opportunities in the report is something you want to act on, we can discuss how inv8 can help. If you want to handle it on your own or work with someone else, that is completely fine. The report is yours either way.',
+  },
+  {
+    q: 'How do I know if I will be selected?',
+    a: 'We select businesses based on a few criteria: whether you are the decision-maker, whether your business has a clear operational pain we can help with, and whether the timing and logistics work for both sides. We will let you know within 2 to 3 days of your application.',
+  },
+  {
+    q: 'What if I am not selected for this batch?',
+    a: 'We keep strong applications on file for the next batch. You will not need to reapply from scratch.',
+  },
+  {
+    q: 'Is this only for businesses in Baguio City proper?',
+    a: 'No. We cover the full Baguio-Benguet area, including La Trinidad, Itogon, Tublay, and other parts of Benguet. If your business is further out, reach out and we will check if logistics work.',
+  },
+]
+
+const steps = [
+  { n: '01', title: 'Apply', body: 'Fill out a short form with 5 quick questions about your business. Applications are reviewed within 2 to 3 days.' },
+  { n: '02', title: 'Get Confirmed', body: 'We review all applications and select the best fit for each batch. If you are selected, we reach out personally to confirm your slot and schedule the visit.' },
+  { n: '03', title: 'We Visit', body: 'The inv8 team visits your business for 1.5 to 2 hours. We observe, ask questions, and take notes. You just show us how things work.' },
+  { n: '04', title: 'You Receive Your Report', body: 'Within 5 days, we send you a written Innovation Opportunity Report: 3 clear, specific areas where your business can improve, with practical recommendations and cost estimates.' },
+  { n: '05', title: 'We Walk Through It Together', body: 'We schedule a 30-minute debrief to go through the report with you, answer your questions, and help you figure out your next move.' },
+]
+
+const deliverables = [
+  {
+    icon: 'fa-solid fa-map-location-dot',
+    title: 'An on-site visit from the inv8 team',
+    body: 'We come to you. We spend 1.5 to 2 hours at your business, observing how things run and talking with you and your team.',
+  },
+  {
+    icon: 'fa-solid fa-comments',
+    title: 'A structured discovery conversation',
+    body: 'We ask the questions most business owners never get asked. What takes the most time? Where do things break down? What would you fix first if you could?',
+  },
+  {
+    icon: 'fa-solid fa-file-lines',
+    title: 'Your Innovation Opportunity Report',
+    body: 'Within 5 days of the visit, we deliver a written 5 to 8 page report identifying 3 specific areas where your business can improve — each with a recommended approach, a rough cost range, and a realistic timeline. Yours to keep.',
+  },
+  {
+    icon: 'fa-solid fa-people-arrows',
+    title: 'A debrief walkthrough',
+    body: 'We sit down with you (or hop on a call) to walk through the report together, answer your questions, and help you decide what to do next.',
+  },
+]
+
+const goodFit = [
+  'Your business has been operating for at least a year',
+  'You have 3 to 50 people on your team',
+  'You feel like some parts of your operations could be faster, cleaner, or less stressful',
+  'You are the owner, manager, or decision-maker for the business',
+  'You are based in Baguio City or anywhere in Benguet',
+]
+
+/* ── meta ── */
+const originalTitle = document.title
+const originalDesc = document.querySelector('meta[name="description"]')?.getAttribute('content') ?? ''
+
+onMounted(() => {
+  document.title = 'BID Program — Free Business Innovation Discovery | inv8 Studio'
+  document.querySelector('meta[name="description"]')?.setAttribute('content',
+    'inv8 BID Program: a free, on-site business discovery visit for Baguio-Benguet MSMEs. We observe your operations and deliver an Innovation Opportunity Report — at no cost.')
+})
+onUnmounted(() => {
+  document.title = originalTitle
+  document.querySelector('meta[name="description"]')?.setAttribute('content', originalDesc)
+})
+</script>
+
+<template>
+  <div class="min-h-screen bg-[#03040f]">
+    <Navbar />
+
+    <!-- ═══════════════════════════════════════
+         HERO
+    ═══════════════════════════════════════ -->
+    <section class="relative overflow-hidden px-4 pt-32 pb-24 sm:px-6 lg:px-8">
+      <!-- Background glow -->
+      <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div class="h-[500px] w-[700px] rounded-full bg-blue-600/10 blur-[120px]"></div>
+      </div>
+
+      <div class="relative mx-auto max-w-4xl text-center">
+        <!-- Badge -->
+        <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
+          <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+          June 2026 Batch · Now Open
+        </span>
+
+        <h1 class="mt-6 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+          We visit your business.<br class="hidden sm:block" />
+          <span class="text-blue-400">You keep the insights.</span><br class="hidden sm:block" />
+          No cost.
+        </h1>
+
+        <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/60 sm:text-xl">
+          The inv8 Business Innovation Discovery (BID) Program gives Baguio-Benguet businesses a free, on-site look at how they operate and where they can improve.
+        </p>
+
+        <p class="mt-3 text-base text-white/40">
+          No pitch. No commitment. Just honest, expert eyes on your business.
+        </p>
+
+        <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <button
+            @click="router.push('/contactus')"
+            class="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500 hover:scale-105"
+          >
+            Apply for a Free Slot
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Scarcity tag -->
+        <div class="mt-5 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm text-amber-300">
+          <i class="fa-solid fa-triangle-exclamation text-xs"></i>
+          Only 3 slots open per batch. Applications are reviewed before confirmation.
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         WHAT IS THE BID PROGRAM
+    ═══════════════════════════════════════ -->
+    <section class="px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-5xl">
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+          <!-- Left label column -->
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">What Is the BID Program?</p>
+            <h2 class="mt-4 text-3xl font-black leading-snug text-white sm:text-4xl">
+              A free, expert look at how your business really works.
+            </h2>
+            <div class="mt-6 space-y-4 text-base leading-relaxed text-white/60">
+              <p>Running a business in Baguio is not easy. You are managing staff, serving customers, handling finances, and figuring out what to improve next. Most of the time, you are too close to the day-to-day to see what is actually slowing you down.</p>
+              <p>That is what the BID Program is for.</p>
+              <p>We come to your business, sit with you and your team, and take a close look at how things work. We ask the right questions, observe your actual operations, and identify the areas where a small change or a better system could make a real difference.</p>
+              <p>A week later, we hand you a written Innovation Opportunity Report — a clear, jargon-free document that maps out what we found and what you can do about it. You walk away with something useful, whether you work with us again or not.</p>
+            </div>
+            <div class="mt-6 inline-flex items-center gap-2 rounded-full bg-blue-500/10 border border-blue-500/20 px-4 py-2 text-sm font-semibold text-blue-300">
+              <i class="fa-solid fa-check text-xs"></i>
+              It is free. And it is for businesses right here in Baguio-Benguet.
+            </div>
+          </div>
+
+          <!-- Right: stat cards -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
+              <p class="text-4xl font-black text-blue-400">3</p>
+              <p class="mt-1 text-sm text-white/50">slots per batch</p>
+            </div>
+            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
+              <p class="text-4xl font-black text-blue-400">5</p>
+              <p class="mt-1 text-sm text-white/50">days to your report</p>
+            </div>
+            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
+              <p class="text-4xl font-black text-blue-400">₱0</p>
+              <p class="mt-1 text-sm text-white/50">cost to you</p>
+            </div>
+            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
+              <p class="text-4xl font-black text-blue-400">3</p>
+              <p class="mt-1 text-sm text-white/50">specific opportunities in every report</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         WHAT YOU GET
+    ═══════════════════════════════════════ -->
+    <section class="px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-5xl">
+        <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">What You Get</p>
+        <h2 class="mt-4 text-3xl font-black text-white sm:text-4xl">Everything included. No extra charges.</h2>
+
+        <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div
+            v-for="(d, i) in deliverables"
+            :key="i"
+            class="flex gap-5 rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6 transition hover:border-blue-500/20"
+          >
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
+              <i :class="[d.icon, 'text-base']"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white leading-snug">{{ d.title }}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-white/55">{{ d.body }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         WHO IT IS FOR
+    ═══════════════════════════════════════ -->
+    <section class="px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-5xl">
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Who This Is For</p>
+            <h2 class="mt-4 text-3xl font-black text-white sm:text-4xl">Built for businesses that are already running and want to run better.</h2>
+            <p class="mt-5 text-base leading-relaxed text-white/60">
+              The BID Program is for Baguio-Benguet businesses that are already operating. You do not need to be tech-savvy. You do not need a website or any existing digital tools.
+            </p>
+
+            <div class="mt-8">
+              <p class="mb-4 text-sm font-semibold text-white/80">You are a good fit if:</p>
+              <div class="space-y-3">
+                <div v-for="item in goodFit" :key="item" class="flex items-start gap-3 text-sm text-white/65">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-blue-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  {{ item }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-5">
+            <!-- Industries -->
+            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
+              <p class="text-xs font-bold uppercase tracking-widest text-blue-400 mb-4">We work with</p>
+              <div class="flex flex-wrap gap-2">
+                <span v-for="type in ['Retail Shops','Food & Beverage','Cooperatives','Tourism & Hospitality','Clinics & Wellness','Schools & Training Centers','Chambers of Commerce','Services Businesses']"
+                  :key="type"
+                  class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-white/60"
+                >
+                  {{ type }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Not a fit -->
+            <div class="rounded-2xl border border-red-500/20 bg-red-500/5 p-6">
+              <div class="flex items-start gap-3">
+                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/15 text-red-400">
+                  <i class="fa-solid fa-xmark text-sm"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-white/80 text-sm">Not a fit</p>
+                  <p class="mt-1 text-sm text-white/50">This program is not for businesses that are still in the planning stage or have not yet started operating.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         HOW IT WORKS
+    ═══════════════════════════════════════ -->
+    <section class="px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-5xl">
+        <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">How It Works</p>
+        <h2 class="mt-4 text-3xl font-black text-white sm:text-4xl">Five steps. No surprises.</h2>
+
+        <div class="mt-12 relative">
+          <!-- Vertical connector line (desktop) -->
+          <div class="absolute left-[22px] top-8 bottom-8 w-px bg-gradient-to-b from-blue-500/40 via-blue-500/20 to-transparent hidden sm:block"></div>
+
+          <div class="space-y-6">
+            <div
+              v-for="step in steps"
+              :key="step.n"
+              class="flex gap-6 items-start"
+            >
+              <!-- Number chip -->
+              <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-blue-500/30 bg-blue-500/10 text-sm font-black text-blue-400 z-10">
+                {{ step.n }}
+              </div>
+              <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-5 flex-1 transition hover:border-blue-500/20">
+                <p class="font-bold text-white">{{ step.title }}</p>
+                <p class="mt-1.5 text-sm leading-relaxed text-white/55">{{ step.body }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SCARCITY
+    ═══════════════════════════════════════ -->
+    <section class="px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-5xl">
+        <div class="rounded-[28px] border border-amber-500/20 bg-amber-500/5 px-8 py-10 sm:px-12">
+          <div class="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.3em] text-amber-400">Limited Slots Per Batch</p>
+              <h2 class="mt-3 text-2xl font-black text-white sm:text-3xl">Each batch is limited to 3 businesses.</h2>
+              <p class="mt-4 max-w-lg text-base leading-relaxed text-white/60">
+                This is intentional. We want to give each visit the time and attention it deserves, and we want the report to be genuinely useful — not rushed.
+              </p>
+              <p class="mt-3 text-sm text-white/50">
+                Applications are reviewed before slots are confirmed. Not everyone who applies will be selected for the current batch, but we keep strong applications on file for the next one.
+              </p>
+            </div>
+            <div class="flex flex-col items-start gap-3 sm:items-end sm:shrink-0">
+              <button
+                @click="router.push('/contactus')"
+                class="inline-flex items-center gap-2 rounded-full bg-amber-500 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-amber-400 hover:scale-105 shadow-lg shadow-amber-500/20"
+              >
+                Apply Now — June 2026 Batch
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-3.5 w-3.5">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <p class="text-xs text-amber-400/70">Slots are limited. Applications close once the batch is full.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         WHY INV8
+    ═══════════════════════════════════════ -->
+    <section class="px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-5xl">
+        <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Why inv8?</p>
+            <h2 class="mt-4 text-3xl font-black text-white sm:text-4xl">We are from here. We know how business works in Baguio.</h2>
+            <div class="mt-6 space-y-4 text-base leading-relaxed text-white/60">
+              <p>We are a product design and development studio based here in Baguio City. We work with local businesses, cooperatives, and institutions across Cordillera, and we understand the specific challenges of running a business in this region.</p>
+              <p>We are not a Manila agency. We do not show up with a generic pitch and a one-size-fits-all solution. We show up, we listen, and we figure out what actually makes sense for your business.</p>
+              <p>The BID Program is how we introduce ourselves. We would rather earn your trust by doing good work than by making promises.</p>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-blue-500/20 bg-[#0a0c1c] p-8">
+            <i class="fa-solid fa-award text-3xl text-blue-400"></i>
+            <p class="mt-4 text-base font-semibold text-white leading-snug">
+              inv8 is the only full-stack design and development studio in Baguio, offering product design, web development, and IoT solutions under one team.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span v-for="tag in ['Product Design','Web Development','IoT Solutions','Baguio City']" :key="tag"
+                class="rounded-full bg-blue-500/10 border border-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-300"
+              >{{ tag }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         FAQ
+    ═══════════════════════════════════════ -->
+    <section class="px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Questions You Might Have</p>
+        <h2 class="mt-4 text-3xl font-black text-white sm:text-4xl">FAQ</h2>
+
+        <div class="mt-10 space-y-3">
+          <div
+            v-for="(faq, i) in faqs"
+            :key="i"
+            class="overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0a0c1c] transition"
+            :class="openFaq === i ? 'border-blue-500/20' : ''"
+          >
+            <button
+              @click="toggleFaq(i)"
+              class="flex w-full items-center justify-between px-6 py-5 text-left"
+            >
+              <span class="font-semibold text-white/90 text-sm sm:text-base">{{ faq.q }}</span>
+              <i
+                class="fa-solid fa-chevron-down text-blue-400 text-xs transition-transform duration-200 shrink-0 ml-4"
+                :class="openFaq === i ? 'rotate-180' : ''"
+              ></i>
+            </button>
+            <Transition name="faq-drop">
+              <div v-if="openFaq === i" class="px-6 pb-5">
+                <p class="text-sm leading-relaxed text-white/55 border-t border-white/[0.06] pt-4">{{ faq.a }}</p>
+              </div>
+            </Transition>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         FINAL CTA
+    ═══════════════════════════════════════ -->
+    <section class="px-4 py-24 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <h2 class="text-3xl font-black text-white sm:text-4xl lg:text-5xl">
+          Ready to see what your<br class="hidden sm:block" />
+          <span class="text-blue-400">business is capable of?</span>
+        </h2>
+        <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/60">
+          Apply for a free BID slot. We will review your application and get back to you within 2 to 3 days.
+        </p>
+
+        <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <button
+            @click="router.push('/contactus')"
+            class="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500 hover:scale-105"
+          >
+            Apply for Your Free Slot
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <p class="mt-4 text-sm text-white/35">Only 3 slots per batch. June 2026 batch is now open.</p>
+
+        <p class="mt-6 text-sm text-white/40">
+          Questions? Message us at
+          <a href="mailto:hello@inv8.io" class="text-blue-400 underline underline-offset-2 hover:text-blue-300">hello@inv8.io</a>
+          or find us on
+          <a href="https://facebook.com/inv8studio" target="_blank" rel="noopener" class="text-blue-400 underline underline-offset-2 hover:text-blue-300">Facebook</a>
+        </p>
+      </div>
+    </section>
+
+  </div>
+</template>
+
+<style scoped>
+.faq-drop-enter-active,
+.faq-drop-leave-active { transition: max-height 0.25s ease, opacity 0.2s ease; max-height: 300px; overflow: hidden; }
+.faq-drop-enter-from,
+.faq-drop-leave-to     { max-height: 0; opacity: 0; }
+</style>
