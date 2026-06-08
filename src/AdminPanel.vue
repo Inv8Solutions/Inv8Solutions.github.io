@@ -447,6 +447,66 @@
           </div>
         </div>
 
+        <!-- ── BID APPLICATIONS ──────────────────────────────── -->
+        <div v-else-if="activeSection === 'bid'" class="space-y-4">
+          <div class="flex items-center justify-between">
+            <p class="text-sm text-gray-500">{{ bidApplications.length }} application{{ bidApplications.length !== 1 ? 's' : '' }}</p>
+            <button @click="loadBidApplications" class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition">
+              <i class="fa-solid fa-rotate-right text-[10px]"></i> Refresh
+            </button>
+          </div>
+
+          <div v-if="bidApplications.length" class="overflow-hidden rounded-xl border border-gray-200 bg-white">
+            <table class="min-w-full divide-y divide-gray-100 text-sm">
+              <thead class="bg-gray-50 text-xs font-semibold uppercase tracking-wider text-gray-400">
+                <tr>
+                  <th class="px-5 py-3 text-left">Name</th>
+                  <th class="px-5 py-3 text-left">Business</th>
+                  <th class="px-5 py-3 text-left">Type</th>
+                  <th class="px-5 py-3 text-left">Team Size</th>
+                  <th class="px-5 py-3 text-left">Decision Maker</th>
+                  <th class="px-5 py-3 text-left">Contact</th>
+                  <th class="px-5 py-3 text-left">Submitted</th>
+                  <th class="px-5 py-3 text-left">Details</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr
+                  v-for="app in bidApplications"
+                  :key="app.id"
+                  class="hover:bg-gray-50/50 transition cursor-pointer"
+                  @click="openBidModal(app)"
+                >
+                  <td class="px-5 py-3 font-semibold text-gray-800">{{ app.name }}</td>
+                  <td class="px-5 py-3 text-gray-600">{{ app.businessName }}</td>
+                  <td class="px-5 py-3 text-gray-500">{{ app.businessType }}</td>
+                  <td class="px-5 py-3 text-gray-500">{{ app.teamSize }}</td>
+                  <td class="px-5 py-3">
+                    <span
+                      class="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                      :class="app.isDecisionMaker === 'yes' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'"
+                    >
+                      <i :class="app.isDecisionMaker === 'yes' ? 'fa-solid fa-check' : 'fa-solid fa-xmark'" class="text-[10px]"></i>
+                      {{ app.isDecisionMaker === 'yes' ? 'Yes' : 'No' }}
+                    </span>
+                  </td>
+                  <td class="px-5 py-3 text-blue-600">{{ app.contact }}</td>
+                  <td class="px-5 py-3 text-gray-400 text-xs whitespace-nowrap">{{ app.submittedAtFormatted }}</td>
+                  <td class="px-5 py-3">
+                    <button class="rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-600 hover:bg-blue-100 transition">View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div v-else class="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 py-20 text-gray-400">
+            <i class="fa-solid fa-inbox text-3xl"></i>
+            <p class="mt-3 text-sm font-medium">No applications yet</p>
+            <p class="mt-1 text-xs">Submissions from the BID page will appear here</p>
+          </div>
+        </div>
+
         <!-- ── CRM ──────────────────────────────────────────────── -->
         <CRMPanel
           v-else-if="activeSection === 'crm'"
@@ -555,6 +615,41 @@
           <div class="mt-5 flex gap-2 border-t border-gray-100 pt-4">
             <button @click="updateCallStatus('contacted')" class="btn-sm bg-amber-500 text-white hover:bg-amber-600">Mark Contacted</button>
             <button @click="closeCallModal" class="btn-sm ml-auto border border-gray-300 text-gray-600 hover:bg-gray-50">Close</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+    <!-- BID Application Detail Modal -->
+    <Teleport to="body">
+      <div v-if="showBidModal" class="modal-backdrop" @click.self="closeBidModal">
+        <div class="modal-box max-w-lg">
+          <div class="modal-header">
+            <h3 class="modal-title">BID Application</h3>
+            <button @click="closeBidModal" class="modal-close-btn">✕</button>
+          </div>
+          <div v-if="selectedBid" class="space-y-3 text-sm">
+            <div class="grid grid-cols-2 gap-3">
+              <div class="detail-row"><span class="detail-label">Name</span><span class="detail-value">{{ selectedBid.name }}</span></div>
+              <div class="detail-row"><span class="detail-label">Business</span><span class="detail-value">{{ selectedBid.businessName }}</span></div>
+              <div class="detail-row"><span class="detail-label">Business Type</span><span class="detail-value">{{ selectedBid.businessType }}</span></div>
+              <div class="detail-row"><span class="detail-label">Team Size</span><span class="detail-value">{{ selectedBid.teamSize }}</span></div>
+              <div class="detail-row"><span class="detail-label">Decision Maker</span>
+                <span class="mt-1 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold"
+                  :class="selectedBid.isDecisionMaker === 'yes' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'">
+                  {{ selectedBid.isDecisionMaker === 'yes' ? 'Yes' : 'No' }}
+                </span>
+              </div>
+              <div class="detail-row"><span class="detail-label">Contact</span><span class="detail-value break-all text-blue-600">{{ selectedBid.contact }}</span></div>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">What they wish ran smoother</span>
+              <p class="mt-1 whitespace-pre-wrap rounded-lg bg-gray-50 p-3 text-xs text-gray-700 border border-gray-200">{{ selectedBid.painPoint }}</p>
+            </div>
+            <p class="text-xs text-gray-400">Submitted {{ selectedBid.submittedAtFormatted }}</p>
+          </div>
+          <div class="mt-5 flex gap-2 border-t border-gray-100 pt-4">
+            <button @click="closeBidModal" class="btn-sm ml-auto border border-gray-300 text-gray-600 hover:bg-gray-50">Close</button>
           </div>
         </div>
       </div>
@@ -1013,6 +1108,50 @@ const inquiries = ref<Inquiry[]>([])
 const calls = ref<Call[]>([])
 const galleryPhotos = ref<GalleryPhoto[]>([])
 const blogPosts = ref<BlogPost[]>([])
+
+// ── BID Applications ──────────────────────────────────────────
+type BidApplication = {
+  id: string
+  name: string
+  businessName: string
+  businessType: string
+  teamSize: string
+  painPoint: string
+  isDecisionMaker: 'yes' | 'no' | string
+  contact: string
+  submittedAt: { toDate?: () => Date } | null
+  submittedAtFormatted: string
+}
+const bidApplications = ref<BidApplication[]>([])
+const selectedBid = ref<BidApplication | null>(null)
+const showBidModal = ref(false)
+
+function openBidModal(app: BidApplication) { selectedBid.value = app; showBidModal.value = true }
+function closeBidModal() { showBidModal.value = false; selectedBid.value = null }
+
+async function loadBidApplications() {
+  try {
+    const q = query(collection(db, 'bid_applications'), orderBy('submittedAt', 'desc'))
+    const snap = await getDocs(q)
+    bidApplications.value = snap.docs.map(d => {
+      const data = d.data()
+      const ts = data.submittedAt
+      const date = ts?.toDate ? ts.toDate() : null
+      return {
+        id: d.id,
+        name: data.name ?? '',
+        businessName: data.businessName ?? '',
+        businessType: data.businessType ?? '',
+        teamSize: data.teamSize ?? '',
+        painPoint: data.painPoint ?? '',
+        isDecisionMaker: data.isDecisionMaker ?? '',
+        contact: data.contact ?? '',
+        submittedAt: ts ?? null,
+        submittedAtFormatted: date ? date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' }) : '—',
+      }
+    })
+  } catch (e) { console.error('[loadBidApplications]', e) }
+}
 
 // CRM dashboard stats
 const crmStats = reactive({ pipeline: 0, closedWon: 0, activeDeals: 0, openTasks: 0, overdueTasks: 0, winRate: 0 })
@@ -1538,7 +1677,7 @@ async function loadCRMStats() {
 
 async function loadData() {
   isLoading.value = true; error.value = null
-  try { await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls(), loadGalleryPhotos(), fetchBlogPosts(), loadCRMStats()]) }
+  try { await Promise.all([fetchProjects(), fetchInquiries(), fetchCalls(), loadGalleryPhotos(), fetchBlogPosts(), loadCRMStats(), loadBidApplications()]) }
   catch (e) { console.error(e) } finally { isLoading.value = false }
 }
 
@@ -1569,6 +1708,7 @@ const navItems = computed(() => [
   { id:'inquiries', label:'Inquiries', icon:'fa-solid fa-envelope', badge: newInquiriesCount.value },
   { id:'calls',     label:'Calls',     icon:'fa-solid fa-phone' },
   { id:'gallery',   label:'Gallery',   icon:'fa-solid fa-image' },
+  { id:'bid',        label:'BID Applications', icon:'fa-solid fa-store', badge: bidApplications.value.length || undefined },
   { id:'crm',       label:'CRM',       icon:'fa-solid fa-diagram-project', badge: overdueCrmTasks.value },
   { id:'settings',  label:'Settings',  icon:'fa-solid fa-gear' },
 ])
