@@ -241,70 +241,134 @@ onUnmounted(() => {
          WHAT IS THE BID PROGRAM
     ═══════════════════════════════════════ -->
     <section class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-5xl">
-        <div class="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-          <!-- Left label column -->
+      <div class="mx-auto max-w-6xl">
+        <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.25fr] lg:items-start">
+
+          <!-- ── Left: explanation ── -->
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">What Is the BID Program?</p>
-            <h2 class="mt-4 text-3xl font-black leading-snug text-white sm:text-4xl">
-              A free, expert look at how your business really works.
+            <h2 class="mt-4 text-4xl font-black leading-tight text-white sm:text-5xl">
+              A free business check-up for
+              <span class="text-blue-500"> Baguio-Benguet businesses.</span>
             </h2>
-            <div class="mt-6 space-y-4 text-base leading-relaxed text-white/60">
-              <p>Running a business in Baguio is not easy. You are managing staff, serving customers, handling finances, and figuring out what to improve next. Most of the time, you are too close to the day-to-day to see what is actually slowing you down.</p>
-              <p>That is what the BID Program is for.</p>
-              <p>We come to your business, sit with you and your team, and take a close look at how things work. We ask the right questions, observe your actual operations, and identify the areas where a small change or a better system could make a real difference.</p>
-              <p>A week later, we hand you a written Innovation Opportunity Report — a clear, jargon-free document that maps out what we found and what you can do about it. You walk away with something useful, whether you work with us again or not.</p>
+
+            <!-- Definition pill -->
+            <div class="mt-6 flex items-center gap-3 rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 py-3">
+              <i class="fa-solid fa-book-open text-blue-400 text-sm shrink-0"></i>
+              <p class="text-sm text-white/80 leading-snug">
+                BID stands for <span class="font-bold text-blue-400">Business Innovation Discovery.</span>
+              </p>
             </div>
-            <div class="mt-6 inline-flex items-center gap-2 rounded-full bg-blue-500/10 border border-blue-500/20 px-4 py-2 text-sm font-semibold text-blue-300">
-              <i class="fa-solid fa-check text-xs"></i>
-              It is free. And it is for businesses right here in Baguio-Benguet.
+
+            <!-- Description -->
+            <p class="mt-5 text-base leading-relaxed text-white/60">
+              It's a free on-site business assessment where the inv8 team visits your business, observes how things work, and identifies practical ways to improve operations, save time, and reduce day-to-day frustrations.
+            </p>
+
+            <!-- 4 process items -->
+            <div class="mt-8 space-y-5">
+              <div
+                v-for="item in [
+                  { icon: 'fa-solid fa-clock',         title: 'We visit your business.',                    sub: 'We spend 1.5 to 2 hours on-site, observe your operations, and ask the right questions.' },
+                  { icon: 'fa-solid fa-magnifying-glass', title: 'We identify opportunities.',              sub: 'We look for areas causing delays, manual work, inefficiencies, or missed opportunities.' },
+                  { icon: 'fa-solid fa-file-lines',    title: 'You receive a personalized Improvement Plan.', sub: 'Within 5 days, you\'ll receive a clear, jargon-free report with practical recommendations, cost estimates, and next steps.' },
+                  { icon: 'fa-solid fa-check',         title: 'You decide what\'s next.',                   sub: 'The report is yours to keep, whether you work with inv8 or not.' },
+                ]"
+                :key="item.title"
+                class="flex items-start gap-4"
+              >
+                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400">
+                  <i :class="[item.icon, 'text-sm']"></i>
+                </div>
+                <div>
+                  <p class="font-bold text-white text-sm leading-snug">{{ item.title }}</p>
+                  <p class="mt-1 text-sm leading-relaxed text-white/50">{{ item.sub }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer pill -->
+            <div class="mt-8 flex items-center gap-3 rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 py-3">
+              <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-blue-500/40 bg-blue-500/10 text-blue-400">
+                <i class="fa-solid fa-check text-xs"></i>
+              </div>
+              <p class="text-sm text-white/70 leading-snug">
+                <span class="font-bold text-blue-400">It is free.</span> And it is for businesses right here in Baguio-Benguet.
+              </p>
             </div>
           </div>
 
-          <!-- Right: stat cards -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
-              <p class="text-4xl font-black text-blue-400">3</p>
-              <p class="mt-1 text-sm text-white/50">slots per batch</p>
-            </div>
-            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
-              <p class="text-4xl font-black text-blue-400">5</p>
-              <p class="mt-1 text-sm text-white/50">days to your report</p>
-            </div>
-            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
-              <p class="text-4xl font-black text-blue-400">₱0</p>
-              <p class="mt-1 text-sm text-white/50">cost to you</p>
-            </div>
-            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
-              <p class="text-4xl font-black text-blue-400">3</p>
-              <p class="mt-1 text-sm text-white/50">specific opportunities in every report</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+          <!-- ── Right: two stacked cards ── -->
+          <div class="flex flex-col gap-5">
 
-    <!-- ═══════════════════════════════════════
-         WHAT YOU GET
-    ═══════════════════════════════════════ -->
-    <section class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-5xl">
-        <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">What You Get</p>
-        <h2 class="mt-4 text-3xl font-black text-white sm:text-4xl">Everything included. No extra charges.</h2>
+            <!-- Card 1: What You Can Expect -->
+            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
+              <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-5">What You Can Expect</p>
+              <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <div
+                  v-for="stat in [
+                    { icon: 'fa-solid fa-clock',          value: '2 Hours',  label: 'On-site business visit',        sub: 'We spend time at your business.' },
+                    { icon: 'fa-solid fa-calendar-days',  value: '5 Days',   label: 'Receive your Improvement Plan', sub: 'We deliver your report within 5 working days.' },
+                    { icon: 'fa-solid fa-peso-sign',      value: '₱0',       label: 'No cost to participate',        sub: '100% free with no hidden fees.' },
+                    { icon: 'fa-solid fa-lightbulb',      value: '3',        label: 'Recommendations',               sub: 'Practical opportunities for improvement in every report.' },
+                  ]"
+                  :key="stat.value"
+                  class="flex flex-col items-center text-center rounded-xl border border-white/[0.06] bg-white/[0.03] p-4 gap-2"
+                >
+                  <i :class="[stat.icon, 'text-blue-400 text-xl']"></i>
+                  <p class="text-2xl font-black text-blue-400 leading-none">{{ stat.value }}</p>
+                  <p class="text-xs font-bold text-white leading-snug">{{ stat.label }}</p>
+                  <p class="text-[11px] text-white/40 leading-snug">{{ stat.sub }}</p>
+                </div>
+              </div>
+            </div>
 
-        <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div
-            v-for="(d, i) in deliverables"
-            :key="i"
-            class="flex gap-5 rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6 transition hover:border-blue-500/20"
-          >
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
-              <i :class="[d.icon, 'text-base']"></i>
+            <!-- Card 2: How BID Works -->
+            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
+              <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6">How BID Works</p>
+
+              <!-- Steps with arrows -->
+              <div class="flex items-start justify-between gap-1">
+                <div
+                  v-for="(step, i) in [
+                    { icon: 'fa-solid fa-store',           n: '1', title: 'We Visit',   desc: 'We come to your business and meet with you and your team.' },
+                    { icon: 'fa-solid fa-magnifying-glass',n: '2', title: 'We Observe', desc: 'We observe how things work, ask questions, and take note of what we see.' },
+                    { icon: 'fa-solid fa-file-lines',      n: '3', title: 'We Report',  desc: 'You receive a personalized Improvement Plan within 5 days.' },
+                    { icon: 'fa-solid fa-rocket',          n: '4', title: 'You Decide', desc: 'Use the recommendations to improve your business in your own way and at your own pace.' },
+                  ]"
+                  :key="step.n"
+                  class="flex items-start"
+                >
+                  <!-- Step item -->
+                  <div class="flex flex-col items-center text-center" style="width: 90px;">
+                    <div class="flex h-14 w-14 items-center justify-center rounded-full border border-blue-500/30 bg-[#111528] text-blue-400">
+                      <i :class="[step.icon, 'text-lg']"></i>
+                    </div>
+                    <p class="mt-2 text-xs font-bold text-white leading-snug">{{ step.n }}. {{ step.title }}</p>
+                    <p class="mt-1 text-[11px] text-white/40 leading-snug">{{ step.desc }}</p>
+                  </div>
+
+                  <!-- Arrow between steps -->
+                  <div v-if="i < 3" class="flex items-start pt-6 px-1 shrink-0">
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-white/20">
+                      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- No-obligation footer -->
+              <div class="mt-6 border-t border-white/[0.06] pt-4 flex items-start gap-3">
+                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-blue-500/30 bg-blue-500/10 text-blue-400">
+                  <i class="fa-solid fa-shield-halved text-sm"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-bold text-white leading-snug">No obligation. No sales pressure.</p>
+                  <p class="mt-0.5 text-xs text-white/45 leading-relaxed">Our goal is to share useful insights. If you need help implementing the recommendations, we'll be here when you're ready.</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <h3 class="font-bold text-white leading-snug">{{ d.title }}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-white/55">{{ d.body }}</p>
-            </div>
+
           </div>
         </div>
       </div>
@@ -433,38 +497,6 @@ onUnmounted(() => {
               </div>
             </div>
 
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════
-         HOW IT WORKS
-    ═══════════════════════════════════════ -->
-    <section class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-5xl">
-        <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">How It Works</p>
-        <h2 class="mt-4 text-3xl font-black text-white sm:text-4xl">Five steps. No surprises.</h2>
-
-        <div class="mt-12 relative">
-          <!-- Vertical connector line (desktop) -->
-          <div class="absolute left-[22px] top-8 bottom-8 w-px bg-gradient-to-b from-blue-500/40 via-blue-500/20 to-transparent hidden sm:block"></div>
-
-          <div class="space-y-6">
-            <div
-              v-for="step in steps"
-              :key="step.n"
-              class="flex gap-6 items-start"
-            >
-              <!-- Number chip -->
-              <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-blue-500/30 bg-blue-500/10 text-sm font-black text-blue-400 z-10">
-                {{ step.n }}
-              </div>
-              <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-5 flex-1 transition hover:border-blue-500/20">
-                <p class="font-bold text-white">{{ step.title }}</p>
-                <p class="mt-1.5 text-sm leading-relaxed text-white/55">{{ step.body }}</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
