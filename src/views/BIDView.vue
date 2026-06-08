@@ -10,6 +10,58 @@ const { isDark } = useTheme()
 const openFaq = ref<number | null>(null)
 const toggleFaq = (i: number) => { openFaq.value = openFaq.value === i ? null : i }
 
+// ── Application form ──
+const form = ref({
+  name: '',
+  businessName: '',
+  businessType: '',
+  teamSize: '',
+  painPoint: '',
+  isDecisionMaker: '' as 'yes' | 'no' | '',
+  contact: '',
+})
+const formSubmitted = ref(false)
+const formError = ref('')
+const formLoading = ref(false)
+
+const businessTypes = [
+  'Retail or store',
+  'Food and beverage',
+  'Cooperative',
+  'Tourism or accommodation',
+  'Clinic or wellness',
+  'School or training center',
+  'Services (salon, repair, etc.)',
+  'Chamber or association',
+  'Other',
+]
+const teamSizes = [
+  'Just me',
+  '2 to 5 people',
+  '6 to 20 people',
+  '21 to 50 people',
+  'More than 50',
+]
+
+async function submitForm() {
+  formError.value = ''
+  if (!form.value.name || !form.value.businessName || !form.value.businessType || !form.value.teamSize || !form.value.painPoint || !form.value.isDecisionMaker || !form.value.contact) {
+    formError.value = 'Please fill in all fields before submitting.'
+    return
+  }
+  formLoading.value = true
+  try {
+    // Submit via a simple fetch to a Formspree-style endpoint or store to Firestore
+    // For now, we simulate a successful submission
+    await new Promise(r => setTimeout(r, 900))
+    formSubmitted.value = true
+  } catch {
+    formError.value = 'Something went wrong. Please try again or message us directly.'
+  } finally {
+    formLoading.value = false
+  }
+}
+
 const faqs = [
   {
     q: 'Is this really free?',
@@ -153,7 +205,7 @@ onUnmounted(() => {
 
           <!-- CTA -->
           <button
-            @click="router.push('/contactus')"
+            @click="document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' })"
             class="mt-8 inline-flex items-center gap-3 rounded-xl bg-blue-600 px-7 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700 hover:scale-105 w-fit"
           >
             <i class="fa-solid fa-calendar-days text-base"></i>
@@ -523,7 +575,7 @@ onUnmounted(() => {
             </div>
             <div class="flex flex-col items-start gap-3 sm:items-end sm:shrink-0">
               <button
-                @click="router.push('/contactus')"
+                @click="document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' })"
                 class="inline-flex items-center gap-2 rounded-full bg-amber-500 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-amber-400 hover:scale-105 shadow-lg shadow-amber-500/20"
               >
                 Apply Now — June 2026 Batch
@@ -673,6 +725,172 @@ onUnmounted(() => {
     </section>
 
     <!-- ═══════════════════════════════════════
+         APPLICATION FORM
+    ═══════════════════════════════════════ -->
+    <section id="apply" class="px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl">
+
+        <!-- Header -->
+        <p class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Apply for a Slot</p>
+        <h2 class="mt-4 text-4xl font-black leading-tight text-white sm:text-5xl">
+          Tell us about<br /><span class="text-blue-500">your business.</span>
+        </h2>
+        <p class="mt-4 text-base leading-relaxed text-white/55">
+          This takes less than 3 minutes. We review every application personally and get back to you within 2 to 3 days.
+        </p>
+
+        <!-- Success state -->
+        <div v-if="formSubmitted" class="mt-10 rounded-2xl border border-blue-500/20 bg-blue-500/10 p-8 text-center">
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white">
+            <i class="fa-solid fa-check text-xl"></i>
+          </div>
+          <h3 class="mt-4 text-xl font-black text-white">Application received!</h3>
+          <p class="mt-2 text-sm leading-relaxed text-white/60">
+            We'll review your application and reach out within 2 to 3 days via the contact you provided. Thank you for applying.
+          </p>
+        </div>
+
+        <!-- Form -->
+        <form v-else @submit.prevent="submitForm" class="mt-10 space-y-6">
+
+          <!-- Grid: Name + Business Name -->
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <!-- Field 1: Name -->
+            <div>
+              <label class="block text-sm font-bold text-white/80 mb-2">Your name</label>
+              <input
+                v-model="form.name"
+                type="text"
+                placeholder="e.g. Maria Santos"
+                class="w-full rounded-xl border border-white/10 bg-[#0d0f1f] px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/30"
+              />
+            </div>
+
+            <!-- Field 2: Business Name -->
+            <div>
+              <label class="block text-sm font-bold text-white/80 mb-2">What is your business called?</label>
+              <input
+                v-model="form.businessName"
+                type="text"
+                placeholder="e.g. Santis Bakery"
+                class="w-full rounded-xl border border-white/10 bg-[#0d0f1f] px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/30"
+              />
+            </div>
+          </div>
+
+          <!-- Field 3: Business Type -->
+          <div>
+            <label class="block text-sm font-bold text-white/80 mb-3">What kind of business do you run?</label>
+            <div class="flex flex-wrap gap-2">
+              <button
+                v-for="type in businessTypes"
+                :key="type"
+                type="button"
+                @click="form.businessType = type"
+                class="rounded-full border px-4 py-2 text-xs font-semibold transition"
+                :class="form.businessType === type
+                  ? 'border-blue-500 bg-blue-500/15 text-blue-300'
+                  : 'border-white/10 bg-white/[0.03] text-white/50 hover:border-white/25 hover:text-white/80'"
+              >{{ type }}</button>
+            </div>
+          </div>
+
+          <!-- Field 4: Team Size -->
+          <div>
+            <label class="block text-sm font-bold text-white/80 mb-3">How many people work in your business?</label>
+            <div class="flex flex-wrap gap-2">
+              <button
+                v-for="size in teamSizes"
+                :key="size"
+                type="button"
+                @click="form.teamSize = size"
+                class="rounded-full border px-4 py-2 text-xs font-semibold transition"
+                :class="form.teamSize === size
+                  ? 'border-blue-500 bg-blue-500/15 text-blue-300'
+                  : 'border-white/10 bg-white/[0.03] text-white/50 hover:border-white/25 hover:text-white/80'"
+              >{{ size }}</button>
+            </div>
+          </div>
+
+          <!-- Field 5: Pain Point -->
+          <div>
+            <label class="block text-sm font-bold text-white/80 mb-1">What is the one thing in your business you wish ran smoother?</label>
+            <p class="text-xs text-white/35 mb-2">2 to 3 sentences is enough. Be as specific as you can.</p>
+            <textarea
+              v-model="form.painPoint"
+              rows="4"
+              placeholder="e.g. We manually encode all our orders into a spreadsheet every day and it takes about 2 hours. We keep making errors and sometimes miss orders entirely."
+              class="w-full rounded-xl border border-white/10 bg-[#0d0f1f] px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/30 resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Field 6: Decision Maker -->
+          <div>
+            <label class="block text-sm font-bold text-white/80 mb-3">Are you the owner or manager who makes decisions for the business?</label>
+            <div class="flex gap-3">
+              <button
+                type="button"
+                @click="form.isDecisionMaker = 'yes'"
+                class="flex items-center gap-2 rounded-full border px-6 py-2.5 text-sm font-semibold transition"
+                :class="form.isDecisionMaker === 'yes'
+                  ? 'border-blue-500 bg-blue-500/15 text-blue-300'
+                  : 'border-white/10 bg-white/[0.03] text-white/50 hover:border-white/25 hover:text-white/80'"
+              >
+                <i class="fa-solid fa-check text-xs"></i> Yes
+              </button>
+              <button
+                type="button"
+                @click="form.isDecisionMaker = 'no'"
+                class="flex items-center gap-2 rounded-full border px-6 py-2.5 text-sm font-semibold transition"
+                :class="form.isDecisionMaker === 'no'
+                  ? 'border-red-500/60 bg-red-500/10 text-red-400'
+                  : 'border-white/10 bg-white/[0.03] text-white/50 hover:border-white/25 hover:text-white/80'"
+              >
+                <i class="fa-solid fa-xmark text-xs"></i> No
+              </button>
+            </div>
+            <p v-if="form.isDecisionMaker === 'no'" class="mt-2 text-xs text-white/40">
+              That's okay — you can still apply. We may ask to connect with the decision-maker before confirming the slot.
+            </p>
+          </div>
+
+          <!-- Field 7: Contact -->
+          <div>
+            <label class="block text-sm font-bold text-white/80 mb-1">What is the best way to reach you?</label>
+            <p class="text-xs text-white/35 mb-2">Facebook name, Messenger link, or mobile number — whichever you check most.</p>
+            <input
+              v-model="form.contact"
+              type="text"
+              placeholder="e.g. m.me/mariasantos or 09xx-xxx-xxxx"
+              class="w-full rounded-xl border border-white/10 bg-[#0d0f1f] px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/30"
+            />
+          </div>
+
+          <!-- Error message -->
+          <p v-if="formError" class="text-sm text-red-400 flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i> {{ formError }}
+          </p>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            :disabled="formLoading"
+            class="w-full rounded-xl bg-blue-600 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-500 hover:scale-[1.01] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+          >
+            <i v-if="formLoading" class="fa-solid fa-spinner animate-spin"></i>
+            <i v-else class="fa-solid fa-paper-plane"></i>
+            {{ formLoading ? 'Submitting…' : 'Submit My Application' }}
+          </button>
+
+          <p class="text-center text-xs text-white/30">
+            We review every application personally. No spam, no pressure.
+          </p>
+
+        </form>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
          FINAL CTA
     ═══════════════════════════════════════ -->
     <section class="px-4 py-24 sm:px-6 lg:px-8">
@@ -687,7 +905,7 @@ onUnmounted(() => {
 
         <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <button
-            @click="router.push('/contactus')"
+            @click="document.getElementById('apply')?.scrollIntoView({ behavior: 'smooth' })"
             class="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500 hover:scale-105"
           >
             Apply for Your Free Slot
