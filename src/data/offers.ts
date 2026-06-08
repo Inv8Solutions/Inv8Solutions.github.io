@@ -7,6 +7,11 @@ import retasifyImg from '@/assets/Retasify.png'
 import webMobileAppImg from '@/assets/Web_MobileApp.png'
 import pitchdeckImg from '@/assets/pitchdeck.png'
 import landingPageImg from '@/assets/landing_page.png'
+import businessInnovationImg from '@/assets/Business_Innovation.png'
+import websiteRedesignImg from '@/assets/Website_redesign.png'
+import digitalPresenceImg from '@/assets/DigitalPresence.png'
+import businessModelImg from '@/assets/business_model.png'
+import pitchProposalImg from '@/assets/pitch_proposal_design.png'
 import artistHubImg from '@/assets/ArtistHub.png'
 import bentoBasketImg from '@/assets/BentoBasket.png'
 import forensicLensImg from '@/assets/ForensicLens.png'
@@ -136,35 +141,35 @@ export const audiences: Audience[] = [
         description:
           'Before you invest in anything new, understand what is actually holding you back. We run a structured discovery process that looks at your business model, your customers, and your operations, then surfaces the most important opportunities for growth and innovation. You walk away with a clear picture of what to fix, what to double down on, and what to do next.',
         bestFor: 'MSMEs and social enterprises ready to grow but unsure where to start, organizations wanting to innovate but needing a grounded starting point',
-        image: innovImage,
+        image: businessInnovationImg,
       },
       {
         title: 'Website Redesign',
         description:
           'Your website should work as hard as you do. We redesign sites that are slow, confusing, or hard to find into something clean, fast, and easy to navigate, so visitors understand what you offer and know how to reach you.',
         bestFor: 'Businesses with outdated or underperforming websites',
-        image: trapiHausImg,
+        image: websiteRedesignImg,
       },
       {
         title: 'Digital Presence Setup',
         description:
           'If people cannot find you online, they will find someone else. We set up and organize your Google Business Profile, social media pages, and basic digital presence so you show up where your customers are already looking.',
         bestFor: 'Businesses stepping into online channels for the first time',
-        image: artistHubImg,
+        image: digitalPresenceImg,
       },
       {
         title: 'Business Model Design',
         description:
           'Sometimes the product is not the problem. Sometimes it is the model. We sit with you, map out how your business creates and delivers value, and help you find the changes that will make the biggest difference.',
         bestFor: 'Social enterprises working on long-term sustainability, MSMEs ready to grow but unsure how',
-        image: bentoBasketImg,
+        image: businessModelImg,
       },
       {
         title: 'Pitch and Proposal Design',
         description:
           'Whether you are applying for a grant, building a partnership, or presenting your work to funders, how you tell your story matters. We help you shape that story and design materials that are clear, compelling, and easy to act on.',
         bestFor: 'Social enterprises applying to foundations, MSMEs seeking government or LGU partnerships',
-        image: forensicLensImg,
+        image: pitchProposalImg,
       },
     ],
   },
