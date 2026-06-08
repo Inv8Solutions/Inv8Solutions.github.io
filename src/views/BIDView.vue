@@ -298,77 +298,79 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <!-- ── Right: two stacked cards ── -->
-          <div class="flex flex-col gap-5">
-
-            <!-- Card 1: What You Can Expect -->
-            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
-              <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-5">What You Can Expect</p>
-              <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <div
-                  v-for="stat in [
-                    { icon: 'fa-solid fa-clock',          value: '2 Hours',  label: 'On-site business visit',        sub: 'We spend time at your business.' },
-                    { icon: 'fa-solid fa-calendar-days',  value: '5 Days',   label: 'Receive your Improvement Plan', sub: 'We deliver your report within 5 working days.' },
-                    { icon: 'fa-solid fa-peso-sign',      value: '₱0',       label: 'No cost to participate',        sub: '100% free with no hidden fees.' },
-                    { icon: 'fa-solid fa-lightbulb',      value: '3',        label: 'Recommendations',               sub: 'Practical opportunities for improvement in every report.' },
-                  ]"
-                  :key="stat.value"
-                  class="flex flex-col items-center text-center rounded-xl border border-white/[0.06] bg-white/[0.03] p-4 gap-2"
-                >
-                  <i :class="[stat.icon, 'text-blue-400 text-xl']"></i>
-                  <p class="text-2xl font-black text-blue-400 leading-none">{{ stat.value }}</p>
-                  <p class="text-xs font-bold text-white leading-snug">{{ stat.label }}</p>
-                  <p class="text-[11px] text-white/40 leading-snug">{{ stat.sub }}</p>
-                </div>
+          <!-- ── Right: What You Can Expect ── -->
+          <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6 self-start">
+            <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-5">What You Can Expect</p>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2">
+              <div
+                v-for="stat in [
+                  { icon: 'fa-solid fa-clock',          value: '2 Hours',  label: 'On-site business visit',        sub: 'We spend time at your business.' },
+                  { icon: 'fa-solid fa-calendar-days',  value: '5 Days',   label: 'Receive your Improvement Plan', sub: 'We deliver your report within 5 working days.' },
+                  { icon: 'fa-solid fa-peso-sign',      value: '₱0',       label: 'No cost to participate',        sub: '100% free with no hidden fees.' },
+                  { icon: 'fa-solid fa-lightbulb',      value: '3',        label: 'Recommendations',               sub: 'Practical opportunities for improvement in every report.' },
+                ]"
+                :key="stat.value"
+                class="flex flex-col items-center text-center rounded-xl border border-white/[0.06] bg-white/[0.03] p-4 gap-2"
+              >
+                <i :class="[stat.icon, 'text-blue-400 text-xl']"></i>
+                <p class="text-2xl font-black text-blue-400 leading-none">{{ stat.value }}</p>
+                <p class="text-xs font-bold text-white leading-snug">{{ stat.label }}</p>
+                <p class="text-[11px] text-white/40 leading-snug">{{ stat.sub }}</p>
               </div>
             </div>
+          </div>
 
-            <!-- Card 2: How BID Works -->
-            <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-6">
-              <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6">How BID Works</p>
+        </div>
+      </div>
+    </section>
 
-              <!-- Steps with arrows -->
-              <div class="flex items-start justify-between gap-1">
-                <div
-                  v-for="(step, i) in [
-                    { icon: 'fa-solid fa-store',           n: '1', title: 'We Visit',   desc: 'We come to your business and meet with you and your team.' },
-                    { icon: 'fa-solid fa-magnifying-glass',n: '2', title: 'We Observe', desc: 'We observe how things work, ask questions, and take note of what we see.' },
-                    { icon: 'fa-solid fa-file-lines',      n: '3', title: 'We Report',  desc: 'You receive a personalized Improvement Plan within 5 days.' },
-                    { icon: 'fa-solid fa-rocket',          n: '4', title: 'You Decide', desc: 'Use the recommendations to improve your business in your own way and at your own pace.' },
-                  ]"
-                  :key="step.n"
-                  class="flex items-start"
-                >
-                  <!-- Step item -->
-                  <div class="flex flex-col items-center text-center" style="width: 90px;">
-                    <div class="flex h-14 w-14 items-center justify-center rounded-full border border-blue-500/30 bg-[#111528] text-blue-400">
-                      <i :class="[step.icon, 'text-lg']"></i>
-                    </div>
-                    <p class="mt-2 text-xs font-bold text-white leading-snug">{{ step.n }}. {{ step.title }}</p>
-                    <p class="mt-1 text-[11px] text-white/40 leading-snug">{{ step.desc }}</p>
-                  </div>
+    <!-- ═══════════════════════════════════════
+         HOW BID WORKS
+    ═══════════════════════════════════════ -->
+    <section class="px-4 pb-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl">
+        <div class="rounded-2xl border border-white/[0.07] bg-[#0a0c1c] p-8">
+          <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-8">How BID Works</p>
 
-                  <!-- Arrow between steps -->
-                  <div v-if="i < 3" class="flex items-start pt-6 px-1 shrink-0">
-                    <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-white/20">
-                      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                    </svg>
-                  </div>
+          <!-- Steps with arrows -->
+          <div class="grid grid-cols-2 gap-6 sm:flex sm:items-start sm:justify-between sm:gap-2">
+            <div
+              v-for="(step, i) in [
+                { icon: 'fa-solid fa-store',            n: '1', title: 'We Visit',   desc: 'We come to your business and meet with you and your team.' },
+                { icon: 'fa-solid fa-magnifying-glass', n: '2', title: 'We Observe', desc: 'We observe how things work, ask questions, and take note of what we see.' },
+                { icon: 'fa-solid fa-file-lines',       n: '3', title: 'We Report',  desc: 'You receive a personalized Improvement Plan within 5 days.' },
+                { icon: 'fa-solid fa-rocket',           n: '4', title: 'You Decide', desc: 'Use the recommendations to improve your business in your own way and at your own pace.' },
+              ]"
+              :key="step.n"
+              class="flex sm:flex-1 sm:items-start"
+            >
+              <!-- Step item -->
+              <div class="flex flex-col items-center text-center w-full">
+                <div class="flex h-16 w-16 items-center justify-center rounded-full border border-blue-500/30 bg-[#111528] text-blue-400">
+                  <i :class="[step.icon, 'text-xl']"></i>
                 </div>
+                <p class="mt-3 text-sm font-bold text-white leading-snug">{{ step.n }}. {{ step.title }}</p>
+                <p class="mt-1.5 text-xs text-white/45 leading-relaxed max-w-[140px]">{{ step.desc }}</p>
               </div>
 
-              <!-- No-obligation footer -->
-              <div class="mt-6 border-t border-white/[0.06] pt-4 flex items-start gap-3">
-                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-blue-500/30 bg-blue-500/10 text-blue-400">
-                  <i class="fa-solid fa-shield-halved text-sm"></i>
-                </div>
-                <div>
-                  <p class="text-sm font-bold text-white leading-snug">No obligation. No sales pressure.</p>
-                  <p class="mt-0.5 text-xs text-white/45 leading-relaxed">Our goal is to share useful insights. If you need help implementing the recommendations, we'll be here when you're ready.</p>
-                </div>
+              <!-- Arrow between steps (desktop only) -->
+              <div v-if="i < 3" class="hidden sm:flex items-start pt-7 px-2 shrink-0">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-white/25">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                </svg>
               </div>
             </div>
+          </div>
 
+          <!-- No-obligation footer -->
+          <div class="mt-8 border-t border-white/[0.06] pt-6 flex items-start gap-4">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400">
+              <i class="fa-solid fa-shield-halved text-base"></i>
+            </div>
+            <div>
+              <p class="font-bold text-white leading-snug">No obligation. No sales pressure.</p>
+              <p class="mt-1 text-sm text-white/50 leading-relaxed">Our goal is to share useful insights. If you need help implementing the recommendations, we'll be here when you're ready.</p>
+            </div>
           </div>
         </div>
       </div>
