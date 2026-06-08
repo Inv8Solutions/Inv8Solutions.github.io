@@ -3,6 +3,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from '@/composables/useTheme'
 import heroImage from '@/assets/hero-image.png'
+import { db } from '@/firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 const router = useRouter()
 const { isDark } = useTheme()
@@ -56,9 +58,18 @@ async function submitForm() {
   }
   formLoading.value = true
   try {
-    // Submit via a simple fetch to a Formspree-style endpoint or store to Firestore
-    // For now, we simulate a successful submission
-    await new Promise(r => setTimeout(r, 900))
+    await addDoc(collection(db, 'bid_applications'), {
+      name: form.value.name,
+      businessName: form.value.businessName,
+      businessType: form.value.businessType === 'Other'
+        ? `Other: ${form.value.otherBusinessType}`
+        : form.value.businessType,
+      teamSize: form.value.teamSize,
+      painPoint: form.value.painPoint,
+      isDecisionMaker: form.value.isDecisionMaker,
+      contact: form.value.contact,
+      submittedAt: serverTimestamp(),
+    })
     formSubmitted.value = true
   } catch {
     formError.value = 'Something went wrong. Please try again or message us directly.'
