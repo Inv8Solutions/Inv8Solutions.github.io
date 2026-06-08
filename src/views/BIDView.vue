@@ -15,6 +15,7 @@ const form = ref({
   name: '',
   businessName: '',
   businessType: '',
+  otherBusinessType: '',
   teamSize: '',
   painPoint: '',
   isDecisionMaker: '' as 'yes' | 'no' | '',
@@ -49,7 +50,7 @@ function scrollToApply() {
 
 async function submitForm() {
   formError.value = ''
-  if (!form.value.name || !form.value.businessName || !form.value.businessType || !form.value.teamSize || !form.value.painPoint || !form.value.isDecisionMaker || !form.value.contact) {
+  if (!form.value.name || !form.value.businessName || !form.value.businessType || (form.value.businessType === 'Other' && !form.value.otherBusinessType) || !form.value.teamSize || !form.value.painPoint || !form.value.isDecisionMaker || !form.value.contact) {
     formError.value = 'Please fill in all fields before submitting.'
     return
   }
@@ -797,6 +798,19 @@ onUnmounted(() => {
                   : 'border-white/10 bg-white/[0.03] text-white/50 hover:border-white/25 hover:text-white/80'"
               >{{ type }}</button>
             </div>
+
+            <!-- "Other" text input -->
+            <Transition name="faq-drop">
+              <div v-if="form.businessType === 'Other'" class="mt-3">
+                <input
+                  v-model="form.otherBusinessType"
+                  type="text"
+                  placeholder="Please describe your business type…"
+                  autofocus
+                  class="w-full rounded-xl border border-blue-500/30 bg-[#0d0f1f] px-4 py-3 text-sm text-white placeholder-white/25 outline-none transition focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/30"
+                />
+              </div>
+            </Transition>
           </div>
 
           <!-- Field 4: Team Size -->
