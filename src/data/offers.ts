@@ -182,6 +182,130 @@ export const audiences: Audience[] = [
 
 export const DEFAULT_AUDIENCE_ID = audiences[0]?.id ?? 'founders'
 
+/** ── Filipino translations of audiences ── */
+export const audiencesFil: Audience[] = [
+  {
+    id: 'founders',
+    label: 'Mga Founder at Startup',
+    icon: 'fa-solid fa-rocket',
+    sectionHeader: 'Para sa mga Founder at Startup',
+    sectionTagline: 'May ideya ka. Alamin natin kung ano ang dapat itayo muna.',
+    sectionIntro: 'Mahirap magsimula. Tinutulungan namin ang mga bagong founder na makapag-focus sa pinakamahalagang bagay, kumilos nang mas mabilis, at maging handa sa harap ng mga taong makakatulong sa kanilang paglago.',
+    services: [
+      {
+        title: 'MVP Development',
+        description: 'Ang iyong unang produkto ay dapat sagutin ang isang tanong: gusto ba talaga ito ng mga tao? Nagtatayo kami ng simpleng, gumaganang web app na maaari mong ilagay sa harap ng mga tunay na gumagamit at matuto. Walang overbuilding. Walang naaksayang buwan. Isang bagay na tunay na maaari mong subukan.',
+        bestFor: 'Mga unang beses na founder, mga nanalo sa hackathon, mga tumanggap ng grant na kailangang magpakita ng progreso',
+        image: (audiences[0]!.services[0]!.image),
+      },
+      {
+        title: 'Product Design (UI/UX)',
+        description: 'Bago kami magdisenyo ng isang screen, nakikipag-usap kami sa iyong mga gumagamit. Kinakatawan namin kung paano sila nag-iisip, ano ang kailangan nila, at saan sila natigil. Pagkatapos ay nagdidisenyo kami ng isang bagay na tunay na gumagana para sa kanila.',
+        bestFor: 'Mga founder na naghahanda para sa launch o mga presentasyon sa mamumuhunan',
+        image: (audiences[0]!.services[1]!.image),
+      },
+      {
+        title: 'Web at Mobile App Design',
+        description: 'Nagdidisenyo kami ng web platform o mobile app mula sa simula. Nakatuon kami sa kalinawan, kadalian ng paggamit, at mga karanasang nagpapabalik ng mga tao.',
+        bestFor: 'Mga founder at maagang-yugto na koponan na handang itayo ang kanilang pangunahing produkto',
+        image: (audiences[0]!.services[2]!.image),
+      },
+      {
+        title: 'Pitch Deck Design',
+        description: 'Ang magandang pitch ay nagsasalaysay ng malinaw na kwento. Tinutulungan ka naming malaman kung ano ang kwentong iyon, pagkatapos ay nagdidisenyo kami ng deck na simpleng nagkukomunika nito. Istruktura, biswal, at daloy na nagpapanatiling engganyo ang mga tao.',
+        bestFor: 'Mga founder na nag-aapply sa mga accelerator, government grant, o angel investor',
+        image: (audiences[0]!.services[3]!.image),
+      },
+      {
+        title: 'Landing Page',
+        description: 'Subukan ang iyong ideya bago itayo ang buong produkto. Nagdidisenyo at nagtatayo kami ng simpleng, nakatutok na pahina na nagpapaliwanag kung ano ang ginagawa mo, para kanino ito, at kung ano ang dapat gawin ng mga tao.',
+        bestFor: 'Mga founder na nagpapatunay pa ng kanilang ideya, maagang marketing, pre-launch signup',
+        image: (audiences[0]!.services[4]!.image),
+      },
+    ],
+  },
+  {
+    id: 'msmes',
+    label: 'Mga MSME at Social Enterprise',
+    icon: 'fa-solid fa-store',
+    sectionHeader: 'Para sa mga MSME at Social Enterprise',
+    sectionTagline: 'Nagtayo ka ng isang tunay na bagay. Tulungan ka naming dalhin ito nang mas malayo.',
+    sectionIntro: 'Hindi mo kailangang maging pinakamalaking negosyo sa silid para gumana nang tulad ng isa. Kailangan mo ng digital na presensya na gumagana, isang website na pinagkakatiwalaan ng mga tao, at isang malinaw na larawan kung saan patutungo ang iyong negosyo.',
+    services: [
+      {
+        title: 'Business Innovation Discovery',
+        description: 'Bago ka mag-invest ng kahit anong bago, unawain kung ano talaga ang pumipigil sa iyo. Nagpapatakbo kami ng isang nakabalangkas na proseso ng pagtuklas na tumitingin sa iyong modelo ng negosyo, mga customer, at mga operasyon, pagkatapos ay inilalabas ang pinakamahalagang pagkakataon para sa paglago at inobasyon.',
+        bestFor: 'Mga MSME at social enterprise na handang lumago ngunit hindi sigurado kung saan magsisimula',
+        image: (audiences[1]!.services[0]!.image),
+      },
+      {
+        title: 'Website Redesign',
+        description: 'Ang iyong website ay dapat gumana nang kasingtigas ng iyong pagsisikap. Nagre-redesign kami ng mga site na mabagal, nakakalito, o mahirap hanapin sa isang bagay na malinis, mabilis, at madaling mag-navigate.',
+        bestFor: 'Mga negosyong may lumang o hindi gumaganang website',
+        image: (audiences[1]!.services[1]!.image),
+      },
+      {
+        title: 'Digital Presence Setup',
+        description: 'Kung hindi ka mahahanap ng mga tao online, makikita nila ang ibang tao. Nagse-set up at nag-oorganisa kami ng iyong Google Business Profile, mga social media page, at pangunahing digital na presensya.',
+        bestFor: 'Mga negosyong unang sumusubok sa online na channel',
+        image: (audiences[1]!.services[2]!.image),
+      },
+      {
+        title: 'Business Model Design',
+        description: 'Minsan ang produkto ay hindi ang problema. Minsan ito ay ang modelo. Nakikipag-upo kami sa iyo, kinukuha ang mapa ng iyong negosyo, at tinutulungan kang mahanap ang mga pagbabagong gagawa ng pinakamalaking pagkakaiba.',
+        bestFor: 'Mga social enterprise na nagtatrabaho sa pangmatagalang sustainability, mga MSME na handang lumago',
+        image: (audiences[1]!.services[3]!.image),
+      },
+      {
+        title: 'Pitch at Proposal Design',
+        description: 'Kung nag-aapply ka para sa grant, nagtatayo ng pakikipagtulungan, o nagpapakita ng iyong trabaho sa mga nagpopondo, ang paraan ng pagsasalaysay ng iyong kwento ay mahalaga. Tinutulungan ka naming hubugin ang kwentong iyon at nagdidisenyo ng mga materyales.',
+        bestFor: 'Mga social enterprise na nag-aapply sa mga foundation, mga MSME na naghahanap ng partnership sa gobyerno',
+        image: (audiences[1]!.services[4]!.image),
+      },
+    ],
+  },
+  {
+    id: 'organizations',
+    label: 'Mga Organisasyon at LGU',
+    icon: 'fa-solid fa-building-columns',
+    sectionHeader: 'Para sa mga Organisasyon at LGU',
+    sectionTagline: 'Nais mong suportahan ang inobasyon sa iyong komunidad. Tinutulungan ka naming gawin ito nang maayos.',
+    sectionIntro: 'Ang pagpapatakbo ng isang programa ng inobasyon ay nangangailangan ng higit pa sa magandang intensyon. Nangangailangan ito ng tamang istruktura, tamang facilitation, at malinaw na plano.',
+    services: [
+      {
+        title: 'Innovation Program Design',
+        description: 'Isang maayos na dinisenyo na programa ang nagbabago ng direksyon ng bawat kalahok na dumaan dito. Tinutulungan ka naming itayo ang tamang istruktura, magtakda ng makabuluhang milestone, ikonekta ang mga founder sa tamang mentor.',
+        bestFor: 'Mga state university, LGU, technology business incubator na nagtatayo o nagpapabuti ng mga programa',
+        image: (audiences[2]!.services[0]!.image),
+      },
+      {
+        title: 'Innovation Workshops at Facilitation',
+        description: 'Ang pinakamahusay na mga ideya ay nagmumula sa mga taong naramdamang narinig sila. Nagdidisenyo at nagfa-facilitate kami ng mga workshop na tumutulong sa iyong koponan o komunidad na maunawaan ang isang problema at lumabas na may magagawa.',
+        bestFor: 'Mga organisasyong nagsisimula ng bagong inisyatibo, community problem-solving, pre-program discovery',
+        image: (audiences[2]!.services[1]!.image),
+      },
+      {
+        title: 'Startup Competition Design',
+        description: 'Ang isang kumpetisyon ay kasing ganda lamang ng naiprodukto nito. Nagdidisenyo kami ng buong karanasan mula sa konsepto hanggang mekanika hanggang paghuhukom.',
+        bestFor: 'Mga LGU, unibersidad, corporate program, ahensya ng gobyerno',
+        image: (audiences[2]!.services[2]!.image),
+      },
+      {
+        title: 'Capacity Building',
+        description: 'Kapag umalis kami, ang kaalaman ay dapat manatili. Sinasanay namin ang iyong panloob na koponan sa mga kasangkapan at pamamaraan na kailangan nila para mapatakbo ang mga programa ng inobasyon nang may kumpiyansa.',
+        bestFor: 'TBI staff, LGU innovation officer, unibersidad na guro na nagpapatakbo ng mga programa ng startup',
+        image: (audiences[2]!.services[3]!.image),
+      },
+      {
+        title: 'Program Documentation at Reporting',
+        description: 'Ang mga magagandang programa ay nangangailangan ng magandang dokumentasyon. Gumagawa kami ng mga ulat, playbook, monitoring at evaluation framework, at mga kwento ng epekto.',
+        bestFor: 'Mga organisasyong nag-uulat sa DOST, DICT, o mga internasyonal na partner sa pag-unlad',
+        image: (audiences[2]!.services[4]!.image),
+      },
+    ],
+  },
+]
+
 // Legacy exports kept for any components that still reference them
 export type OfferDetail = {
   id: string

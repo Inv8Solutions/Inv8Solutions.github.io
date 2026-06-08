@@ -3,8 +3,10 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
+import { useLanguage } from '@/composables/useLanguage'
 const router = useRouter()
 const { observeElements } = useScrollAnimation()
+const { t } = useLanguage()
 
 const scrollToServices = () => {
   document.querySelector('#services-body')?.scrollIntoView({ behavior: 'smooth' })
@@ -37,12 +39,12 @@ onMounted(() => {
       </div>
 
       <h1 class="text-5xl font-black leading-[1.06] tracking-tight text-white sm:text-6xl xl:text-7xl">
-        We help builders turn<br />
-        <span class="text-blue-500">good ideas into real things.</span>
+        {{ t('We help builders turn', 'Tinutulungan namin ang mga builder na gawing') }}<br />
+        <span class="text-blue-500">{{ t('good ideas into real things.', 'magandang mga ideya na tunay na bagay.') }}</span>
       </h1>
 
       <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/55 sm:text-lg">
-        inv8 Studio is a product design and innovation studio. We work with founders, organizations, and small businesses to design, build, and grow with purpose.
+        {{ t('inv8 Studio is a product design and innovation studio. We work with founders, organizations, and small businesses to design, build, and grow with purpose.', 'Ang inv8 Studio ay isang studio ng disenyo ng produkto at inobasyon. Nagtatrabaho kami kasama ang mga founder, organisasyon, at maliliit na negosyo upang magdisenyo, bumuo, at lumago nang may layunin.') }}
       </p>
 
       <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -50,14 +52,14 @@ onMounted(() => {
           @click="router.push('/contactus')"
           class="inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-900/50 transition hover:bg-blue-500 hover:scale-105"
         >
-          Book a Discovery Sprint
+          {{ t('Book a Discovery Sprint', 'Mag-book ng Discovery Sprint') }}
           <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
         </button>
         <button
           @click="$router.push('/works')"
           class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/10 hover:scale-105"
         >
-          See Our Work
+          {{ t('See Our Work', 'Tingnan ang Aming Mga Gawa') }}
         </button>
       </div>
     </div>

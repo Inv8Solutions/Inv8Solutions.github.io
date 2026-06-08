@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { audiences } from '@/data/offers'
+import { audiences, audiencesFil } from '@/data/offers'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
+import { useLanguage } from '@/composables/useLanguage'
+import { computed } from 'vue'
+
+const { t, lang } = useLanguage()
+const activeAudiences = computed(() => lang.value === 'fil' ? audiencesFil : audiences)
 
 defineOptions({ name: 'FeaturesSection' })
 
@@ -41,8 +46,8 @@ const palette = [
   },
 ]
 
-const currentIdx  = () => audiences.findIndex(a => a.id === activeAudience.value)
-const current     = () => audiences.find(a => a.id === activeAudience.value)!
+const currentIdx  = () => activeAudiences.value.findIndex(a => a.id === activeAudience.value)
+const current     = () => activeAudiences.value.find(a => a.id === activeAudience.value)!
 const currentPal  = () => palette[currentIdx() % palette.length]!
 
 onMounted(() => {
@@ -59,21 +64,20 @@ onMounted(() => {
       <div class="features-header mb-12 text-center">
         <div class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
           <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400"></span>
-          Our Services
+          {{ t('Our Services', 'Aming mga Serbisyo') }}
         </div>
         <h2 class="mt-5 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl">
-          End-to-end solutions<br />for every stage of <span class="text-blue-500">innovation.</span>
+          {{ t('End-to-end solutions', 'Kumpletong solusyon') }}<br />{{ t('for every stage of', 'para sa bawat yugto ng') }} <span class="text-blue-500">{{ t('innovation.', 'inobasyon.') }}</span>
         </h2>
         <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/50">
-          From strategy and design to development and growth,
-          we help startups and businesses build meaningful digital products.
+          {{ t('From strategy and design to development and growth, we help startups and businesses build meaningful digital products.', 'Mula sa estratehiya at disenyo hanggang pagbuo at paglago, tinutulungan namin ang mga startup at negosyo na lumikha ng makabuluhang digital na produkto.') }}
         </p>
       </div>
 
       <!-- Audience tab switcher -->
       <div class="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <button
-          v-for="(audience, i) in audiences"
+          v-for="(audience, i) in activeAudiences"
           :key="audience.id"
           @click="activeAudience = audience.id"
           class="flex items-center gap-3 rounded-2xl border px-5 py-4 text-left transition duration-200"
@@ -155,7 +159,7 @@ onMounted(() => {
               <div class="px-5 pb-5 -mt-4 relative">
                 <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest border"
                   :class="currentPal().badge">
-                  {{ current().services.length }} services
+                  {{ current().services.length }} {{ t('services', 'serbisyo') }}
                 </span>
                 <p class="mt-2 text-sm font-bold text-white leading-snug">{{ current().services[0]?.title }}</p>
               </div>
@@ -164,10 +168,10 @@ onMounted(() => {
             <!-- CTA card -->
             <div class="rounded-[20px] border border-white/[0.07] bg-[#0d0f1f] p-5">
               <p class="text-sm font-semibold text-white/80 leading-snug">
-                Ready to explore what we can do for your {{ current().label.split(' ')[0] }}?
+                {{ t(`Ready to explore what we can do for your ${current().label.split(' ')[0]}?`, `Handa ka na bang tuklasin kung ano ang magagawa namin para sa iyong ${current().label.split(' ')[0]}?`) }}
               </p>
               <p class="mt-1.5 text-xs text-white/45 leading-relaxed">
-                Browse the full list or book a discovery sprint to find the right fit.
+                {{ t('Browse the full list or book a discovery sprint to find the right fit.', 'Tingnan ang buong listahan o mag-book ng discovery sprint para mahanap ang pinakaangkop.') }}
               </p>
               <div class="mt-4 flex flex-col gap-2">
                 <button
@@ -175,13 +179,13 @@ onMounted(() => {
                   class="w-full rounded-full py-2.5 text-sm font-bold text-white transition hover:scale-105 shadow-lg"
                   :class="currentPal().btn"
                 >
-                  View all {{ current().label }} services
+                  {{ t(`View all ${current().label} services`, `Tingnan lahat ng serbisyo para sa ${current().label}`) }}
                 </button>
                 <button
                   @click="router.push('/contactus')"
                   class="w-full rounded-full border border-white/15 py-2.5 text-sm font-semibold text-white/70 transition hover:border-white/30 hover:text-white"
                 >
-                  Book a Discovery Sprint
+                  {{ t('Book a Discovery Sprint', 'Mag-book ng Discovery Sprint') }}
                 </button>
               </div>
             </div>

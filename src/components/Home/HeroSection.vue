@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useLanguage } from '@/composables/useLanguage'
 
 const router = useRouter()
+const { t } = useLanguage()
 
 const openStartProjectModal = () => {
   router.push('/contactus')
@@ -54,26 +56,26 @@ const floatingIcons = [
       <div class="flex flex-1 flex-col items-center text-center">
         <div class="mb-8 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-5 py-2 text-sm font-bold uppercase tracking-widest text-blue-400 animate-fade-in-up">
           <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
-          Open for Work
+          {{ t('Open for Work', 'Bukas para sa Trabaho') }}
         </div>
         <h1 class="mb-6 max-w-5xl text-4xl font-black leading-tight tracking-tight text-white md:text-5xl lg:text-6xl animate-fade-in-up animate-delay-200">
-          The innovation partner for startups and <span class="text-blue-500">growing businesses.</span>
+          {{ t('The innovation partner for startups and', 'Ang innovation partner para sa mga startup at') }} <span class="text-blue-500">{{ t('growing businesses.', 'lumalagong negosyo.') }}</span>
         </h1>
         <p class="mb-10 max-w-2xl text-lg leading-relaxed text-white/50 animate-fade-in-up animate-delay-400">
-          We help startups and MSMEs validate opportunities, build meaningful solutions, and create lasting value through strategy, design, and engineering.
+          {{ t('We help startups and MSMEs validate opportunities, build meaningful solutions, and create lasting value through strategy, design, and engineering.', 'Tinutulungan namin ang mga startup at MSME na mapatunayan ang mga pagkakataon, bumuo ng makabuluhang solusyon, at lumikha ng pangmatagalang halaga sa pamamagitan ng estratehiya, disenyo, at inhinyeriya.') }}
         </p>
         <div class="flex flex-wrap items-center justify-center gap-4 animate-fade-in-up animate-delay-600">
           <button
             @click="openStartProjectModal"
             class="rounded-full bg-blue-600 px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-900/50 transition hover:bg-blue-500 hover:scale-105"
           >
-            Start a Project
+            {{ t('Start a Project', 'Magsimula ng Proyekto') }}
           </button>
           <button
             @click="router.push('/services')"
             class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-3.5 text-sm font-bold text-white transition hover:bg-white/10 hover:scale-105"
           >
-            Explore Services
+            {{ t('Explore Services', 'Tuklasin ang mga Serbisyo') }}
             <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
           </button>
         </div>

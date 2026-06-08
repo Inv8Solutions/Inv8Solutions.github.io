@@ -1,49 +1,47 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
+import { useLanguage } from '@/composables/useLanguage'
 
 defineOptions({
   name: 'WhyChooseUs',
 })
 
 const { observeElements } = useScrollAnimation()
+const { t } = useLanguage()
 
-const reasons = [
+const reasons = computed(() => [
   {
-    title: 'Evidence-Driven Approach',
-    description: 'We validate assumptions early, turning insights into stronger product decisions.',
+    title: t('Evidence-Driven Approach', 'Pamamaraang Batay sa Ebidensya'),
+    description: t('We validate assumptions early, turning insights into stronger product decisions.', 'Maaga naming pinapatunayan ang mga pagpapalagay, ginagawang mas matibay na mga desisyon sa produkto ang mga kaalaman.'),
     icon: 'fa-solid fa-chart-line',
   },
   {
-    title: 'Integrated Design & Engineering',
-    description: 'UX, frontend, and backend work together from day one for seamless execution.',
+    title: t('Integrated Design & Engineering', 'Pinagsanib na Disenyo at Inhinyeriya'),
+    description: t('UX, frontend, and backend work together from day one for seamless execution.', 'Ang UX, frontend, at backend ay nagtatrabaho nang magkasama mula sa unang araw para sa maayos na pagpapatupad.'),
     icon: 'fa-solid fa-layer-group',
   },
   {
-    title: 'Lean and Fast Delivery',
-    description:
-      'We focus on essentials, helping you launch faster without unnecessary complexity.',
+    title: t('Lean and Fast Delivery', 'Mabilis at Mahusay na Paghahatid'),
+    description: t('We focus on essentials, helping you launch faster without unnecessary complexity.', 'Nakatuon kami sa mga esensyal, tinutulungan kang maglunsad nang mas mabilis nang walang hindi kinakailangang komplikasyon.'),
     icon: 'fa-solid fa-rocket',
   },
   {
-    title: 'User-Centered Solutions',
-    description:
-      'Every product is crafted around real needs, ensuring intuitive and meaningful experiences.',
+    title: t('User-Centered Solutions', 'Mga Solusyong Nakasentro sa Gumagamit'),
+    description: t('Every product is crafted around real needs, ensuring intuitive and meaningful experiences.', 'Bawat produkto ay ginawa sa paligid ng tunay na mga pangangailangan, tinitiyak ang intuitive at makabuluhang mga karanasan.'),
     icon: 'fa-solid fa-users',
   },
   {
-    title: 'Modern, Scalable Technology',
-    description:
-      'We use a reliable, future-ready tech stack built for performance and long-term growth.',
+    title: t('Modern, Scalable Technology', 'Modernong, Napapalawak na Teknolohiya'),
+    description: t('We use a reliable, future-ready tech stack built for performance and long-term growth.', 'Gumagamit kami ng maaasahan, handa sa hinaharap na tech stack na itinayo para sa pagganap at pangmatagalang paglago.'),
     icon: 'fa-solid fa-microchip',
   },
   {
-    title: 'Built for Real-World Impact',
-    description:
-      'Whether it’s an MVP, SME system, or IoT solution, we design products that perform where it matters most.',
+    title: t('Built for Real-World Impact', 'Itinayo para sa Tunay na Epekto'),
+    description: t("Whether it's an MVP, SME system, or IoT solution, we design products that perform where it matters most.", 'Maging MVP, sistema ng SME, o solusyon sa IoT, nagdidisenyo kami ng mga produktong gumaganap kung saan ito pinaka-mahalaga.'),
     icon: 'fa-solid fa-globe',
   },
-]
+])
 
 onMounted(() => {
   observeElements('.reason-card')
@@ -58,14 +56,14 @@ onMounted(() => {
     <div class="mx-auto max-w-5xl space-y-10 text-center">
       <div class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
         <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400"></span>
-        Why Choose Us
+        {{ t('Why Choose Us', 'Bakit Kami') }}
       </div>
       <div class="space-y-2 mt-4">
         <h2 class="text-4xl font-black leading-tight tracking-tight text-white md:text-5xl">
-          We deliver clarity, speed, and disciplined
+          {{ t('We deliver clarity, speed, and disciplined', 'Naghahatid kami ng kalinawan, bilis, at disiplinadong') }}
         </h2>
         <p class="text-4xl font-black leading-tight text-white/30 md:text-5xl">
-          execution in every product we build.
+          {{ t('execution in every product we build.', 'pagpapatupad sa bawat produktong itinayo namin.') }}
         </p>
       </div>
     </div>
@@ -84,21 +82,5 @@ onMounted(() => {
         <p class="mt-2 text-sm leading-relaxed text-white/50">{{ reason.description }}</p>
       </article>
     </div>
-
-    <!-- <div class="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 px-2 sm:grid-cols-2">
-      <article
-        v-for="reason in reasons"
-        :key="reason.title"
-        class="rounded-[28px] border border-gray-200 bg-white p-6 text-left shadow-[0_30px_80px_-60px_rgba(15,23,42,0.5)]"
-      >
-        <div
-          class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600"
-        >
-          <span class="text-xl">⬤</span>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900">{{ reason.title }}</h3>
-        <p class="mt-2 text-sm leading-relaxed text-gray-500">{{ reason.description }}</p>
-      </article>
-    </div> -->
   </section>
 </template>

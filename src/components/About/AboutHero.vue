@@ -3,19 +3,21 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
 
+import { useLanguage } from '@/composables/useLanguage'
 const router = useRouter()
 const heroBg = '/images/about-hero.jpg'
 const { observeElements } = useScrollAnimation()
+const { t } = useLanguage()
 
 const openStartProjectModal = () => {
   router.push('/contactus')
 }
 
 const valueProps = [
-  { icon: 'fa-solid fa-people-group', title: 'Innovation Partner', description: 'We work with you, not just for you.' },
-  { icon: 'fa-solid fa-lightbulb', title: 'Strategy-First', description: 'We start with clarity before building.' },
-  { icon: 'fa-solid fa-code', title: 'Design + Engineering', description: 'End-to-end execution under one roof.' },
-  { icon: 'fa-solid fa-arrow-trend-up', title: 'Impact-Driven', description: 'We build solutions that create real impact.' },
+  { icon: 'fa-solid fa-people-group', title: t('Innovation Partner', 'Innovation Partner'), description: t('We work with you, not just for you.', 'Nagtatrabaho kami kasama ka, hindi para sa iyo lamang.') },
+  { icon: 'fa-solid fa-lightbulb', title: t('Strategy-First', 'Estratehiya Muna'), description: t('We start with clarity before building.', 'Nagsisimula kami nang may kalinawan bago bumuo.') },
+  { icon: 'fa-solid fa-code', title: t('Design + Engineering', 'Disenyo + Inhinyeriya'), description: t('End-to-end execution under one roof.', 'End-to-end na pagpapatupad sa iisang lugar.') },
+  { icon: 'fa-solid fa-arrow-trend-up', title: t('Impact-Driven', 'Nakatuon sa Epekto'), description: t('We build solutions that create real impact.', 'Nagtatayo kami ng mga solusyong lumilikha ng tunay na epekto.') },
 ]
 
 onMounted(() => {
@@ -37,17 +39,16 @@ onMounted(() => {
         <div class="flex flex-col justify-center lg:w-1/2">
           <div class="hero-animate mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-blue-400">
             <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
-            Innovation Partner
+            {{ t('Innovation Partner', 'Innovation Partner') }}
           </div>
 
           <h1 id="about-heading" class="hero-animate animate-delay-100 text-5xl font-black leading-[1.1] tracking-tight text-white md:text-6xl">
-            Your innovation<br />partner from idea<br />
-            <span class="text-blue-500">to impact.</span>
+            {{ t('Your innovation', 'Ang iyong') }}<br />{{ t('partner from idea', 'innovation partner mula sa ideya') }}<br />
+            <span class="text-blue-500">{{ t('to impact.', 'hanggang sa epekto.') }}</span>
           </h1>
 
           <p class="hero-animate animate-delay-200 mt-6 max-w-md text-lg leading-relaxed text-white/55">
-            We partner with founders, businesses, and organizations to build meaningful digital
-            products through strategy, design, and engineering.
+            {{ t('We partner with founders, businesses, and organizations to build meaningful digital products through strategy, design, and engineering.', 'Nakikipagtulungan kami sa mga founder, negosyo, at organisasyon upang bumuo ng makabuluhang digital na produkto sa pamamagitan ng estratehiya, disenyo, at inhinyeriya.') }}
           </p>
 
           <div class="hero-animate animate-delay-300 mt-8 flex flex-wrap gap-3">
@@ -56,14 +57,14 @@ onMounted(() => {
               class="inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-900/50 transition hover:bg-blue-500 hover:scale-105"
             >
               <i class="fa-regular fa-calendar" aria-hidden="true"></i>
-              Book a Discovery Call
+              {{ t('Book a Discovery Call', 'Mag-book ng Discovery Call') }}
             </button>
             <button
               @click="router.push('/services')"
               class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-white/10 hover:scale-105"
             >
               <i class="fa-solid fa-play fa-xs" aria-hidden="true"></i>
-              Explore Services
+              {{ t('Explore Services', 'Tuklasin ang mga Serbisyo') }}
             </button>
           </div>
 
@@ -106,7 +107,7 @@ onMounted(() => {
               <i class="fa-solid fa-star-of-life text-xs" aria-hidden="true"></i>
             </div>
             <p class="text-xs leading-snug text-white/70">
-              We combine insight, design, and technology to turn possibilities into products people love.
+              {{ t('We combine insight, design, and technology to turn possibilities into products people love.', 'Pinagsasama namin ang kaalaman, disenyo, at teknolohiya upang gawing mga produktong minamahal ng mga tao ang mga posibilidad.') }}
             </p>
           </div>
         </div>

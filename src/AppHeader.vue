@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from '@/composables/useTheme'
+import { useLanguage } from '@/composables/useLanguage'
 
 defineOptions({
   name: 'AppHeader',
@@ -11,15 +12,16 @@ const route = useRoute()
 const router = useRouter()
 const isMenuOpen = ref(false)
 const { isDark, toggleTheme } = useTheme()
+const { t } = useLanguage()
 
-const navLinks = [
-  { name: 'Home', path: '/' },
-  { name: 'About Us', path: '/about' },
-  { name: 'Services', path: '/services' },
-  { name: 'Works', path: '/works' },
-  { name: 'Blog', path: '/blog' },
-  { name: 'Contact', path: '/contactus' },
-]
+const navLinks = computed(() => [
+  { name: t('Home', 'Home'), path: '/' },
+  { name: t('About Us', 'Tungkol sa Amin'), path: '/about' },
+  { name: t('Services', 'Mga Serbisyo'), path: '/services' },
+  { name: t('Works', 'Mga Gawa'), path: '/works' },
+  { name: t('Blog', 'Blog'), path: '/blog' },
+  { name: t('Contact', 'Makipag-ugnayan'), path: '/contactus' },
+])
 
 const isActive = (path: string) => {
   if (path === '/' && route.path === '/') return true
@@ -134,7 +136,7 @@ onUnmounted(() => {
             @click="navigate('/contactus')"
             class="hidden rounded-full bg-blue-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-900/50 transition hover:bg-blue-500 hover:scale-105 md:inline-flex"
           >
-            Start a Project
+            {{ t('Start a Project', 'Magsimula ng Proyekto') }}
           </button>
         </div>
       </header>
@@ -168,7 +170,7 @@ onUnmounted(() => {
                 @click="[navigate('/contactus'), closeMenu()]"
                 class="w-full rounded-full bg-blue-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
               >
-                Start a Project
+                {{ t('Start a Project', 'Magsimula ng Proyekto') }}
               </button>
             </li>
           </ul>

@@ -1,39 +1,49 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
+import { useLanguage } from '@/composables/useLanguage'
 
 defineOptions({
   name: 'StepsSection',
 })
 
 const { observeElements } = useScrollAnimation()
+const { t } = useLanguage()
 
-const steps = [
+const steps = computed(() => [
   {
     number: '01.',
-    title: 'Discover',
-    description:
+    title: t('Discover', 'Tuklasin'),
+    description: t(
       'We explore the problem space, uncover user needs, and identify the real challenges behind the idea. This gives us clarity on what truly matters.',
+      'Sinisiyasat namin ang espasyo ng problema, natutuklasan ang mga pangangailangan ng gumagamit, at natutukoy ang tunay na mga hamon sa likod ng ideya.',
+    ),
   },
   {
     number: '02.',
-    title: 'Define',
-    description:
+    title: t('Define', 'Tukuyin'),
+    description: t(
       'We refine insights into a clear, focused direction. The key problem is articulated, and the solution strategy becomes sharp and actionable.',
+      'Pinipino namin ang mga kaalaman sa isang malinaw, nakatuong direksyon. Ang pangunahing problema ay isinasalaysay, at ang estratehiya sa solusyon ay nagiging malinaw at maisakatuparan.',
+    ),
   },
   {
     number: '03.',
-    title: 'Develop',
-    description:
+    title: t('Develop', 'Bumuo'),
+    description: t(
       'We design and build lean prototypes or MVP features that address the core problem. This stage turns direction into tangible, testable solutions.',
+      'Nagdidisenyo at nagtatayo kami ng mga lean prototype o MVP feature na tumutugon sa pangunahing problema. Ang yugtong ito ay ginagawang nasasalat at nasusubok na mga solusyon ang direksyon.',
+    ),
   },
   {
     number: '04.',
-    title: 'Deliver',
-    description:
+    title: t('Deliver', 'Maihatid'),
+    description: t(
       'We launch, validate with real users, and iterate with purpose. Each release strengthens the product and moves it closer to market readiness.',
+      'Naglulunsad kami, nagpapatunay sa mga tunay na gumagamit, at nag-i-iterate nang may layunin. Bawat release ay nagpapatibay ng produkto at inililipat ito nang mas malapit sa kahandaang sa merkado.',
+    ),
   },
-]
+])
 
 const tools = [
   { name: 'Figma', icon: 'fa-brands fa-figma' },
@@ -68,14 +78,14 @@ onMounted(() => {
           class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-300"
         >
           <span class="inline-block h-1.5 w-1.5 rounded-full bg-blue-400"></span>
-          Our Process
+          {{ t('Our Process', 'Aming Proseso') }}
         </div>
         <h2 id="steps-heading" class="mt-5 text-4xl font-black leading-tight text-white md:text-5xl">
-          A proven process for
-          <span class="text-white/50"> purposeful innovation</span>
+          {{ t('A proven process for', 'Isang napatunayang proseso para sa') }}
+          <span class="text-white/50"> {{ t('purposeful innovation', 'makahulugang inobasyon') }}</span>
         </h2>
         <p class="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/50">
-          Every engagement follows a disciplined four-step framework built to reduce risk, accelerate learning, and ship products that work.
+          {{ t('Every engagement follows a disciplined four-step framework built to reduce risk, accelerate learning, and ship products that work.', 'Bawat pakikipag-ugnayan ay sumusunod sa isang disiplinadong apat na hakbang na balangkas na itinayo upang mabawasan ang panganib, mapabilis ang pag-aaral, at maipadala ang mga produktong gumagana.') }}
         </p>
       </div>
 
@@ -94,7 +104,7 @@ onMounted(() => {
       </div>
 
       <div class="tools-section mt-10 rounded-3xl border border-white/5 bg-white/[0.03] px-7 py-6">
-        <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-white/40">Tools we trust to build with clarity</p>
+        <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-white/40">{{ t('Tools we trust to build with clarity', 'Mga kasangkapang pinagkakatiwalaan namin para bumuo nang may kalinawan') }}</p>
         <div class="mt-5 flex flex-wrap items-center gap-4 text-white/60">
           <div
             v-for="tool in tools"

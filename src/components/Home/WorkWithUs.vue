@@ -2,12 +2,14 @@
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useScrollAnimation } from '@/composables/useScrollAnimation'
+import { useLanguage } from '@/composables/useLanguage'
 import img1 from '@/assets/introImage1.png'
 import img2 from '@/assets/introImage2.png'
 import img3 from '@/assets/introImage5.png'
 
 const router = useRouter()
 const { observeElements } = useScrollAnimation()
+const { t } = useLanguage()
 
 const openStartProjectModal = () => {
   router.push('/contactus')
@@ -31,20 +33,20 @@ onMounted(() => {
     <div class="wwu-header relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
       <span class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-white">
         <span class="inline-block h-2 w-2 rounded-full bg-white"></span>
-        Work With Us
+        {{ t('Work With Us', 'Makipagtulungan sa Amin') }}
       </span>
       <h2 class="mt-4 text-4xl font-black leading-tight tracking-tight text-white md:text-6xl">
-        Ready to build something<br class="hidden sm:block" /> that actually works?
+        {{ t('Ready to build something', 'Handa ka na bang bumuo ng isang bagay') }}<br class="hidden sm:block" /> {{ t('that actually works?', 'na talagang gumagana?') }}
       </h2>
       <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-blue-100/80">
-        From idea to launch, we partner with startups and growing businesses to validate, design, and ship products that create real impact.
+        {{ t('From idea to launch, we partner with startups and growing businesses to validate, design, and ship products that create real impact.', 'Mula sa ideya hanggang paglulunsad, nakikipagtulungan kami sa mga startup at lumalagong negosyo upang mapatunayan, magdisenyo, at maihatid ang mga produktong lumilikha ng tunay na epekto.') }}
       </p>
       <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
         <button
           @click="openStartProjectModal"
           class="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-blue-700 shadow-lg shadow-blue-900/30 transition hover:bg-blue-50 hover:scale-105"
         >
-          Start a Project
+          {{ t('Start a Project', 'Magsimula ng Proyekto') }}
           <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
         </button>
         <a
@@ -54,7 +56,7 @@ onMounted(() => {
           class="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/20 hover:scale-105"
         >
           <i class="fa-brands fa-discord" aria-hidden="true"></i>
-          Join Our Community
+          {{ t('Join Our Community', 'Sumali sa Aming Komunidad') }}
         </a>
       </div>
     </div>
