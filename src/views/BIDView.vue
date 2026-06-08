@@ -106,14 +106,15 @@ onUnmounted(() => {
          HERO
     ═══════════════════════════════════════ -->
     <section
-      class="relative overflow-hidden pt-28 pb-0 transition-colors duration-300"
+      class="relative overflow-hidden transition-colors duration-300"
       :class="isDark ? 'bg-[#03040f]' : 'bg-white'"
+      style="min-height: 620px;"
     >
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 items-end gap-0 lg:grid-cols-2">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 h-full">
+        <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[620px]">
 
           <!-- ── Left: copy ── -->
-          <div class="pb-16 lg:pb-24 pr-0 lg:pr-10">
+          <div class="flex flex-col justify-center pt-28 pb-16 pr-0 lg:pr-12">
             <!-- Badge -->
             <span
               class="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors duration-300"
@@ -185,18 +186,18 @@ onUnmounted(() => {
           </div>
 
           <!-- ── Right: image + floating card ── -->
-          <div class="relative hidden lg:block self-end">
-            <!-- Image -->
+          <div class="relative hidden lg:flex items-stretch">
+            <!-- Image fills full height of section -->
             <img
               :src="heroImage"
               alt="inv8 team visiting a local Baguio business"
-              class="w-full rounded-tl-[32px] rounded-tr-[32px] object-cover object-top"
-              style="max-height: 580px; object-position: center top;"
+              class="w-full h-full object-cover object-center rounded-tl-[32px]"
+              style="min-height: 620px;"
             />
 
             <!-- Left gradient fade blending image into background -->
             <div
-              class="absolute inset-y-0 left-0 w-32 rounded-tl-[32px] transition-colors duration-300"
+              class="absolute inset-y-0 left-0 w-40 rounded-tl-[32px] transition-colors duration-300"
               :class="isDark
                 ? 'bg-gradient-to-r from-[#03040f] to-transparent'
                 : 'bg-gradient-to-r from-white to-transparent'"
@@ -204,7 +205,7 @@ onUnmounted(() => {
 
             <!-- Floating "What you'll get" card -->
             <div
-              class="absolute bottom-8 right-4 w-72 rounded-2xl shadow-xl border p-5 transition-colors duration-300"
+              class="absolute bottom-10 right-6 w-72 rounded-2xl shadow-xl border p-5 transition-colors duration-300"
               :class="isDark
                 ? 'bg-[#0d0f1f] border-white/10 shadow-black/40'
                 : 'bg-white border-gray-100 shadow-black/10'"
