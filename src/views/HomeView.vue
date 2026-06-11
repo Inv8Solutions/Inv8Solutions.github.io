@@ -10,6 +10,7 @@ import WhyChooseUs from '@/components/Home/WhyChooseUs.vue'
 import LatestInsights from '@/components/Home/LatestInsights.vue'
 import WorkWithUs from '@/components/Home/WorkWithUs.vue'
 import Faq from '@/components/Home/Faq.vue'
+import VentureStudioPromo from '@/components/Home/VentureStudioPromo.vue'
 </script>
 
 <template>
@@ -22,6 +23,7 @@ import Faq from '@/components/Home/Faq.vue'
   <ProductPreview />
   <WhyChooseUs />
   <LatestInsights />
+  <VentureStudioPromo />
   <WorkWithUs />
   <Faq />
 </template>
