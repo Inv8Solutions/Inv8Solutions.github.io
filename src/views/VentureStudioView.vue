@@ -281,97 +281,110 @@ onMounted(() => {
         </div>
 
         <!-- 3 Panels -->
-        <div class="vs-animate grid gap-px overflow-hidden rounded-3xl border border-white/8 bg-white/8 lg:grid-cols-3">
+        <div class="vs-animate grid overflow-hidden rounded-3xl border border-white/10 lg:grid-cols-3" style="background: #0a0c1a;">
 
-          <!-- Panel 1 -->
-          <div class="flex flex-col bg-[#0d0f1f] lg:relative">
-            <!-- Photo -->
-            <div class="relative h-56 shrink-0 overflow-hidden">
-              <img src="/images/venture-panel-1.jpg" alt="Founder doing customer research" class="absolute inset-0 h-full w-full object-cover object-center" />
-              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(13,15,31,0.1) 0%, rgba(13,15,31,0.55) 100%);"></div>
-            </div>
-
-            <!-- Step badge + arrow row -->
-            <div class="relative flex h-12 shrink-0 items-center justify-center border-t border-white/6 bg-[#0b0d1e]">
-              <div class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-blue-500 bg-[#0b0d1e] text-xs font-black text-blue-300" style="box-shadow: 0 0 14px rgba(59,130,246,0.45);">01</div>
-              <!-- Arrow (desktop only, right edge) -->
-              <div class="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:flex h-7 w-7 items-center justify-center rounded-full border border-blue-500/40 bg-[#0b0d1e] text-blue-400 text-xs" style="box-shadow: 0 0 8px rgba(59,130,246,0.3);">
-                <i class="fa-solid fa-chevron-right"></i>
+          <!-- Panel 1 — You know the problem -->
+          <div class="relative flex flex-col border-b border-white/8 lg:border-b-0 lg:border-r">
+            <!-- Photo with layered gradient -->
+            <div class="relative h-64 shrink-0 overflow-hidden">
+              <img
+                src="/images/venture-panel-1.jpg"
+                alt="Founder doing customer research"
+                class="absolute inset-0 h-full w-full object-cover object-[center_30%] transition-transform duration-700 hover:scale-105"
+              />
+              <!-- Dark vignette + bottom fade -->
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,12,26,0.25) 0%, rgba(10,12,26,0) 40%, rgba(10,12,26,0.85) 100%);"></div>
+              <!-- Step number overlaid bottom-left of photo -->
+              <div class="absolute bottom-4 left-5 flex items-center gap-2.5">
+                <div class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-blue-400 bg-[#0a0c1a]/80 text-[11px] font-black text-blue-300 backdrop-blur-sm" style="box-shadow: 0 0 12px rgba(59,130,246,0.5);">01</div>
+                <span class="text-[11px] font-bold uppercase tracking-widest text-white/50">{{ t('The Founder', 'Ang Founder') }}</span>
               </div>
             </div>
 
+            <!-- Arrow connector (desktop) -->
+            <div class="absolute right-0 top-32 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:flex h-8 w-8 items-center justify-center rounded-full border border-blue-500/50 bg-[#0a0c1a] text-blue-400 text-xs shadow-lg" style="box-shadow: 0 0 12px rgba(59,130,246,0.35);">
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
             <!-- Content -->
-            <div class="flex-1 p-7">
-              <h3 class="text-lg font-black text-white">{{ t('You know the problem.', 'Alam mo ang problema.') }}</h3>
-              <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
-              <ul class="mt-5 space-y-3">
+            <div class="flex-1 px-7 py-6">
+              <h3 class="text-xl font-black tracking-tight text-white">{{ t('You know the problem.', 'Alam mo ang problema.') }}</h3>
+              <div class="mt-2.5 h-[3px] w-10 rounded-full bg-blue-500"></div>
+              <ul class="mt-5 space-y-3.5">
                 <li v-for="point in [
                   t('You\'ve identified a real problem.', 'Natukoy mo na ang tunay na problema.'),
                   t('You\'ve spoken with customers.', 'Nakausap mo na ang mga customer.'),
                   t('You know there is an opportunity worth pursuing.', 'Alam mong may oportunidad na sulit na harapin.'),
-                ]" :key="point" class="flex items-start gap-3 text-sm text-white/60">
-                  <i class="fa-solid fa-circle-check mt-0.5 shrink-0 text-blue-400"></i>
+                ]" :key="point" class="flex items-start gap-3 text-sm leading-relaxed text-white/55">
+                  <i class="fa-solid fa-circle-check mt-0.5 shrink-0 text-blue-400 text-base"></i>
                   {{ point }}
                 </li>
               </ul>
             </div>
           </div>
 
-          <!-- Panel 2 -->
-          <div class="flex flex-col bg-[#0d0f1f] lg:relative">
-            <!-- Photo -->
-            <div class="relative h-56 shrink-0 overflow-hidden">
-              <img src="/images/venture-panel-2.jpg" alt="Founder overwhelmed by technical decisions" class="absolute inset-0 h-full w-full object-cover object-center" />
-              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(13,15,31,0.1) 0%, rgba(13,15,31,0.55) 100%);"></div>
-            </div>
-
-            <!-- Step badge + arrow row -->
-            <div class="relative flex h-12 shrink-0 items-center justify-center border-t border-white/6 bg-[#0b0d1e]">
-              <div class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-blue-500 bg-[#0b0d1e] text-xs font-black text-blue-300" style="box-shadow: 0 0 14px rgba(59,130,246,0.45);">02</div>
-              <div class="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:flex h-7 w-7 items-center justify-center rounded-full border border-blue-500/40 bg-[#0b0d1e] text-blue-400 text-xs" style="box-shadow: 0 0 8px rgba(59,130,246,0.3);">
-                <i class="fa-solid fa-chevron-right"></i>
+          <!-- Panel 2 — Technical questions begin -->
+          <div class="relative flex flex-col border-b border-white/8 lg:border-b-0 lg:border-r">
+            <div class="relative h-64 shrink-0 overflow-hidden">
+              <img
+                src="/images/venture-panel-2.jpg"
+                alt="Founder overwhelmed by technical decisions"
+                class="absolute inset-0 h-full w-full object-cover object-[center_20%] transition-transform duration-700 hover:scale-105"
+              />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,12,26,0.25) 0%, rgba(10,12,26,0) 40%, rgba(10,12,26,0.85) 100%);"></div>
+              <div class="absolute bottom-4 left-5 flex items-center gap-2.5">
+                <div class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-blue-400 bg-[#0a0c1a]/80 text-[11px] font-black text-blue-300 backdrop-blur-sm" style="box-shadow: 0 0 12px rgba(59,130,246,0.5);">02</div>
+                <span class="text-[11px] font-bold uppercase tracking-widest text-white/50">{{ t('The Gap', 'Ang Agwat') }}</span>
               </div>
             </div>
 
-            <!-- Content -->
-            <div class="flex-1 p-7">
-              <h3 class="text-lg font-black text-white">{{ t('Then the technical questions begin.', 'Pagkatapos ay nagsisimula ang mga teknikal na tanong.') }}</h3>
-              <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
-              <ul class="mt-5 space-y-3">
+            <div class="absolute right-0 top-32 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:flex h-8 w-8 items-center justify-center rounded-full border border-blue-500/50 bg-[#0a0c1a] text-blue-400 text-xs shadow-lg" style="box-shadow: 0 0 12px rgba(59,130,246,0.35);">
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
+            <div class="flex-1 px-7 py-6">
+              <h3 class="text-xl font-black tracking-tight text-white">{{ t('Then the technical questions begin.', 'Pagkatapos ay nagsisimula ang mga teknikal na tanong.') }}</h3>
+              <div class="mt-2.5 h-[3px] w-10 rounded-full bg-blue-500"></div>
+              <ul class="mt-5 space-y-3.5">
                 <li v-for="q in [
                   t('What should be built first?', 'Ano ang dapat itayo muna?'),
                   t('Who should build it?', 'Sino ang dapat magtayo nito?'),
                   t('How do you validate before spending too much?', 'Paano mo iva-validate bago gumastos nang masyadong malaki?'),
                   t('How do you manage developers when you\'re not technical?', 'Paano mo papamahalaan ang mga developer kung hindi ka teknikal?'),
-                ]" :key="q" class="flex items-start gap-3 text-sm text-white/60">
-                  <i class="fa-regular fa-circle-question mt-0.5 shrink-0 text-white/30"></i>
+                ]" :key="q" class="flex items-start gap-3 text-sm leading-relaxed text-white/55">
+                  <i class="fa-regular fa-circle-question mt-0.5 shrink-0 text-white/35 text-base"></i>
                   {{ q }}
                 </li>
               </ul>
             </div>
           </div>
 
-          <!-- Panel 3 -->
-          <div class="flex flex-col bg-[#0d0f1f]">
-            <!-- Photo -->
-            <div class="relative h-56 shrink-0 overflow-hidden">
-              <img src="/images/venture-panel-3.jpg" alt="inv8 team collaborating with founders" class="absolute inset-0 h-full w-full object-cover object-center" />
-              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(13,15,31,0.1) 0%, rgba(13,15,31,0.55) 100%);"></div>
+          <!-- Panel 3 — That's where we come in -->
+          <div class="relative flex flex-col bg-[#0c0f25]">
+            <div class="relative h-64 shrink-0 overflow-hidden">
+              <img
+                src="/images/venture-panel-3.jpg"
+                alt="inv8 team collaborating with founders"
+                class="absolute inset-0 h-full w-full object-cover object-[center_25%] transition-transform duration-700 hover:scale-105"
+              />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,12,26,0.2) 0%, rgba(10,12,26,0) 35%, rgba(10,12,26,0.88) 100%);"></div>
+              <!-- inv8 brand badge -->
+              <div class="absolute right-4 top-4 rounded-lg border border-blue-500/40 bg-blue-600/20 px-2.5 py-1 backdrop-blur-sm">
+                <span class="text-xs font-black tracking-wider text-blue-300">inv8</span>
+              </div>
+              <div class="absolute bottom-4 left-5 flex items-center gap-2.5">
+                <div class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-blue-400 bg-[#0a0c1a]/80 text-[11px] font-black text-blue-300 backdrop-blur-sm" style="box-shadow: 0 0 12px rgba(59,130,246,0.5);">03</div>
+                <span class="text-[11px] font-bold uppercase tracking-widest text-white/50">{{ t('The Solution', 'Ang Solusyon') }}</span>
+              </div>
             </div>
 
-            <!-- Step badge row (no arrow on last) -->
-            <div class="flex h-12 shrink-0 items-center justify-center border-t border-white/6 bg-[#0b0d1e]">
-              <div class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-blue-500 bg-[#0b0d1e] text-xs font-black text-blue-300" style="box-shadow: 0 0 14px rgba(59,130,246,0.45);">03</div>
-            </div>
-
-            <!-- Content -->
-            <div class="flex-1 p-7">
-              <h3 class="text-lg font-black text-white">{{ t("That's where we come in.", 'Doon kami pumapasok.') }}</h3>
-              <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
-              <p class="mt-5 text-sm leading-relaxed text-white/60">
+            <div class="flex-1 px-7 py-6">
+              <h3 class="text-xl font-black tracking-tight text-white">{{ t("That's where we come in.", 'Doon kami pumapasok.') }}</h3>
+              <div class="mt-2.5 h-[3px] w-10 rounded-full bg-blue-500"></div>
+              <p class="mt-5 text-sm leading-relaxed text-white/55">
                 {{ t('inv8 Venture Studio gives founders access to product strategy, UX design, engineering, and execution support under one roof.', 'Ang inv8 Venture Studio ay nagbibigay sa mga founder ng access sa product strategy, UX design, engineering, at execution support sa iisang lugar.') }}
               </p>
-              <p class="mt-4 text-sm font-bold text-white">
+              <p class="mt-4 rounded-xl border border-blue-500/20 bg-blue-500/8 px-4 py-3 text-sm font-semibold leading-relaxed text-white/80">
                 {{ t('So you can focus on solving the problem while we help build the product.', 'Para makapag-focus ka sa paglulusog ng problema habang tinutulungan ka naming itayo ang produkto.') }}
               </p>
             </div>
