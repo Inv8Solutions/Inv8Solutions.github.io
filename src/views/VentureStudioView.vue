@@ -453,42 +453,9 @@ onMounted(() => {
 
           <!-- Card 1: Early-Stage Startups -->
           <div class="group flex flex-col overflow-hidden rounded-2xl border border-white/8 bg-[#0a0c1a] transition hover:border-blue-500/30">
-            <!-- Illustration -->
-            <div class="relative flex h-52 items-center justify-center overflow-hidden" style="background: radial-gradient(ellipse 80% 60% at 50% 70%, rgba(59,130,246,0.18) 0%, rgba(10,12,26,0) 70%), linear-gradient(180deg, #0a0f2e 0%, #060816 100%);">
-              <!-- Stars -->
-              <div class="absolute inset-0 overflow-hidden opacity-40">
-                <div v-for="n in 18" :key="n" class="absolute h-px w-px rounded-full bg-white" :style="'top:' + (n * 17 % 90) + '%;left:' + (n * 23 % 95) + '%;opacity:' + (0.3 + (n % 5) * 0.15)"></div>
-              </div>
-              <!-- Rocket + screen illustration -->
-              <div class="relative flex flex-col items-center">
-                <div class="relative">
-                  <!-- Screen/monitor -->
-                  <div class="relative mb-2 rounded-lg border border-blue-500/20 bg-[#0d1340]/80 px-5 py-3 shadow-lg shadow-blue-900/30">
-                    <div class="mb-1.5 flex gap-1">
-                      <div class="h-1 w-4 rounded bg-blue-400/50"></div>
-                      <div class="h-1 w-6 rounded bg-white/20"></div>
-                    </div>
-                    <div class="flex gap-1 items-end h-6">
-                      <div class="w-2 rounded-sm bg-blue-500/60" style="height:40%"></div>
-                      <div class="w-2 rounded-sm bg-blue-400/80" style="height:65%"></div>
-                      <div class="w-2 rounded-sm bg-blue-500/60" style="height:55%"></div>
-                      <div class="w-2 rounded-sm bg-blue-300/90" style="height:85%"></div>
-                      <div class="w-2 rounded-sm bg-blue-400/70" style="height:70%"></div>
-                    </div>
-                  </div>
-                  <!-- Rocket -->
-                  <div class="absolute -right-5 -top-6 flex h-14 w-14 items-center justify-center rounded-full border border-blue-400/30 bg-blue-600/20 text-2xl backdrop-blur-sm" style="box-shadow: 0 0 20px rgba(59,130,246,0.4);">
-                    <i class="fa-solid fa-rocket text-blue-300 -rotate-45"></i>
-                  </div>
-                  <!-- Glow trail -->
-                  <div class="absolute -right-3 top-4 h-10 w-1 rounded-full bg-gradient-to-b from-blue-400/40 to-transparent rotate-45 blur-sm"></div>
-                </div>
-                <!-- Two people silhouettes -->
-                <div class="mt-2 flex gap-1">
-                  <div class="h-6 w-5 rounded-t-full bg-blue-900/60"></div>
-                  <div class="h-7 w-5 rounded-t-full bg-blue-800/60"></div>
-                </div>
-              </div>
+            <div class="relative h-52 overflow-hidden">
+              <img src="/images/Earlystage.png" alt="Early-Stage Startups" class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,12,26,0.1) 0%, rgba(10,12,26,0.7) 100%);"></div>
             </div>
             <!-- Content -->
             <div class="p-5">
@@ -504,34 +471,9 @@ onMounted(() => {
 
           <!-- Card 2: University Spin-offs -->
           <div class="group flex flex-col overflow-hidden rounded-2xl border border-white/8 bg-[#0a0c1a] transition hover:border-blue-500/30">
-            <div class="relative flex h-52 items-center justify-center overflow-hidden" style="background: radial-gradient(ellipse 80% 60% at 50% 70%, rgba(59,130,246,0.15) 0%, rgba(10,12,26,0) 70%), linear-gradient(180deg, #0a0e2a 0%, #060816 100%);">
-              <div class="relative flex flex-col items-center gap-2">
-                <!-- Research → Product flow -->
-                <div class="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-white/40 mb-1">
-                  <span>{{ t('Research', 'Pananaliksik') }}</span>
-                  <div class="flex gap-0.5">
-                    <div class="h-px w-2 bg-white/30 mt-[5px]"></div>
-                    <i class="fa-solid fa-arrow-right text-[7px] text-blue-400/60"></i>
-                  </div>
-                  <span>{{ t('Product', 'Produkto') }}</span>
-                </div>
-                <!-- Grad cap + light bulb dome -->
-                <div class="relative">
-                  <div class="flex h-20 w-20 items-center justify-center rounded-full border border-blue-400/20 bg-blue-900/20" style="box-shadow: 0 0 30px rgba(59,130,246,0.2);">
-                    <i class="fa-solid fa-lightbulb text-3xl text-yellow-300/80" style="filter: drop-shadow(0 0 8px rgba(250,204,21,0.5));"></i>
-                  </div>
-                  <!-- Grad cap on top -->
-                  <div class="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <i class="fa-solid fa-graduation-cap text-2xl text-blue-300/90"></i>
-                  </div>
-                </div>
-                <!-- Books stack -->
-                <div class="mt-1 flex gap-1">
-                  <div class="h-3 w-8 rounded-sm bg-blue-800/60 border-t border-blue-500/20"></div>
-                  <div class="h-3 w-6 rounded-sm bg-blue-700/60 border-t border-blue-400/20"></div>
-                  <div class="h-3 w-10 rounded-sm bg-blue-900/60 border-t border-blue-500/10"></div>
-                </div>
-              </div>
+            <div class="relative h-52 overflow-hidden">
+              <img src="/images/research.png" alt="University Spin-offs" class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,12,26,0.1) 0%, rgba(10,12,26,0.7) 100%);"></div>
             </div>
             <div class="p-5">
               <div class="mb-3 flex items-center gap-3">
@@ -546,26 +488,9 @@ onMounted(() => {
 
           <!-- Card 3: Validated Idea Founders -->
           <div class="group flex flex-col overflow-hidden rounded-2xl border border-white/8 bg-[#0a0c1a] transition hover:border-blue-500/30">
-            <div class="relative flex h-52 items-center justify-center overflow-hidden" style="background: radial-gradient(ellipse 80% 60% at 50% 70%, rgba(59,130,246,0.15) 0%, rgba(10,12,26,0) 70%), linear-gradient(180deg, #0a0e2a 0%, #060816 100%);">
-              <div class="relative flex items-center gap-5">
-                <!-- Clipboard checklist -->
-                <div class="rounded-xl border border-white/10 bg-[#0d1340]/80 px-4 py-3 text-xs shadow-xl">
-                  <div v-for="item in ['Problem', 'Solution', 'Market', 'Traction']" :key="item" class="flex items-center gap-2 py-0.5">
-                    <i class="fa-solid fa-check text-blue-400 text-[10px]"></i>
-                    <span class="text-white/60 text-[11px]">{{ item }}</span>
-                  </div>
-                </div>
-                <!-- Chart + growth arrow -->
-                <div class="flex flex-col items-center gap-1">
-                  <div class="flex items-end gap-1 h-12">
-                    <div class="w-3 rounded-t bg-blue-600/50" style="height:35%"></div>
-                    <div class="w-3 rounded-t bg-blue-500/70" style="height:55%"></div>
-                    <div class="w-3 rounded-t bg-blue-400/80" style="height:75%"></div>
-                    <div class="w-3 rounded-t bg-blue-300/90" style="height:100%"></div>
-                  </div>
-                  <i class="fa-solid fa-arrow-trend-up text-xl text-blue-400" style="filter: drop-shadow(0 0 6px rgba(96,165,250,0.5));"></i>
-                </div>
-              </div>
+            <div class="relative h-52 overflow-hidden">
+              <img src="/images/validatedidea.png" alt="Validated Idea Founders" class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,12,26,0.1) 0%, rgba(10,12,26,0.7) 100%);"></div>
             </div>
             <div class="p-5">
               <div class="mb-3 flex items-center gap-3">
@@ -580,34 +505,9 @@ onMounted(() => {
 
           <!-- Card 4: New Digital Ventures -->
           <div class="group flex flex-col overflow-hidden rounded-2xl border border-white/8 bg-[#0a0c1a] transition hover:border-blue-500/30">
-            <div class="relative flex h-52 items-center justify-center overflow-hidden" style="background: radial-gradient(ellipse 80% 60% at 50% 70%, rgba(59,130,246,0.15) 0%, rgba(10,12,26,0) 70%), linear-gradient(180deg, #080c22 0%, #060816 100%);">
-              <div class="relative">
-                <!-- Building silhouette -->
-                <div class="flex items-end gap-1">
-                  <div class="w-8 rounded-t bg-blue-900/50 border border-blue-500/10" style="height:60px;">
-                    <div class="grid grid-cols-2 gap-px p-1 mt-1">
-                      <div v-for="w in 6" :key="w" class="h-1.5 rounded-sm" :class="w % 3 === 0 ? 'bg-yellow-400/40' : 'bg-blue-400/20'"></div>
-                    </div>
-                  </div>
-                  <div class="w-12 rounded-t bg-blue-800/50 border border-blue-500/15" style="height:90px;">
-                    <div class="grid grid-cols-2 gap-px p-1 mt-1">
-                      <div v-for="w in 10" :key="w" class="h-1.5 rounded-sm" :class="w % 4 === 0 ? 'bg-yellow-400/50' : 'bg-blue-400/25'"></div>
-                    </div>
-                  </div>
-                  <div class="w-8 rounded-t bg-blue-900/50 border border-blue-500/10" style="height:50px;">
-                    <div class="grid grid-cols-2 gap-px p-1 mt-1">
-                      <div v-for="w in 4" :key="w" class="h-1.5 rounded-sm" :class="w % 2 === 0 ? 'bg-yellow-400/30' : 'bg-blue-400/15'"></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Digital glow overlay -->
-                <div class="absolute inset-0 rounded-lg" style="background: linear-gradient(to top, rgba(59,130,246,0.12) 0%, transparent 60%);"></div>
-                <!-- Chart line overlay -->
-                <svg class="absolute -top-4 right-0 w-16 h-8 opacity-60" viewBox="0 0 64 32">
-                  <polyline points="0,28 16,20 32,14 48,8 64,4" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
-                  <circle cx="64" cy="4" r="2" fill="#60a5fa"/>
-                </svg>
-              </div>
+            <div class="relative h-52 overflow-hidden">
+              <img src="/images/venture.png" alt="New Digital Ventures" class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,12,26,0.1) 0%, rgba(10,12,26,0.7) 100%);"></div>
             </div>
             <div class="p-5">
               <div class="mb-3 flex items-center gap-3">
