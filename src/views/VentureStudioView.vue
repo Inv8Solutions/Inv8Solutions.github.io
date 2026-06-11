@@ -521,35 +521,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Values strip -->
-        <div class="vs-animate mt-8 flex flex-wrap items-center justify-center gap-6 rounded-2xl border border-white/8 bg-[#0a0c1a] px-8 py-5">
-          <div class="flex items-center gap-2.5 text-sm font-semibold text-white/60">
-            <i class="fa-solid fa-bullseye text-blue-400 text-base"></i>
-            {{ t('Purpose-Driven', 'Nakatuon sa Layunin') }}
-          </div>
-          <div class="hidden h-5 w-px bg-white/15 sm:block"></div>
-          <div class="flex items-center gap-2.5 text-sm font-semibold text-white/60">
-            <i class="fa-solid fa-people-group text-blue-400 text-base"></i>
-            {{ t('Execution-Focused', 'Nakatuon sa Execution') }}
-          </div>
-          <div class="hidden h-5 w-px bg-white/15 sm:block"></div>
-          <div class="flex items-center gap-2.5 text-sm font-semibold text-white/60">
-            <i class="fa-solid fa-arrow-trend-up text-blue-400 text-base"></i>
-            {{ t('Long-Term Mindset', 'Pangmatagalang Pag-iisip') }}
-          </div>
-        </div>
-
-        <!-- Closing line -->
-        <div class="vs-animate mt-8 flex items-center gap-5 rounded-2xl border border-white/8 bg-[#0a0c1a] px-7 py-5">
-          <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-blue-500/30 bg-blue-600/20 text-blue-400 text-2xl">
-            <i class="fa-solid fa-handshake"></i>
-          </div>
-          <p class="text-sm leading-relaxed text-white/55">
-            {{ t('We evaluate opportunities carefully. We only partner when we genuinely believe we can create', 'Maingat naming sinusuri ang mga oportunidad. Nakikipagtulungan lamang kami kapag tunay kaming naniniwala na maaari kaming lumikha ng') }}
-            <span class="font-semibold text-blue-400">{{ t('meaningful long-term value', 'makabuluhang pangmatagalang halaga') }}</span>
-            {{ t('together.', 'nang magkasama.') }}
-          </p>
-        </div>
 
       </div>
     </section>
