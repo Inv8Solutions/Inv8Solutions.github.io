@@ -391,49 +391,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Bottom capability strip -->
-        <div class="vs-animate mt-6 overflow-hidden rounded-2xl border border-white/8 bg-[#0d0f1f]">
-          <div class="flex flex-col gap-6 p-6 lg:flex-row lg:items-center lg:gap-8">
-            <!-- Left: headline -->
-            <div class="flex items-center gap-4 lg:w-64 lg:shrink-0">
-              <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-blue-500/30 bg-blue-600/20 text-blue-400 text-xl">
-                <i class="fa-solid fa-rocket"></i>
-              </div>
-              <div>
-                <p class="text-sm font-black text-white leading-snug">{{ t('Building a startup requires more than an idea.', 'Ang pagtatayo ng startup ay nangangailangan ng higit pa sa isang ideya.') }}</p>
-                <p class="mt-0.5 text-xs text-white/40">{{ t('Without hiring an entire product team.', 'Nang hindi nag-hire ng buong product team.') }}</p>
-              </div>
-            </div>
-
-            <div class="hidden h-12 w-px bg-white/8 lg:block"></div>
-
-            <!-- Right: 4 capabilities -->
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:flex-1">
-              <div v-for="cap in [
-                { icon: 'fa-solid fa-bullseye', title: t('Product Strategy', 'Product Strategy'), desc: t('Define the right problem, opportunity, and solution.', 'Tukuyin ang tamang problema, oportunidad, at solusyon.') },
-                { icon: 'fa-solid fa-pen-nib', title: t('UX / UI Design', 'UX / UI Design'), desc: t('Design experiences that users love and trust.', 'Magdisenyo ng mga karanasang minamahal at pinagkakatiwalaan ng mga gumagamit.') },
-                { icon: 'fa-solid fa-code', title: t('Engineering', 'Engineering'), desc: t('Build scalable, reliable, and modern products.', 'Magtayo ng scalable, maaasahan, at modernong mga produkto.') },
-                { icon: 'fa-solid fa-users-gear', title: t('Technical Leadership', 'Technical Leadership'), desc: t('Guide decisions, architecture, and execution with clarity.', 'Gabayan ang mga desisyon, arkitektura, at execution nang may kalinawan.') },
-              ]" :key="cap.title" class="flex gap-3 rounded-xl border border-white/6 bg-white/3 p-3">
-                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600/20 text-blue-400 text-sm">
-                  <i :class="cap.icon"></i>
-                </div>
-                <div>
-                  <p class="text-xs font-bold text-white">{{ cap.title }}</p>
-                  <p class="mt-0.5 text-[11px] leading-relaxed text-white/40">{{ cap.desc }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Footer tagline -->
-          <div class="border-t border-white/6 px-6 py-3 text-center">
-            <p class="text-xs text-white/40">
-              <i class="fa-regular fa-star text-blue-400 mr-1.5"></i>
-              {{ t('We become your product team — so you can build with confidence.', 'Nagiging product team mo kami — para makapagtayo ka nang may kumpiyansa.') }}
-            </p>
-          </div>
-        </div>
 
       </div>
     </section>
