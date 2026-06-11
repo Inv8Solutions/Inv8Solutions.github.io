@@ -285,31 +285,10 @@ onMounted(() => {
 
           <!-- Panel 1 -->
           <div class="flex flex-col bg-[#0d0f1f] lg:relative">
-            <!-- Illustration -->
-            <div class="relative flex h-52 shrink-0 items-end justify-center overflow-hidden px-6" style="background: linear-gradient(135deg, #0d1535 0%, #0b1530 50%, #0d0f1f 100%);">
-              <div class="relative z-10 mb-0 w-full max-w-[240px]">
-                <div class="rounded-t-lg border border-white/15 bg-[#111827]/80 p-4 shadow-xl">
-                  <div class="mb-2 flex items-center gap-2">
-                    <div class="h-1.5 w-1.5 rounded-full bg-red-400/70"></div>
-                    <div class="h-1.5 w-1.5 rounded-full bg-yellow-400/70"></div>
-                    <div class="h-1.5 w-1.5 rounded-full bg-green-400/70"></div>
-                  </div>
-                  <div class="space-y-2">
-                    <div class="flex items-center gap-2 rounded bg-white/5 px-2 py-1.5 text-[10px] font-bold text-white/70">
-                      <i class="fa-solid fa-diagram-project text-blue-400 text-xs"></i>
-                      PROBLEM
-                    </div>
-                    <div class="grid grid-cols-2 gap-1.5">
-                      <div class="rounded bg-yellow-400/20 px-2 py-1 text-[9px] text-yellow-200/80">IDEA</div>
-                      <div class="rounded bg-blue-400/20 px-2 py-1 text-[9px] text-blue-200/80">IDEA</div>
-                      <div class="col-span-2 flex items-center gap-1 rounded bg-white/5 px-2 py-1 text-[9px] text-white/50">
-                        <i class="fa-solid fa-lightbulb text-yellow-400 text-xs"></i> Opportunity
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="h-3 rounded-b-sm bg-[#1a1f2e]/60"></div>
-              </div>
+            <!-- Photo -->
+            <div class="relative h-56 shrink-0 overflow-hidden">
+              <img src="/images/venture-panel-1.jpg" alt="Founder doing customer research" class="absolute inset-0 h-full w-full object-cover object-center" />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(13,15,31,0.1) 0%, rgba(13,15,31,0.55) 100%);"></div>
             </div>
 
             <!-- Step badge + arrow row -->
@@ -340,18 +319,10 @@ onMounted(() => {
 
           <!-- Panel 2 -->
           <div class="flex flex-col bg-[#0d0f1f] lg:relative">
-            <!-- Illustration -->
-            <div class="relative flex h-52 shrink-0 items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, #0d1535 0%, #0c1020 100%);">
-              <div class="grid grid-cols-3 gap-2 px-6">
-                <div v-for="tag in ['MVP?', 'UX / UI?', 'TECH STACK?', '</>', 'AI?', 'BACKEND?', 'HIRING?', '?', '?']" :key="tag + Math.random()"
-                  class="flex items-center justify-center rounded-lg border px-2 py-2.5 text-[10px] font-bold"
-                  :class="{
-                    'text-yellow-300 border-yellow-500/30 bg-yellow-500/10': tag === 'MVP?' || tag === 'UX / UI?' || tag === 'HIRING?',
-                    'text-blue-300 border-blue-500/30 bg-blue-500/10': tag === 'TECH STACK?' || tag === '</>' || tag === 'AI?',
-                    'text-white/35 border-white/10 bg-white/3': tag === 'BACKEND?' || tag === '?',
-                  }"
-                >{{ tag }}</div>
-              </div>
+            <!-- Photo -->
+            <div class="relative h-56 shrink-0 overflow-hidden">
+              <img src="/images/venture-panel-2.jpg" alt="Founder overwhelmed by technical decisions" class="absolute inset-0 h-full w-full object-cover object-center" />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(13,15,31,0.1) 0%, rgba(13,15,31,0.55) 100%);"></div>
             </div>
 
             <!-- Step badge + arrow row -->
@@ -382,34 +353,10 @@ onMounted(() => {
 
           <!-- Panel 3 -->
           <div class="flex flex-col bg-[#0d0f1f]">
-            <!-- Illustration -->
-            <div class="relative flex h-52 shrink-0 items-end justify-center overflow-hidden px-4" style="background: linear-gradient(135deg, #0d1535 0%, #0b1530 60%, #0d0f1f 100%);">
-              <div class="relative z-10 mb-0 w-full max-w-[280px]">
-                <div class="rounded-t-xl border border-blue-500/20 bg-[#111827]/90 p-3 shadow-xl shadow-blue-900/30">
-                  <div class="mb-2 flex items-center gap-1.5">
-                    <div class="h-1 w-1 rounded-full bg-white/20"></div>
-                    <div class="h-1.5 w-16 rounded bg-white/10"></div>
-                    <div class="ml-auto">
-                      <div class="h-4 w-8 rounded bg-blue-500/30 text-[8px] text-blue-300 flex items-center justify-center">inv8</div>
-                    </div>
-                  </div>
-                  <div class="grid grid-cols-3 gap-1.5">
-                    <div class="col-span-2 h-10 rounded bg-white/5 flex items-center justify-center">
-                      <div class="w-8 h-6 rounded-sm bg-blue-500/20 border border-blue-500/20"></div>
-                    </div>
-                    <div class="space-y-1">
-                      <div class="h-4 rounded bg-blue-500/20"></div>
-                      <div class="h-4 rounded bg-white/5"></div>
-                    </div>
-                    <div class="col-span-3 flex gap-1">
-                      <div class="h-2 flex-1 rounded-full bg-blue-500/40"></div>
-                      <div class="h-2 w-4 rounded-full bg-white/10"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="h-3 rounded-b-sm bg-[#1a1f2e]/60"></div>
-              </div>
-              <div class="absolute bottom-4 right-5 text-[9px] font-bold text-blue-400/40 tracking-wider">inv8</div>
+            <!-- Photo -->
+            <div class="relative h-56 shrink-0 overflow-hidden">
+              <img src="/images/venture-panel-3.jpg" alt="inv8 team collaborating with founders" class="absolute inset-0 h-full w-full object-cover object-center" />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(13,15,31,0.1) 0%, rgba(13,15,31,0.55) 100%);"></div>
             </div>
 
             <!-- Step badge row (no arrow on last) -->
