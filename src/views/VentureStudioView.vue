@@ -164,23 +164,27 @@ const partnershipModels = computed(() => [
 const steps = computed(() => [
   {
     step: '01',
+    icon: 'fa-solid fa-file-pen',
     title: t('Apply', 'Mag-apply'),
-    description: t('Submit your application below. Tell us about the problem you are solving and where you are today.', 'Isumite ang iyong aplikasyon sa ibaba. Sabihin sa amin ang tungkol sa problemang iyong niresolba at kung nasaan ka ngayon.'),
+    description: t('Submit your application and tell us about the problem you are solving, your team, and where you are today.', 'Isumite ang iyong aplikasyon at sabihin sa amin ang tungkol sa problemang iyong niresolba, ang iyong koponan, at kung nasaan ka ngayon.'),
   },
   {
     step: '02',
-    title: t('Discovery Call', 'Discovery Call'),
-    description: t('If there is a fit, we schedule a short call to understand your vision, your team, and the opportunity.', 'Kung may pagkakaayon, mag-iskedyul kami ng maikling tawag upang maunawaan ang iyong bisyon, kopohan, at oportunidad.'),
+    icon: 'fa-solid fa-magnifying-glass-chart',
+    title: t('Evaluate', 'Suriin'),
+    description: t('We evaluate the opportunity, team, market potential, and strategic fit. Not every application moves forward.', 'Sinusuri namin ang oportunidad, koponan, potensyal ng merkado, at strategic fit. Hindi lahat ng aplikasyon ay sumusulong.'),
   },
   {
     step: '03',
-    title: t('Proposal', 'Proposal'),
-    description: t('We craft a tailored partnership proposal covering scope, model, and timeline — no one-size-fits-all templates.', 'Gumagawa kami ng naka-tailor na partnership proposal na sumasaklaw sa scope, modelo, at timeline — walang one-size-fits-all na template.'),
+    icon: 'fa-solid fa-handshake',
+    title: t('Partnership Design', 'Disenyo ng Partnership'),
+    description: t('If there is alignment, we design a partnership model that works for both sides — equity, revenue share, hybrid, or project-based.', 'Kung may pagkakaayon, nagdidisenyo kami ng modelo ng partnership na gumagana para sa magkabilang panig — equity, revenue share, hybrid, o project-based.'),
   },
   {
     step: '04',
-    title: t('Build Together', 'Magtayo Nang Magkasama'),
-    description: t('Once aligned, we get to work. Strategy, design, engineering, and launch — all under one roof.', 'Kapag naka-align na, magsisimula na kaming magtrabaho. Strategy, disenyo, engineering, at launch — lahat sa iisang lugar.'),
+    icon: 'fa-solid fa-rocket',
+    title: t('Build & Launch', 'Itayo at Ilunsad'),
+    description: t('Our team works alongside you to validate, design, build, and launch the venture. Together, we aim for impact.', 'Ang aming koponan ay nagtatrabaho kasabay mo upang i-validate, idisensyo, itayo, at ilunsad ang venture. Sama-sama, naglalayong lumikha ng epekto.'),
   },
 ])
 
@@ -411,29 +415,100 @@ onMounted(() => {
 
     <!-- ── How It Works ───────────────────────────────────────────────────── -->
     <section id="how-it-works" class="bg-[#080a18] py-24">
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div class="vs-animate mb-14 text-center">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="vs-animate mb-16 text-center">
           <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
-            <span class="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
+            <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
             {{ t('How It Works', 'Paano Gumagana') }}
           </span>
-          <h2 class="mt-4 text-4xl font-black text-white md:text-5xl">
-            {{ t('From application to launch', 'Mula sa aplikasyon hanggang sa paglulunsad') }}
+          <h2 class="mt-4 text-4xl font-black leading-tight text-white md:text-5xl">
+            {{ t('A Selective Path to', 'Isang Mapiling Landas tungo sa') }}<br />
+            {{ t('Building Together', 'Pagtatatayo Nang Magkasama') }}
           </h2>
+          <p class="mx-auto mt-4 max-w-2xl text-base text-white/50">
+            {{ t(
+              'Every venture begins with a conversation. We evaluate opportunities carefully and only move forward when there is strong alignment on vision, commitment, and potential.',
+              'Ang bawat venture ay nagsisimula sa isang pag-uusap. Maingat naming sinusuri ang mga oportunidad at sumusulong lamang kapag may malakas na pagkakaayon sa bisyon, commitment, at potensyal.'
+            ) }}
+          </p>
         </div>
 
-        <div class="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Timeline connector + step numbers (desktop) -->
+        <div class="vs-animate relative hidden lg:block mb-6">
+          <!-- Line -->
+          <div class="absolute top-1/2 left-[calc(12.5%-1px)] right-[calc(12.5%-1px)] h-[2px] -translate-y-1/2" style="background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%); box-shadow: 0 0 10px rgba(59,130,246,0.6);"></div>
+          <!-- Dots between -->
+          <div class="absolute top-1/2 left-[calc(12.5%-1px)] right-[calc(12.5%-1px)] -translate-y-1/2 flex justify-between px-[12.5%]">
+            <div v-for="n in 3" :key="n" class="h-2 w-2 rounded-full bg-blue-400 opacity-60" style="box-shadow: 0 0 6px rgba(59,130,246,0.8);"></div>
+          </div>
+          <!-- Step bubbles -->
+          <div class="grid grid-cols-4">
+            <div v-for="(step, i) in steps" :key="step.step" class="flex justify-center">
+              <div
+                class="relative z-10 flex h-14 w-14 items-center justify-center rounded-full border-2 border-blue-500 bg-[#080a18] text-sm font-black text-white shadow-lg"
+                style="box-shadow: 0 0 20px rgba(59,130,246,0.5);"
+              >
+                <span class="text-blue-300">{{ step.step }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step cards -->
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <div
             v-for="(step, i) in steps"
             :key="step.step"
-            class="vs-animate relative rounded-3xl border border-white/8 bg-white/4 p-7 transition hover:border-blue-500/30"
+            class="vs-animate relative rounded-2xl border border-white/8 bg-[#0d0f1f] p-7 transition hover:border-blue-500/40 hover:bg-[#0f1125]"
             :style="'animation-delay:' + i * 0.1 + 's'"
           >
-            <span class="mb-4 block text-4xl font-black text-blue-500/20">{{ step.step }}</span>
+            <!-- Mobile step number -->
+            <div class="mb-4 flex lg:hidden h-10 w-10 items-center justify-center rounded-full border border-blue-500/60 bg-blue-500/10 text-xs font-black text-blue-300">
+              {{ step.step }}
+            </div>
+
+            <!-- Icon -->
+            <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 text-blue-400">
+              <i :class="[step.icon, 'text-xl']" aria-hidden="true"></i>
+            </div>
+
             <h3 class="text-base font-bold text-white">{{ step.title }}</h3>
-            <p class="mt-2 text-xs leading-relaxed text-white/50">{{ step.description }}</p>
+            <!-- Underline accent -->
+            <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
+            <p class="mt-3 text-sm leading-relaxed text-white/50 text-center">{{ step.description }}</p>
+
+            <!-- Arrow connector (desktop, not last) -->
+            <div
+              v-if="i < steps.length - 1"
+              class="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 lg:flex h-6 w-6 items-center justify-center rounded-full border border-blue-500/40 bg-[#0d0f1f] text-blue-400 text-xs"
+            >
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
           </div>
         </div>
+
+        <!-- Bottom banner -->
+        <div class="vs-animate mt-8 flex flex-col items-center gap-6 rounded-2xl border border-white/8 bg-[#0d0f1f] px-8 py-6 sm:flex-row sm:justify-between">
+          <div class="flex items-center gap-5">
+            <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-blue-500/30 bg-blue-500/10 text-blue-400 text-2xl">
+              <i class="fa-solid fa-shield-check"></i>
+            </div>
+            <p class="text-base font-bold text-white">
+              {{ t('We build a few ventures exceptionally well.', 'Nagtatayo kami ng iilan ngunit napakahusay na venture.') }}
+            </p>
+          </div>
+          <div class="flex items-center gap-5">
+            <p class="max-w-xs text-sm text-white/45 sm:text-right">
+              {{ t('Our focus is on long-term partnerships and creating meaningful value for founders and the communities we serve.', 'Ang aming pokus ay sa pangmatagalang partnership at paglikha ng makabuluhang halaga para sa mga founder at komunidad na aming pinaglilingkuran.') }}
+            </p>
+            <div class="hidden sm:flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/8 text-blue-400 text-xl">
+              <i class="fa-solid fa-people-group"></i>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
