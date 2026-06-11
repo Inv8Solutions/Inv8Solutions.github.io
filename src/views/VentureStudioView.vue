@@ -258,6 +258,229 @@ onMounted(() => {
       </div>
     </section>
 
+    <!-- ── Execution Gap ─────────────────────────────────────────────────── -->
+    <section class="bg-[#080a18] py-24">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="vs-animate mb-14 text-center">
+          <div class="mb-4 flex items-center justify-center gap-3">
+            <div class="h-px w-10 bg-blue-500/50"></div>
+            <span class="text-xs font-bold uppercase tracking-widest text-blue-400">{{ t('The Execution Gap', 'Ang Execution Gap') }}</span>
+            <div class="h-px w-10 bg-blue-500/50"></div>
+          </div>
+          <h2 class="text-4xl font-black leading-tight text-white md:text-5xl lg:text-6xl">
+            {{ t('Most founders are experts', 'Karamihan sa mga founder ay') }}<br />
+            {{ t('in the problem.', 'eksperto sa problema.') }}<br />
+            <span class="text-blue-400">{{ t('Not in building products.', 'Hindi sa pagtatayo ng mga produkto.') }}</span>
+          </h2>
+          <p class="mx-auto mt-5 max-w-xl text-base text-white/50">
+            {{ t('You understand your customers. You understand the opportunity.', 'Naiintindihan mo ang iyong mga customer. Naiintindihan mo ang oportunidad.') }}<br />
+            {{ t('But turning an idea into a scalable product requires a completely different set of skills.', 'Ngunit ang pag-convert ng isang ideya sa isang scalable na produkto ay nangangailangan ng ganap na ibang hanay ng mga kasanayan.') }}
+          </p>
+        </div>
+
+        <!-- 3 Panels -->
+        <div class="vs-animate grid gap-0 overflow-hidden rounded-3xl border border-white/8 lg:grid-cols-3">
+
+          <!-- Panel 1 -->
+          <div class="relative border-b border-white/8 lg:border-b-0 lg:border-r">
+            <!-- Illustration area -->
+            <div class="relative flex h-52 items-end justify-center overflow-hidden bg-[#0b0d1e] px-6 pb-0">
+              <div class="absolute inset-0" style="background: linear-gradient(135deg, #0d1535 0%, #0b1530 50%, #0d0f1f 100%);"></div>
+              <!-- Whiteboard illustration -->
+              <div class="relative z-10 mb-[-1px] w-full max-w-[240px]">
+                <div class="rounded-t-lg border border-white/15 bg-[#111827]/80 p-4 shadow-xl">
+                  <div class="mb-2 flex items-center gap-2">
+                    <div class="h-1.5 w-1.5 rounded-full bg-red-400/70"></div>
+                    <div class="h-1.5 w-1.5 rounded-full bg-yellow-400/70"></div>
+                    <div class="h-1.5 w-1.5 rounded-full bg-green-400/70"></div>
+                  </div>
+                  <div class="space-y-2">
+                    <div class="flex items-center gap-2 rounded bg-white/5 px-2 py-1.5 text-[10px] font-bold text-white/70">
+                      <i class="fa-solid fa-diagram-project text-blue-400 text-xs"></i>
+                      PROBLEM
+                    </div>
+                    <div class="grid grid-cols-2 gap-1.5">
+                      <div class="rounded bg-yellow-400/20 px-2 py-1 text-[9px] text-yellow-200/80">IDEA</div>
+                      <div class="rounded bg-blue-400/20 px-2 py-1 text-[9px] text-blue-200/80">IDEA</div>
+                      <div class="col-span-2 flex items-center gap-1 rounded bg-white/5 px-2 py-1 text-[9px] text-white/50">
+                        <i class="fa-solid fa-lightbulb text-yellow-400 text-xs"></i> Opportunity
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Desk surface -->
+                <div class="h-3 rounded-b-sm bg-[#1a1f2e]/60"></div>
+              </div>
+              <!-- Person silhouette area glow -->
+              <div class="absolute bottom-0 left-4 h-32 w-10 rounded-t-full bg-blue-900/20"></div>
+            </div>
+
+            <!-- Step number connector -->
+            <div class="absolute bottom-[208px] left-1/2 -translate-x-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-blue-500 bg-[#080a18] text-xs font-black text-blue-300 shadow-lg" style="box-shadow: 0 0 16px rgba(59,130,246,0.5);">01</div>
+            <!-- Arrow to next (desktop) -->
+            <div class="absolute right-0 top-[calc(208px/2)] translate-x-1/2 z-30 hidden lg:flex h-7 w-7 items-center justify-center rounded-full border border-blue-500/50 bg-[#080a18] text-blue-400 text-xs" style="box-shadow: 0 0 10px rgba(59,130,246,0.3);">
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
+            <!-- Content -->
+            <div class="bg-[#0d0f1f] p-7">
+              <h3 class="text-lg font-black text-white">{{ t('You know the problem.', 'Alam mo ang problema.') }}</h3>
+              <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
+              <ul class="mt-5 space-y-3">
+                <li v-for="point in [
+                  t('You\'ve identified a real problem.', 'Natukoy mo na ang tunay na problema.'),
+                  t('You\'ve spoken with customers.', 'Nakausap mo na ang mga customer.'),
+                  t('You know there is an opportunity worth pursuing.', 'Alam mong may oportunidad na sulit na harapin.'),
+                ]" :key="point" class="flex items-start gap-3 text-sm text-white/60">
+                  <i class="fa-solid fa-circle-check mt-0.5 shrink-0 text-blue-400"></i>
+                  {{ point }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Panel 2 -->
+          <div class="relative border-b border-white/8 lg:border-b-0 lg:border-r">
+            <!-- Illustration area -->
+            <div class="relative flex h-52 items-center justify-center overflow-hidden bg-[#0b0d1e]">
+              <div class="absolute inset-0" style="background: linear-gradient(135deg, #0d1535 0%, #0c1020 100%);"></div>
+              <div class="relative z-10 grid grid-cols-3 gap-2 px-6">
+                <div v-for="tag in ['MVP?', 'UX / UI?', 'TECH STACK?', '</>',  'AI?', 'BACKEND?', 'HIRING?', '?', '?']" :key="tag"
+                  class="flex items-center justify-center rounded-lg border border-white/10 bg-[#111827]/70 px-2 py-2 text-[10px] font-bold"
+                  :class="{
+                    'text-yellow-300 border-yellow-500/30 bg-yellow-500/10': tag === 'MVP?' || tag === 'UX / UI?' || tag === 'HIRING?',
+                    'text-blue-300 border-blue-500/30 bg-blue-500/10': tag === 'TECH STACK?' || tag === '</>' || tag === 'AI?',
+                    'text-white/40 border-white/10': tag === 'BACKEND?' || tag === '?' || tag === '?',
+                  }"
+                >{{ tag }}</div>
+              </div>
+            </div>
+
+            <!-- Step number -->
+            <div class="absolute bottom-[208px] left-1/2 -translate-x-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-blue-500 bg-[#080a18] text-xs font-black text-blue-300 shadow-lg" style="box-shadow: 0 0 16px rgba(59,130,246,0.5);">02</div>
+            <!-- Arrow to next (desktop) -->
+            <div class="absolute right-0 top-[calc(208px/2)] translate-x-1/2 z-30 hidden lg:flex h-7 w-7 items-center justify-center rounded-full border border-blue-500/50 bg-[#080a18] text-blue-400 text-xs" style="box-shadow: 0 0 10px rgba(59,130,246,0.3);">
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
+            <!-- Content -->
+            <div class="bg-[#0d0f1f] p-7">
+              <h3 class="text-lg font-black text-white">{{ t('Then the technical questions begin.', 'Pagkatapos ay nagsisimula ang mga teknikal na tanong.') }}</h3>
+              <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
+              <ul class="mt-5 space-y-3">
+                <li v-for="q in [
+                  t('What should be built first?', 'Ano ang dapat itayo muna?'),
+                  t('Who should build it?', 'Sino ang dapat magtayo nito?'),
+                  t('How do you validate before spending too much?', 'Paano mo iva-validate bago gumastos nang masyadong malaki?'),
+                  t('How do you manage developers when you\'re not technical?', 'Paano mo papamahalaan ang mga developer kung hindi ka teknikal?'),
+                ]" :key="q" class="flex items-start gap-3 text-sm text-white/60">
+                  <i class="fa-regular fa-circle-question mt-0.5 shrink-0 text-white/30"></i>
+                  {{ q }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Panel 3 -->
+          <div class="relative">
+            <!-- Illustration area -->
+            <div class="relative flex h-52 items-end justify-center overflow-hidden bg-[#0a0f28]">
+              <div class="absolute inset-0" style="background: linear-gradient(135deg, #0d1535 0%, #0b1530 60%, #0d0f1f 100%);"></div>
+              <!-- Dashboard mockup -->
+              <div class="relative z-10 mb-[-1px] w-full max-w-[280px] px-2">
+                <div class="rounded-t-xl border border-blue-500/20 bg-[#111827]/90 p-3 shadow-xl shadow-blue-900/30">
+                  <div class="mb-2 flex items-center gap-1.5">
+                    <div class="h-1 w-1 rounded-full bg-white/20"></div>
+                    <div class="h-1.5 w-16 rounded bg-white/10"></div>
+                    <div class="ml-auto flex gap-1">
+                      <div class="h-4 w-8 rounded bg-blue-500/30 text-[8px] text-blue-300 flex items-center justify-center">inv8</div>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-1.5">
+                    <div class="col-span-2 h-10 rounded bg-white/5 flex items-center justify-center">
+                      <div class="w-8 h-6 rounded-sm bg-blue-500/20 border border-blue-500/20"></div>
+                    </div>
+                    <div class="space-y-1">
+                      <div class="h-4 rounded bg-blue-500/20"></div>
+                      <div class="h-4 rounded bg-white/5"></div>
+                    </div>
+                    <div class="col-span-3 flex gap-1">
+                      <div class="h-2 flex-1 rounded-full bg-blue-500/40"></div>
+                      <div class="h-2 w-4 rounded-full bg-white/10"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="h-3 rounded-b-sm bg-[#1a1f2e]/60"></div>
+              </div>
+              <div class="absolute bottom-3 right-4 text-[9px] font-bold text-blue-400/50 tracking-wider">inv8</div>
+            </div>
+
+            <!-- Step number -->
+            <div class="absolute bottom-[208px] left-1/2 -translate-x-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-blue-500 bg-[#080a18] text-xs font-black text-blue-300 shadow-lg" style="box-shadow: 0 0 16px rgba(59,130,246,0.5);">03</div>
+
+            <!-- Content -->
+            <div class="bg-[#0d0f1f] p-7">
+              <h3 class="text-lg font-black text-white">{{ t("That's where we come in.", 'Doon kami pumapasok.') }}</h3>
+              <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
+              <p class="mt-5 text-sm leading-relaxed text-white/60">
+                {{ t('inv8 Venture Studio gives founders access to product strategy, UX design, engineering, and execution support under one roof.', 'Ang inv8 Venture Studio ay nagbibigay sa mga founder ng access sa product strategy, UX design, engineering, at execution support sa iisang lugar.') }}
+              </p>
+              <p class="mt-4 text-sm font-bold text-white">
+                {{ t('So you can focus on solving the problem while we help build the product.', 'Para makapag-focus ka sa paglulusog ng problema habang tinutulungan ka naming itayo ang produkto.') }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom capability strip -->
+        <div class="vs-animate mt-6 overflow-hidden rounded-2xl border border-white/8 bg-[#0d0f1f]">
+          <div class="flex flex-col gap-6 p-6 lg:flex-row lg:items-center lg:gap-8">
+            <!-- Left: headline -->
+            <div class="flex items-center gap-4 lg:w-64 lg:shrink-0">
+              <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-blue-500/30 bg-blue-600/20 text-blue-400 text-xl">
+                <i class="fa-solid fa-rocket"></i>
+              </div>
+              <div>
+                <p class="text-sm font-black text-white leading-snug">{{ t('Building a startup requires more than an idea.', 'Ang pagtatayo ng startup ay nangangailangan ng higit pa sa isang ideya.') }}</p>
+                <p class="mt-0.5 text-xs text-white/40">{{ t('Without hiring an entire product team.', 'Nang hindi nag-hire ng buong product team.') }}</p>
+              </div>
+            </div>
+
+            <div class="hidden h-12 w-px bg-white/8 lg:block"></div>
+
+            <!-- Right: 4 capabilities -->
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:flex-1">
+              <div v-for="cap in [
+                { icon: 'fa-solid fa-bullseye', title: t('Product Strategy', 'Product Strategy'), desc: t('Define the right problem, opportunity, and solution.', 'Tukuyin ang tamang problema, oportunidad, at solusyon.') },
+                { icon: 'fa-solid fa-pen-nib', title: t('UX / UI Design', 'UX / UI Design'), desc: t('Design experiences that users love and trust.', 'Magdisenyo ng mga karanasang minamahal at pinagkakatiwalaan ng mga gumagamit.') },
+                { icon: 'fa-solid fa-code', title: t('Engineering', 'Engineering'), desc: t('Build scalable, reliable, and modern products.', 'Magtayo ng scalable, maaasahan, at modernong mga produkto.') },
+                { icon: 'fa-solid fa-users-gear', title: t('Technical Leadership', 'Technical Leadership'), desc: t('Guide decisions, architecture, and execution with clarity.', 'Gabayan ang mga desisyon, arkitektura, at execution nang may kalinawan.') },
+              ]" :key="cap.title" class="flex gap-3 rounded-xl border border-white/6 bg-white/3 p-3">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600/20 text-blue-400 text-sm">
+                  <i :class="cap.icon"></i>
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-white">{{ cap.title }}</p>
+                  <p class="mt-0.5 text-[11px] leading-relaxed text-white/40">{{ cap.desc }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer tagline -->
+          <div class="border-t border-white/6 px-6 py-3 text-center">
+            <p class="text-xs text-white/40">
+              <i class="fa-regular fa-star text-blue-400 mr-1.5"></i>
+              {{ t('We become your product team — so you can build with confidence.', 'Nagiging product team mo kami — para makapagtayo ka nang may kumpiyansa.') }}
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- ── What We Bring ──────────────────────────────────────────────────── -->
     <section class="bg-[#080a18] py-24">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
