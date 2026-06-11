@@ -281,15 +281,13 @@ onMounted(() => {
         </div>
 
         <!-- 3 Panels -->
-        <div class="vs-animate grid gap-0 overflow-hidden rounded-3xl border border-white/8 lg:grid-cols-3">
+        <div class="vs-animate grid gap-px overflow-hidden rounded-3xl border border-white/8 bg-white/8 lg:grid-cols-3">
 
           <!-- Panel 1 -->
-          <div class="relative border-b border-white/8 lg:border-b-0 lg:border-r">
-            <!-- Illustration area -->
-            <div class="relative flex h-52 items-end justify-center overflow-hidden bg-[#0b0d1e] px-6 pb-0">
-              <div class="absolute inset-0" style="background: linear-gradient(135deg, #0d1535 0%, #0b1530 50%, #0d0f1f 100%);"></div>
-              <!-- Whiteboard illustration -->
-              <div class="relative z-10 mb-[-1px] w-full max-w-[240px]">
+          <div class="flex flex-col bg-[#0d0f1f] lg:relative">
+            <!-- Illustration -->
+            <div class="relative flex h-52 shrink-0 items-end justify-center overflow-hidden px-6" style="background: linear-gradient(135deg, #0d1535 0%, #0b1530 50%, #0d0f1f 100%);">
+              <div class="relative z-10 mb-0 w-full max-w-[240px]">
                 <div class="rounded-t-lg border border-white/15 bg-[#111827]/80 p-4 shadow-xl">
                   <div class="mb-2 flex items-center gap-2">
                     <div class="h-1.5 w-1.5 rounded-full bg-red-400/70"></div>
@@ -310,22 +308,21 @@ onMounted(() => {
                     </div>
                   </div>
                 </div>
-                <!-- Desk surface -->
                 <div class="h-3 rounded-b-sm bg-[#1a1f2e]/60"></div>
               </div>
-              <!-- Person silhouette area glow -->
-              <div class="absolute bottom-0 left-4 h-32 w-10 rounded-t-full bg-blue-900/20"></div>
             </div>
 
-            <!-- Step number connector -->
-            <div class="absolute bottom-[208px] left-1/2 -translate-x-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-blue-500 bg-[#080a18] text-xs font-black text-blue-300 shadow-lg" style="box-shadow: 0 0 16px rgba(59,130,246,0.5);">01</div>
-            <!-- Arrow to next (desktop) -->
-            <div class="absolute right-0 top-[calc(208px/2)] translate-x-1/2 z-30 hidden lg:flex h-7 w-7 items-center justify-center rounded-full border border-blue-500/50 bg-[#080a18] text-blue-400 text-xs" style="box-shadow: 0 0 10px rgba(59,130,246,0.3);">
-              <i class="fa-solid fa-chevron-right"></i>
+            <!-- Step badge + arrow row -->
+            <div class="relative flex h-12 shrink-0 items-center justify-center border-t border-white/6 bg-[#0b0d1e]">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-blue-500 bg-[#0b0d1e] text-xs font-black text-blue-300" style="box-shadow: 0 0 14px rgba(59,130,246,0.45);">01</div>
+              <!-- Arrow (desktop only, right edge) -->
+              <div class="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:flex h-7 w-7 items-center justify-center rounded-full border border-blue-500/40 bg-[#0b0d1e] text-blue-400 text-xs" style="box-shadow: 0 0 8px rgba(59,130,246,0.3);">
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
             </div>
 
             <!-- Content -->
-            <div class="bg-[#0d0f1f] p-7">
+            <div class="flex-1 p-7">
               <h3 class="text-lg font-black text-white">{{ t('You know the problem.', 'Alam mo ang problema.') }}</h3>
               <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
               <ul class="mt-5 space-y-3">
@@ -342,31 +339,31 @@ onMounted(() => {
           </div>
 
           <!-- Panel 2 -->
-          <div class="relative border-b border-white/8 lg:border-b-0 lg:border-r">
-            <!-- Illustration area -->
-            <div class="relative flex h-52 items-center justify-center overflow-hidden bg-[#0b0d1e]">
-              <div class="absolute inset-0" style="background: linear-gradient(135deg, #0d1535 0%, #0c1020 100%);"></div>
-              <div class="relative z-10 grid grid-cols-3 gap-2 px-6">
-                <div v-for="tag in ['MVP?', 'UX / UI?', 'TECH STACK?', '</>',  'AI?', 'BACKEND?', 'HIRING?', '?', '?']" :key="tag"
-                  class="flex items-center justify-center rounded-lg border border-white/10 bg-[#111827]/70 px-2 py-2 text-[10px] font-bold"
+          <div class="flex flex-col bg-[#0d0f1f] lg:relative">
+            <!-- Illustration -->
+            <div class="relative flex h-52 shrink-0 items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, #0d1535 0%, #0c1020 100%);">
+              <div class="grid grid-cols-3 gap-2 px-6">
+                <div v-for="tag in ['MVP?', 'UX / UI?', 'TECH STACK?', '</>', 'AI?', 'BACKEND?', 'HIRING?', '?', '?']" :key="tag + Math.random()"
+                  class="flex items-center justify-center rounded-lg border px-2 py-2.5 text-[10px] font-bold"
                   :class="{
                     'text-yellow-300 border-yellow-500/30 bg-yellow-500/10': tag === 'MVP?' || tag === 'UX / UI?' || tag === 'HIRING?',
                     'text-blue-300 border-blue-500/30 bg-blue-500/10': tag === 'TECH STACK?' || tag === '</>' || tag === 'AI?',
-                    'text-white/40 border-white/10': tag === 'BACKEND?' || tag === '?' || tag === '?',
+                    'text-white/35 border-white/10 bg-white/3': tag === 'BACKEND?' || tag === '?',
                   }"
                 >{{ tag }}</div>
               </div>
             </div>
 
-            <!-- Step number -->
-            <div class="absolute bottom-[208px] left-1/2 -translate-x-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-blue-500 bg-[#080a18] text-xs font-black text-blue-300 shadow-lg" style="box-shadow: 0 0 16px rgba(59,130,246,0.5);">02</div>
-            <!-- Arrow to next (desktop) -->
-            <div class="absolute right-0 top-[calc(208px/2)] translate-x-1/2 z-30 hidden lg:flex h-7 w-7 items-center justify-center rounded-full border border-blue-500/50 bg-[#080a18] text-blue-400 text-xs" style="box-shadow: 0 0 10px rgba(59,130,246,0.3);">
-              <i class="fa-solid fa-chevron-right"></i>
+            <!-- Step badge + arrow row -->
+            <div class="relative flex h-12 shrink-0 items-center justify-center border-t border-white/6 bg-[#0b0d1e]">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-blue-500 bg-[#0b0d1e] text-xs font-black text-blue-300" style="box-shadow: 0 0 14px rgba(59,130,246,0.45);">02</div>
+              <div class="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:flex h-7 w-7 items-center justify-center rounded-full border border-blue-500/40 bg-[#0b0d1e] text-blue-400 text-xs" style="box-shadow: 0 0 8px rgba(59,130,246,0.3);">
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
             </div>
 
             <!-- Content -->
-            <div class="bg-[#0d0f1f] p-7">
+            <div class="flex-1 p-7">
               <h3 class="text-lg font-black text-white">{{ t('Then the technical questions begin.', 'Pagkatapos ay nagsisimula ang mga teknikal na tanong.') }}</h3>
               <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
               <ul class="mt-5 space-y-3">
@@ -384,17 +381,15 @@ onMounted(() => {
           </div>
 
           <!-- Panel 3 -->
-          <div class="relative">
-            <!-- Illustration area -->
-            <div class="relative flex h-52 items-end justify-center overflow-hidden bg-[#0a0f28]">
-              <div class="absolute inset-0" style="background: linear-gradient(135deg, #0d1535 0%, #0b1530 60%, #0d0f1f 100%);"></div>
-              <!-- Dashboard mockup -->
-              <div class="relative z-10 mb-[-1px] w-full max-w-[280px] px-2">
+          <div class="flex flex-col bg-[#0d0f1f]">
+            <!-- Illustration -->
+            <div class="relative flex h-52 shrink-0 items-end justify-center overflow-hidden px-4" style="background: linear-gradient(135deg, #0d1535 0%, #0b1530 60%, #0d0f1f 100%);">
+              <div class="relative z-10 mb-0 w-full max-w-[280px]">
                 <div class="rounded-t-xl border border-blue-500/20 bg-[#111827]/90 p-3 shadow-xl shadow-blue-900/30">
                   <div class="mb-2 flex items-center gap-1.5">
                     <div class="h-1 w-1 rounded-full bg-white/20"></div>
                     <div class="h-1.5 w-16 rounded bg-white/10"></div>
-                    <div class="ml-auto flex gap-1">
+                    <div class="ml-auto">
                       <div class="h-4 w-8 rounded bg-blue-500/30 text-[8px] text-blue-300 flex items-center justify-center">inv8</div>
                     </div>
                   </div>
@@ -414,14 +409,16 @@ onMounted(() => {
                 </div>
                 <div class="h-3 rounded-b-sm bg-[#1a1f2e]/60"></div>
               </div>
-              <div class="absolute bottom-3 right-4 text-[9px] font-bold text-blue-400/50 tracking-wider">inv8</div>
+              <div class="absolute bottom-4 right-5 text-[9px] font-bold text-blue-400/40 tracking-wider">inv8</div>
             </div>
 
-            <!-- Step number -->
-            <div class="absolute bottom-[208px] left-1/2 -translate-x-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-blue-500 bg-[#080a18] text-xs font-black text-blue-300 shadow-lg" style="box-shadow: 0 0 16px rgba(59,130,246,0.5);">03</div>
+            <!-- Step badge row (no arrow on last) -->
+            <div class="flex h-12 shrink-0 items-center justify-center border-t border-white/6 bg-[#0b0d1e]">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-blue-500 bg-[#0b0d1e] text-xs font-black text-blue-300" style="box-shadow: 0 0 14px rgba(59,130,246,0.45);">03</div>
+            </div>
 
             <!-- Content -->
-            <div class="bg-[#0d0f1f] p-7">
+            <div class="flex-1 p-7">
               <h3 class="text-lg font-black text-white">{{ t("That's where we come in.", 'Doon kami pumapasok.') }}</h3>
               <div class="mt-2 h-0.5 w-8 rounded-full bg-blue-600"></div>
               <p class="mt-5 text-sm leading-relaxed text-white/60">
