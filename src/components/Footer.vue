@@ -66,6 +66,7 @@ const quickLinks = [
   { name: 'Blog',            nameFil: 'Blog',               path: '/blog' },
   { name: 'Contact Us',      nameFil: 'Makipag-ugnayan',    path: '/contactus' },
   { name: 'Referral Program',nameFil: 'Programang Referral',path: '/referrals' },
+  { name: 'Venture Studio',  nameFil: 'Venture Studio',      path: '/venture-studio' },
 ]
 
 const services = [

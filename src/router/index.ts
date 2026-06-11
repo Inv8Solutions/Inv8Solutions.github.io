@@ -12,6 +12,7 @@ import ProjectDetails from '@/components/ProjectDetails.vue'
 import { BaguioDentalClinics } from '@/components/BaguioDentalClinics'
 import ReferralView from '@/views/ReferralView.vue'
 import BIDView from '@/views/BIDView.vue'
+import VentureStudioView from '@/views/VentureStudioView.vue'
 
 const SITE_NAME = 'inv8 Studio'
 
@@ -89,6 +90,12 @@ const routes = [
     name: 'BID',
     component: BIDView,
     meta: { title: `BID Program — Free Business Innovation Discovery | ${SITE_NAME}` },
+  },
+  {
+    path: '/venture-studio',
+    name: 'VentureStudio',
+    component: VentureStudioView,
+    meta: { title: `Venture Studio — Build Startups With Founders | ${SITE_NAME}` },
   },
   {
     path: '/BaguioDental/Clinics',
