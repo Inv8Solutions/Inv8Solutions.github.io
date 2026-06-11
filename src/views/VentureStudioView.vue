@@ -557,51 +557,229 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- ── Why inv8 Venture Studio ────────────────────────────────────────── -->
+    <!-- ── Why inv8 ────────────────────────────────────────────────────────── -->
     <section class="relative overflow-hidden bg-[#03040f] py-24">
-      <div class="pointer-events-none absolute inset-0 opacity-30" style="background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(59,130,246,0.12) 0%, transparent 70%);" aria-hidden="true"></div>
-      <div class="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
-        <div class="vs-animate mb-10">
-          <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
-            <span class="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
+      <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(59,130,246,0.07) 0%, transparent 70%);" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="vs-animate mb-14 text-center">
+          <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-5 py-2 text-xs font-bold uppercase tracking-widest text-blue-400">
+            <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400"></span>
             {{ t('Why inv8', 'Bakit inv8') }}
-          </span>
-        </div>
-
-        <h2 class="vs-animate text-4xl font-black leading-tight text-white md:text-5xl">
-          {{ t('Most founders face a difficult choice.', 'Karamihan sa mga founder ay nahaharap sa isang mahirap na pagpili.') }}
-        </h2>
-
-        <div class="vs-animate animate-delay-100 mt-10 grid gap-4 sm:grid-cols-3">
-          <div class="rounded-2xl border border-red-500/20 bg-red-500/5 p-5 text-sm text-white/55">
-            <i class="fa-solid fa-building-columns mb-3 text-2xl text-red-400/50"></i>
-            <p class="font-semibold text-white/70">{{ t('Hire an expensive agency', 'Mag-hire ng mahal na ahensya') }}</p>
-            <p class="mt-1 text-xs leading-relaxed">{{ t('High cost, low alignment. You pay regardless of outcome.', 'Mataas na gastos, mababang pagkakaayon. Nagbabayad ka anuman ang resulta.') }}</p>
           </div>
-          <div class="rounded-2xl border border-yellow-500/20 bg-yellow-500/5 p-5 text-sm text-white/55">
-            <i class="fa-solid fa-user-group mb-3 text-2xl text-yellow-400/50"></i>
-            <p class="font-semibold text-white/70">{{ t('Find a technical co-founder', 'Humanap ng technical co-founder') }}</p>
-            <p class="mt-1 text-xs leading-relaxed">{{ t('Hard to find, harder to align. Takes months with no guarantee.', 'Mahirap hanapin, mas mahirap i-align. Tumatagal ng mga buwan nang walang garantiya.') }}</p>
-          </div>
-          <div class="rounded-2xl border border-orange-500/20 bg-orange-500/5 p-5 text-sm text-white/55">
-            <i class="fa-solid fa-person-digging mb-3 text-2xl text-orange-400/50"></i>
-            <p class="font-semibold text-white/70">{{ t('Build alone for months', 'Magtayo nang mag-isa sa loob ng mga buwan') }}</p>
-            <p class="mt-1 text-xs leading-relaxed">{{ t('Slow, isolating, and easy to build the wrong thing.', 'Mabagal, nag-iisa, at madaling magtayo ng maling bagay.') }}</p>
-          </div>
-        </div>
-
-        <div class="vs-animate animate-delay-200 mt-10 rounded-3xl border border-blue-500/25 bg-blue-500/8 p-10">
-          <div class="flex h-14 w-14 mx-auto mb-6 items-center justify-center rounded-2xl bg-blue-600 text-white">
-            <i class="fa-solid fa-bolt text-xl"></i>
-          </div>
-          <h3 class="text-2xl font-black text-white">{{ t('inv8 provides an alternative.', 'Nagbibigay ang inv8 ng alternatibo.') }}</h3>
-          <p class="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/55">
-            {{ t(
-              'You gain access to a team that combines product thinking, design, engineering, and execution under one roof — with incentives aligned to your success from day one.',
-              'Makakakuha ka ng access sa isang team na pinagsasama ang product thinking, disenyo, engineering, at execution sa iisang lugar — na may mga insentibong naka-align sa iyong tagumpay mula sa simula.'
-            ) }}
+          <h2 class="text-6xl font-black leading-none tracking-tight text-white md:text-7xl">
+            {{ t('Why inv', 'Bakit inv') }}<span class="text-blue-400">8</span>?
+          </h2>
+          <p class="mt-4 text-lg font-semibold text-white/70">{{ t('Built for founders. Designed for flexibility.', 'Itinayo para sa mga founder. Dinisenyo para sa flexibility.') }}</p>
+          <p class="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-white/45">
+            {{ t('We help founders move from idea to market through product strategy, design, and development while keeping partnerships practical, founder-friendly, and aligned for long-term success.', 'Tinutulungan namin ang mga founder na lumipat mula sa ideya patungo sa merkado sa pamamagitan ng product strategy, disenyo, at development habang pinapanatiling praktikal, founder-friendly, at naka-align ang mga partnership para sa pangmatagalang tagumpay.') }}
           </p>
         </div>
+
+        <!-- 4 Cards -->
+        <div class="vs-animate grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+          <!-- Card 1: Flexible Partnership Models -->
+          <div class="flex flex-col overflow-hidden rounded-2xl border border-white/8 bg-[#0a0c1a] transition hover:border-blue-500/30">
+            <!-- Illustration -->
+            <div class="relative flex h-52 items-center justify-center overflow-hidden" style="background: radial-gradient(ellipse 90% 70% at 50% 60%, rgba(30,64,175,0.25) 0%, rgba(10,12,26,0) 70%), linear-gradient(160deg, #0c1138 0%, #07091a 100%);">
+              <div class="relative flex items-center justify-center">
+                <!-- Puzzle pieces -->
+                <div class="relative">
+                  <div class="absolute -top-8 left-1/2 -translate-x-1/2 flex gap-1">
+                    <div class="h-8 w-8 rounded-lg border border-blue-400/40 bg-blue-600/30" style="clip-path: polygon(0 0, 70% 0, 70% 40%, 85% 40%, 85% 60%, 70% 60%, 70% 100%, 0 100%);">
+                      <div class="h-full w-full" style="background: linear-gradient(135deg, rgba(96,165,250,0.4), rgba(37,99,235,0.2));"></div>
+                    </div>
+                    <div class="h-8 w-8 rounded-lg border border-blue-300/30 bg-blue-500/20" style="clip-path: polygon(30% 0, 100% 0, 100% 100%, 30% 100%, 30% 60%, 15% 60%, 15% 40%, 30% 40%);">
+                      <div class="h-full w-full" style="background: linear-gradient(135deg, rgba(147,197,253,0.3), rgba(59,130,246,0.15));"></div>
+                    </div>
+                  </div>
+                  <!-- Handshake icon in glowing circle -->
+                  <div class="flex h-20 w-20 items-center justify-center rounded-full border border-blue-400/25 bg-blue-900/30" style="box-shadow: 0 0 30px rgba(59,130,246,0.3), inset 0 0 20px rgba(59,130,246,0.1);">
+                    <i class="fa-solid fa-handshake text-3xl text-blue-300" style="filter: drop-shadow(0 0 8px rgba(147,197,253,0.6));"></i>
+                  </div>
+                  <!-- Orbit ring -->
+                  <div class="absolute inset-[-10px] rounded-full border border-dashed border-blue-500/20 animate-spin" style="animation-duration: 12s;"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Content -->
+            <div class="flex flex-1 flex-col p-5">
+              <div class="mb-3 flex items-center gap-3">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white text-sm shadow-lg shadow-blue-900/40">
+                  <i class="fa-solid fa-handshake"></i>
+                </div>
+                <h3 class="text-sm font-black leading-tight text-white">{{ t('1. Flexible Partnership Models', '1. Flexible na Mga Modelo ng Partnership') }}</h3>
+              </div>
+              <div class="mb-3 h-0.5 w-8 rounded-full bg-blue-600"></div>
+              <p class="flex-1 text-xs leading-relaxed text-white/50">{{ t('Every startup is different. Whether it\'s project-based, revenue-sharing, hybrid, or selective equity partnerships, we structure engagements around what makes sense for the venture and the founder.', 'Ang bawat startup ay natatangi. Iniistraktura namin ang mga pakikipagtulungan sa paligid ng kung ano ang makatuwiran para sa venture at sa founder.') }}</p>
+              <p class="mt-3 text-xs font-semibold text-blue-400">{{ t('No one-size-fits-all approach.', 'Walang one-size-fits-all na diskarte.') }}</p>
+            </div>
+          </div>
+
+          <!-- Card 2: Founder-Friendly Equity -->
+          <div class="flex flex-col overflow-hidden rounded-2xl border border-white/8 bg-[#0a0c1a] transition hover:border-blue-500/30">
+            <div class="relative flex h-52 items-center justify-center overflow-hidden" style="background: radial-gradient(ellipse 90% 70% at 50% 60%, rgba(30,64,175,0.2) 0%, rgba(10,12,26,0) 70%), linear-gradient(160deg, #0c1138 0%, #07091a 100%);">
+              <div class="relative flex items-center gap-4">
+                <!-- Document card -->
+                <div class="rounded-xl border border-white/10 bg-[#0f1545]/90 p-3 shadow-xl shadow-blue-900/30 w-28">
+                  <div class="mb-2 flex items-center gap-2">
+                    <div class="flex h-5 w-5 items-center justify-center rounded-full bg-white/10">
+                      <i class="fa-solid fa-user text-[8px] text-white/50"></i>
+                    </div>
+                    <div class="text-[9px] font-bold uppercase tracking-wider text-white/60 leading-tight">FOUNDER<br/>OWNERSHIP</div>
+                  </div>
+                  <div class="space-y-1">
+                    <div class="h-1 rounded-full bg-white/15 w-full"></div>
+                    <div class="h-1 rounded-full bg-white/10 w-3/4"></div>
+                    <div class="h-1 rounded-full bg-white/10 w-5/6"></div>
+                  </div>
+                  <div class="mt-2 h-px bg-white/10"></div>
+                  <div class="mt-1.5 text-[8px] text-white/30 italic">~ ~ ~</div>
+                </div>
+                <!-- Pie chart -->
+                <div class="relative flex h-14 w-14 items-center justify-center">
+                  <svg viewBox="0 0 36 36" class="h-14 w-14 -rotate-90">
+                    <circle cx="18" cy="18" r="14" fill="transparent" stroke="#1e3a8a" stroke-width="5"/>
+                    <circle cx="18" cy="18" r="14" fill="transparent" stroke="#3b82f6" stroke-width="5" stroke-dasharray="60 40" stroke-linecap="round" style="filter: drop-shadow(0 0 4px rgba(59,130,246,0.6));"/>
+                  </svg>
+                  <span class="absolute text-[9px] font-black text-blue-300">60%</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-1 flex-col p-5">
+              <div class="mb-3 flex items-center gap-3">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white text-sm shadow-lg shadow-blue-900/40">
+                  <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <h3 class="text-sm font-black leading-tight text-white">{{ t('2. Founder-Friendly Equity', '2. Founder-Friendly na Equity') }}</h3>
+              </div>
+              <div class="mb-3 h-0.5 w-8 rounded-full bg-blue-600"></div>
+              <p class="flex-1 text-xs leading-relaxed text-white/50">{{ t('Many venture studios take significant ownership from day one. We believe founders should retain meaningful ownership of what they build. When equity is involved, our goal is alignment, not control.', 'Maraming venture studio ang kumukuha ng malaking ownership mula sa simula. Naniniwala kami na dapat panatilihin ng mga founder ang makabuluhang ownership ng kanilang naitayo.') }}</p>
+            </div>
+          </div>
+
+          <!-- Card 3: Strategy, Design & Engineering -->
+          <div class="flex flex-col overflow-hidden rounded-2xl border border-white/8 bg-[#0a0c1a] transition hover:border-blue-500/30">
+            <div class="relative flex h-52 items-center justify-center overflow-hidden" style="background: radial-gradient(ellipse 90% 70% at 50% 60%, rgba(30,64,175,0.2) 0%, rgba(10,12,26,0) 70%), linear-gradient(160deg, #0c1138 0%, #07091a 100%);">
+              <!-- Strategy → Design → Dev flow -->
+              <div class="flex items-center gap-2">
+                <div class="flex flex-col items-center gap-1.5">
+                  <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-500/30 bg-[#0f1545]/80" style="box-shadow: 0 0 15px rgba(59,130,246,0.2);">
+                    <i class="fa-solid fa-lightbulb text-2xl text-blue-300" style="filter: drop-shadow(0 0 6px rgba(147,197,253,0.5));"></i>
+                  </div>
+                  <span class="text-[9px] font-bold uppercase tracking-wider text-white/40">{{ t('Strategy', 'Estratehiya') }}</span>
+                </div>
+                <!-- Arrow -->
+                <div class="flex flex-col items-center gap-1 mt-[-16px]">
+                  <div class="h-px w-5 bg-gradient-to-r from-blue-500 to-blue-400"></div>
+                  <i class="fa-solid fa-caret-right text-blue-400 text-[10px] -ml-1 -mt-0.5"></i>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                  <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-purple-500/30 bg-[#120f45]/80" style="box-shadow: 0 0 15px rgba(139,92,246,0.2);">
+                    <i class="fa-solid fa-display text-2xl text-purple-300" style="filter: drop-shadow(0 0 6px rgba(196,181,253,0.5));"></i>
+                  </div>
+                  <span class="text-[9px] font-bold uppercase tracking-wider text-white/40">{{ t('Design', 'Disenyo') }}</span>
+                </div>
+                <!-- Arrow -->
+                <div class="flex flex-col items-center gap-1 mt-[-16px]">
+                  <div class="h-px w-5 bg-gradient-to-r from-purple-400 to-teal-400"></div>
+                  <i class="fa-solid fa-caret-right text-teal-400 text-[10px] -ml-1 -mt-0.5"></i>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                  <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-teal-500/30 bg-[#0b1a1a]/80" style="box-shadow: 0 0 15px rgba(20,184,166,0.2);">
+                    <i class="fa-solid fa-code text-2xl text-teal-300" style="filter: drop-shadow(0 0 6px rgba(94,234,212,0.5));"></i>
+                  </div>
+                  <span class="text-[9px] font-bold uppercase tracking-wider text-white/40">{{ t('Dev', 'Dev') }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-1 flex-col p-5">
+              <div class="mb-3 flex items-center gap-3">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white text-sm shadow-lg shadow-blue-900/40">
+                  <i class="fa-solid fa-people-group"></i>
+                </div>
+                <h3 class="text-sm font-black leading-tight text-white">{{ t('3. Strategy, Design & Engineering Under One Roof', '3. Strategy, Disenyo at Engineering sa Iisang Lugar') }}</h3>
+              </div>
+              <div class="mb-3 h-0.5 w-8 rounded-full bg-blue-600"></div>
+              <p class="flex-1 text-xs leading-relaxed text-white/50">{{ t('Most founders end up coordinating agencies, freelancers, designers, and developers. We bring product strategy, UX design, and engineering together in one team.', 'Karamihan sa mga founder ay nagko-coordinate ng mga ahensya, freelancer, designer, at developer. Pinagsasama namin ang product strategy, UX design, at engineering sa isang team.') }}</p>
+              <p class="mt-3 text-xs font-semibold text-blue-400">{{ t('Fewer handoffs. Faster execution. Better decisions.', 'Mas kaunting handoff. Mas mabilis na execution. Mas magagandang desisyon.') }}</p>
+            </div>
+          </div>
+
+          <!-- Card 4: Built for Early-Stage Ventures -->
+          <div class="flex flex-col overflow-hidden rounded-2xl border border-white/8 bg-[#0a0c1a] transition hover:border-blue-500/30">
+            <div class="relative flex h-52 items-center justify-center overflow-hidden" style="background: radial-gradient(ellipse 90% 70% at 50% 60%, rgba(30,64,175,0.25) 0%, rgba(10,12,26,0) 70%), linear-gradient(160deg, #0c1138 0%, #07091a 100%);">
+              <div class="relative flex items-center gap-4">
+                <!-- Rocket -->
+                <div class="relative">
+                  <div class="flex h-20 w-14 items-end justify-center">
+                    <i class="fa-solid fa-rocket text-4xl text-blue-200 -rotate-12" style="filter: drop-shadow(0 0 12px rgba(147,197,253,0.7));"></i>
+                  </div>
+                  <!-- Flame/glow -->
+                  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 h-8 w-4 rounded-full blur-md" style="background: radial-gradient(ellipse, rgba(251,146,60,0.6) 0%, rgba(59,130,246,0.3) 60%, transparent 100%);"></div>
+                  <!-- Stars -->
+                  <div class="absolute -top-2 -right-2 h-1.5 w-1.5 rounded-full bg-white/60 animate-pulse"></div>
+                  <div class="absolute top-2 -left-3 h-1 w-1 rounded-full bg-white/40 animate-pulse" style="animation-delay:0.5s"></div>
+                  <div class="absolute -top-4 left-2 h-1 w-1 rounded-full bg-blue-300/60 animate-pulse" style="animation-delay:1s"></div>
+                </div>
+                <!-- Validate checklist -->
+                <div class="rounded-xl border border-white/10 bg-[#0f1545]/90 px-3 py-2 shadow-xl text-[10px]">
+                  <div class="mb-1 text-[8px] font-bold uppercase tracking-widest text-white/40">VALIDATE</div>
+                  <div v-for="item in ['Problem', 'Solution', 'Market', 'Traction']" :key="item" class="flex items-center gap-1.5 py-0.5">
+                    <i class="fa-solid fa-check text-blue-400 text-[8px]"></i>
+                    <span class="text-white/60">{{ item }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-1 flex-col p-5">
+              <div class="mb-3 flex items-center gap-3">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white text-sm shadow-lg shadow-blue-900/40">
+                  <i class="fa-solid fa-rocket"></i>
+                </div>
+                <h3 class="text-sm font-black leading-tight text-white">{{ t('4. Built for Early-Stage Ventures', '4. Itinayo para sa Early-Stage na Venture') }}</h3>
+              </div>
+              <div class="mb-3 h-0.5 w-8 rounded-full bg-blue-600"></div>
+              <p class="flex-1 text-xs leading-relaxed text-white/50">{{ t('We specialize in helping founders navigate uncertainty. Our approach is lean, evidence-driven, and focused on validation before overbuilding — helping startups conserve resources and reach the market faster.', 'Dalubhasa kami sa pagtulong sa mga founder na mag-navigate ng kawalan ng katiyakan. Ang aming diskarte ay lean, evidence-driven, at nakatuon sa validation bago mag-overbuild.') }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom banner -->
+        <div class="vs-animate mt-6 overflow-hidden rounded-2xl border border-white/8 bg-[#0a0c1a]">
+          <div class="flex flex-col gap-6 px-8 py-6 sm:flex-row sm:items-center sm:justify-between">
+            <!-- Left -->
+            <div class="flex items-center gap-5">
+              <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-blue-500/30 bg-blue-600/20 text-blue-400 text-2xl">
+                <i class="fa-regular fa-star" style="filter: drop-shadow(0 0 6px rgba(96,165,250,0.5));"></i>
+              </div>
+              <div>
+                <p class="text-base font-bold text-white">{{ t("We're not just a service provider.", 'Hindi lang kami isang service provider.') }}</p>
+                <p class="text-base font-bold text-blue-400">{{ t("We're your venture-building partner.", 'Kami ang iyong venture-building partner.') }}</p>
+              </div>
+            </div>
+            <!-- Divider -->
+            <div class="hidden h-12 w-px bg-white/10 sm:block"></div>
+            <!-- Right -->
+            <div class="flex items-center gap-6">
+              <div>
+                <p class="text-sm text-white/55">{{ t('We care about your success as much as you do.', 'Nagmamalasakit kami sa iyong tagumpay tulad mo.') }}</p>
+                <p class="mt-0.5 text-sm font-bold text-white">{{ t('Let\'s build something meaningful — together.', 'Magtayo tayo ng isang bagay na may kahulugan — nang magkasama.') }}</p>
+              </div>
+              <!-- Growth arrow SVG -->
+              <div class="hidden sm:block shrink-0">
+                <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="4,44 20,34 36,26 52,14 68,6" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 4px rgba(59,130,246,0.6));"/>
+                  <circle cx="68" cy="6" r="3" fill="#3b82f6" style="filter: drop-shadow(0 0 4px rgba(59,130,246,0.8));"/>
+                  <polyline points="62,6 68,6 68,12" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
